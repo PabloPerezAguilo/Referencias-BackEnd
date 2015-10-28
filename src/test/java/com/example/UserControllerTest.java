@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.controllers.UserController;
 import com.example.dao.UserDAO;
-import com.example.models.User;
+import com.example.models.Usuario;
 import com.example.utils.InitDB;
 
 public class UserControllerTest {
@@ -50,7 +50,7 @@ public class UserControllerTest {
 	public void emptyUsers() {
 		log.info("Start 'Empty Users test'");
 		try {
-			List<User> list = controller.getUsers();
+			List<Usuario> list = controller.getUsers();
 			assertTrue(list.isEmpty());
 		} catch (Exception e) {
 			fail("Error: " + e.getMessage());
@@ -68,8 +68,8 @@ public class UserControllerTest {
 		try {
 			log.info("Start 'Create User test'");
 			controller.createUser("userTest", "roleTest", "passwordTest");
-			List<User> list = controller.getUsers();
-			User user = list.get(0);
+			List<Usuario> list = controller.getUsers();
+			Usuario user = list.get(0);
 			assertNotNull(user);
 		} catch (Exception e) {
 			fail("Error: " + e.getMessage());

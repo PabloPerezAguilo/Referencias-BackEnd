@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import com.example.controllers.ResourceController;
-import com.example.models.Resource;
+import com.example.models.Referencia;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -60,7 +60,7 @@ public class ResourceService extends Service{
 
 	@POST
 	@ApiOperation(value = "Create a resource", notes = "Create a resource")
-	public Response postResource(Resource r) {
+	public Response postResource(Referencia r) {
 		try {
 			ResourceController resourceController = ResourceController.getInstance();
 			out = resourceController.createResource(r);

@@ -9,7 +9,7 @@ import java.util.Random;
 import org.apache.commons.codec.binary.Base64;
 
 import com.example.dao.UserDAO;
-import com.example.models.User;
+import com.example.models.Usuario;
 
 public class UserController {
 
@@ -33,7 +33,7 @@ public class UserController {
 	 */
 	public String loginUser(String idUser, String pass) throws Exception {
 		// Get the user hashed and salted password
-		User user = dao.getUser(idUser);
+		Usuario user = dao.getUser(idUser);
 		if (user == null) {
 			throw new Exception("User not found");
 		}
@@ -52,15 +52,15 @@ public class UserController {
 	 * Create new user
 	 */
 	public void createUser(String name, String role, String password) throws Exception {
-		dao.insertUser(new User(name, role, this.makePasswordHash(password, this.generateSalting())));
+		dao.insertUser(new Usuario(name, role, this.makePasswordHash(password, this.generateSalting())));
 	}
 
 	/**
 	 * Get all users
 	 */
-	public List<User> getUsers() throws Exception {
-		List<User> list = new ArrayList<User>();
-		Iterator<User> i = dao.getUsers();
+	public List<Usuario> getUsers() throws Exception {
+		List<Usuario> list = new ArrayList<Usuario>();
+		Iterator<Usuario> i = dao.getUsers();
 		while (i.hasNext()) {
 			list.add(i.next());
 		}

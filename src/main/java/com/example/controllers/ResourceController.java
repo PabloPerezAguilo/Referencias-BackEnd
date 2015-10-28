@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.example.dao.ResourceDAO;
-import com.example.models.Resource;
+import com.example.models.Referencia;
 
 public class ResourceController {
 
@@ -24,25 +24,25 @@ public class ResourceController {
 		return singleton;
 	}
 
-	public List<Resource> getResources() throws Exception {
+	public List<Referencia> getResources() throws Exception {
 		// Transform an iterator object to a list
-		List<Resource> list = new ArrayList<Resource>();
-		Iterator<Resource> i = dao.getResources();
+		List<Referencia> list = new ArrayList<Referencia>();
+		Iterator<Referencia> i = dao.getResources();
 		while (i.hasNext()) {
 			list.add(i.next());
 		}
 		return list;
 	}
 
-	public Resource getResource(int key) throws Exception {
-		Resource resource = dao.getResource(key);
+	public Referencia getResource(int key) throws Exception {
+		Referencia resource = dao.getResource(key);
 		if (resource == null) {
 			throw new Exception("Resource not found");
 		}
 		return resource;
 	}
 
-	public Resource createResource(Resource r) throws Exception {
+	public Referencia createResource(Referencia r) throws Exception {
 		dao.insertResource(r);
 		return r;
 	}

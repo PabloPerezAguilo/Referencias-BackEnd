@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.jongo.MongoCollection;
 
-import com.example.models.User;
+import com.example.models.Usuario;
 
 public class UserDAO {
 
@@ -23,15 +23,15 @@ public class UserDAO {
 		return singleton;
 	}
 
-	public Iterator<User> getUsers() {
-		return dao.find().as(User.class).iterator();
+	public Iterator<Usuario> getUsers() {
+		return dao.find(). as(Usuario.class).iterator();
 	}
 
-	public User getUser(String idUser) {
-		return dao.findOne("{'_id':#}", idUser).as(User.class);
+	public Usuario getUser(String idUser) {
+		return dao.findOne("{'_id':#}", idUser).as(Usuario.class);
 	}
 
-	public void insertUser(User user) {
+	public void insertUser(Usuario user) {
 		dao.insert(user);
 	}
 

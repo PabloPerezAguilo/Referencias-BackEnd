@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.jongo.MongoCollection;
 
-import com.example.models.Resource;
+import com.example.models.Referencia;
 
 public class ResourceDAO {
 
@@ -23,15 +23,15 @@ public class ResourceDAO {
 		return singleton;
 	}
 
-	public Iterator<Resource> getResources() throws Exception {
-		return dao.find().as(Resource.class).iterator();
+	public Iterator<Referencia> getResources() throws Exception {
+		return dao.find().as(Referencia.class).iterator();
 	}
 
-	public Resource getResource(int key) {
-		return dao.findOne("{'_id':#}", key).as(Resource.class);
+	public Referencia getResource(int key) {
+		return dao.findOne("{'_id':#}", key).as(Referencia.class);
 	}
 
-	public void insertResource(Resource r) {
+	public void insertResource(Referencia r) {
 		dao.insert(r);
 	}
 

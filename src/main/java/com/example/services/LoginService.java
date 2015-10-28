@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 
 import com.example.controllers.UserController;
-import com.example.models.User;
+import com.example.models.Usuario;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -27,7 +27,7 @@ public class LoginService {
 
 	@POST
 	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
-	public Response login(@ApiParam(value = "Role field is not required", required = true) User usuario) {
+	public Response login(@ApiParam(value = "Role field is not required", required = true) Usuario usuario) {
 		Status status = Response.Status.BAD_REQUEST;
 		Object out;
 		try {

@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.controllers.ResourceController;
-import com.example.models.Resource;
+import com.example.models.Referencia;
 import com.example.utils.InitDB;
 
 public class ResourceControllerTest {
@@ -46,7 +46,7 @@ public class ResourceControllerTest {
 	public void emptyResource() {
 		log.info("Start 'Empty Resource test'");
 		try {
-			List<Resource> list = controller.getResources();
+			List<Referencia> list = controller.getResources();
 			assertTrue(list.isEmpty());
 		} catch (Exception e) {
 			fail("Error: " + e.getMessage());
@@ -57,10 +57,10 @@ public class ResourceControllerTest {
 	public void createResource() {
 		log.info("Start 'Create Resource test'");
 		try {
-			Resource r = new Resource(1, "value1");
+			Referencia r = new Referencia(0,"rbrito","GFI Centro","Banco","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","Borrador");
 			controller.createResource(r);
 			r = controller.getResource(1);
-			assertEquals(r.getValue(), "value1");
+			assertEquals(r.getCliente(), "rbrito");
 		} catch (Exception e) {
 			fail("Error: " + e.getMessage());
 		}
@@ -69,7 +69,7 @@ public class ResourceControllerTest {
 	@Test(expected = Exception.class)
 	public void createDubplicatedResource() throws Exception {
 		log.info("Start 'Create Duplicated Resource test'");
-		Resource r = new Resource(1, "value1");
+		Referencia r = new Referencia(0,"rbrito","GFI Centro","Banco","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","Borrador");
 		controller.createResource(r);
 		controller.createResource(r);
 	}
