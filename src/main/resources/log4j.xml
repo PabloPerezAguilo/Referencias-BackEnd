@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+			<!--<param name="ConversionPattern" value="%d{dd/MM/yyyy-HH:mm:ss} %p %C %L: %m%n"/>-->
+		</layout>
+	</appender>
+
+	<!-- Log con salida a fichero -->
+	<appender name="FICHERO" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/logs/logApp.log"/>
+		<param name="MaxFileSize" value="5MB" />
+		<param name="MaxBackupIndex" value="20" />
+		<param name="Append" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<!--<param name="ConversionPattern" value="%d{ddMMyyyy-HH:mm:ss} %p %C %L: %m%n"/>-->
+			<param name="ConversionPattern" value="%-5p: %c - %m%n"/>
+		</layout>
+	</appender>
+
+	<!-- Root Logger -->
+	<!-- ********************************* -->
+	<!-- *** RAIZ DE TODOS LOS LOGGERS *** -->
+	<!-- ********************************* -->
+	<root>
+		<level value="INFO"/>
+		<!--priority value="WARN" /-->
+		<appender-ref ref="CONSOLE" />
+		<!--<appender-ref ref="FICHERO" />-->
+	</root>
+	
+</log4j:configuration>

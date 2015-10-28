@@ -1,0 +1,29 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
+
+	<http auto-config="true">
+		<!-- this services can be accessed without login -->
+		<intercept-url pattern="/api/api-docs/" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/api/resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/api/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<!-- this services requires login -->
+		<intercept-url pattern="/api/resource2/**" access="ROLE_USER,ROLE_ADMIN" method="GET" requires-channel="https"/>
+		<intercept-url pattern="/api/Login2/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="https"/>
+
+		<http-basic />
+		<!-- Service to logout -->
+		<logout logout-success-url="/logout" />
+
+	</http>
+
+
+	<authentication-manager>
+		<!-- Custom class to validate users. Can be replace for LDAP configuration -->
+		<authentication-provider ref="customAuthentication" />
+	</authentication-manager>
+
+</beans:beans>
