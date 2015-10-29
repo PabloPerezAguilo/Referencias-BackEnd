@@ -9,6 +9,9 @@ import java.util.Random;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.authentication.BindAuthenticator;
+import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 
 import com.example.dao.UsuarioDAO;
 import com.example.models.Referencia;
