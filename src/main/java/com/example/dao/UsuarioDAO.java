@@ -6,32 +6,32 @@ import org.jongo.MongoCollection;
 
 import com.example.models.Usuario;
 
-public class UserDAO {
+public class UsuarioDAO {
 
-	private static UserDAO singleton;
+	private static UsuarioDAO singleton;
 	private static MongoCollection dao;
 	private static final String COLLECTION_NAME_MONGO = "users";
 
-	private UserDAO() throws Exception {
+	private UsuarioDAO() throws Exception {
 		dao = DataBase.getInstance().getCollection(COLLECTION_NAME_MONGO);
 	}
 
-	public static UserDAO getInstance() throws Exception {
+	public static UsuarioDAO getInstance() throws Exception {
 		if (singleton == null) {
-			singleton = new UserDAO();
+			singleton = new UsuarioDAO();
 		}
 		return singleton;
 	}
 
-	public Iterator<Usuario> getUsers() {
+	public Iterator<Usuario> getUsuarios() {
 		return dao.find(). as(Usuario.class).iterator();
 	}
 
-	public Usuario getUser(String idUser) {
+	public Usuario getUsuario(String idUser) {
 		return dao.findOne("{'_id':#}", idUser).as(Usuario.class);
 	}
 
-	public void insertUser(Usuario user) {
+	public void insertUsuario(Usuario user) {
 		dao.insert(user);
 	}
 

@@ -8,22 +8,22 @@ import java.util.Random;
 
 import org.apache.commons.codec.binary.Base64;
 
-import com.example.dao.UserDAO;
+import com.example.dao.UsuarioDAO;
 import com.example.models.Usuario;
 
-public class UserController {
+public class UsuarioController {
 
 	// Singleton instances
-	private UserDAO dao;
-	private static UserController singleton;
+	private UsuarioDAO dao;
+	private static UsuarioController singleton;
 
-	private UserController() throws Exception {
-		dao = UserDAO.getInstance();
+	private UsuarioController() throws Exception {
+		dao = UsuarioDAO.getInstance();
 	}
 
-	public static UserController getInstance() throws Exception {
+	public static UsuarioController getInstance() throws Exception {
 		if (singleton == null) {
-			singleton = new UserController();
+			singleton = new UsuarioController();
 		}
 		return singleton;
 	}
@@ -33,7 +33,7 @@ public class UserController {
 	 */
 	public String loginUser(String idUser, String pass) throws Exception {
 		// Get the user hashed and salted password
-		Usuario user = dao.getUser(idUser);
+		Usuario user = dao.getUsuario(idUser);
 		if (user == null) {
 			throw new Exception("User not found");
 		}
@@ -52,7 +52,7 @@ public class UserController {
 	 * Create new user
 	 */
 	public void createUser(String name, String role, String password) throws Exception {
-		dao.insertUser(new Usuario(name, role, this.makePasswordHash(password, this.generateSalting())));
+		dao.insertUsuario(new Usuario(name, role, this.makePasswordHash(password, this.generateSalting())));
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class UserController {
 	 */
 	public List<Usuario> getUsers() throws Exception {
 		List<Usuario> list = new ArrayList<Usuario>();
-		Iterator<Usuario> i = dao.getUsers();
+		Iterator<Usuario> i = dao.getUsuarios();
 		while (i.hasNext()) {
 			list.add(i.next());
 		}

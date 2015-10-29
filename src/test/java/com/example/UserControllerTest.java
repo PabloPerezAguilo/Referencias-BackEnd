@@ -14,22 +14,22 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.controllers.UserController;
-import com.example.dao.UserDAO;
+import com.example.controllers.UsuarioController;
+import com.example.dao.UsuarioDAO;
 import com.example.models.Usuario;
 import com.example.utils.InitDB;
 
 public class UserControllerTest {
 
 	private static final Logger log = LoggerFactory.getLogger(UserControllerTest.class);
-	private static UserController controller;
-	private static UserDAO dao;
+	private static UsuarioController controller;
+	private static UsuarioDAO dao;
 
 	@BeforeClass
 	public static void init() throws Exception {
 		log.info("Start test");
-		controller = UserController.getInstance();
-		dao = UserDAO.getInstance();
+		controller = UsuarioController.getInstance();
+		dao = UsuarioDAO.getInstance();
 	}
 
 	@AfterClass

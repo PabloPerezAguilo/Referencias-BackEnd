@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
-import com.example.controllers.UserController;
+import com.example.controllers.UsuarioController;
 import com.example.models.Usuario;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
@@ -31,7 +31,7 @@ public class LoginService {
 		Status status = Response.Status.BAD_REQUEST;
 		Object out;
 		try {
-			UserController userController = UserController.getInstance();
+			UsuarioController userController = UsuarioController.getInstance();
 			// Make login
 			String role = userController.loginUser(usuario.getName(), usuario.getPassword());
 			// Take the role and insert into a map

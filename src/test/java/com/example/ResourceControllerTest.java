@@ -13,24 +13,24 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.controllers.ResourceController;
+import com.example.controllers.ReferenciaController;
 import com.example.models.Referencia;
 import com.example.utils.InitDB;
 
 public class ResourceControllerTest {
 
 	private static final Logger log = LoggerFactory.getLogger(ResourceControllerTest.class);
-	private static ResourceController controller;
+	private static ReferenciaController controller;
 
 	@BeforeClass
 	public static void init() throws Exception {
 		log.info("Start test");
-		controller = ResourceController.getInstance();
+		controller = ReferenciaController.getInstance();
 	}
 
 	@AfterClass
 	public static void end() throws Exception {
-		controller.dropResource();
+		controller.dropReferencia();
 		InitDB.loadResources();
 		log.info("Storage restored");
 		log.info("End test");
@@ -38,7 +38,7 @@ public class ResourceControllerTest {
 
 	@Before
 	public void initTest() throws Exception {
-		controller.dropResource();
+		controller.dropReferencia();
 		log.info("Storage cleaned");
 	}
 
@@ -46,7 +46,7 @@ public class ResourceControllerTest {
 	public void emptyResource() {
 		log.info("Start 'Empty Resource test'");
 		try {
-			List<Referencia> list = controller.getResources();
+			List<Referencia> list = controller.getReferencias();
 			assertTrue(list.isEmpty());
 		} catch (Exception e) {
 			fail("Error: " + e.getMessage());
@@ -58,8 +58,8 @@ public class ResourceControllerTest {
 		log.info("Start 'Create Resource test'");
 		try {
 			Referencia r = new Referencia(0,"rbrito","GFI Centro","Banco","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","Borrador");
-			controller.createResource(r);
-			r = controller.getResource(1);
+			controller.createReferencia(r);
+			r = controller.getReferencia(1);
 			assertEquals(r.getCliente(), "rbrito");
 		} catch (Exception e) {
 			fail("Error: " + e.getMessage());
@@ -70,7 +70,7 @@ public class ResourceControllerTest {
 	public void createDubplicatedResource() throws Exception {
 		log.info("Start 'Create Duplicated Resource test'");
 		Referencia r = new Referencia(0,"rbrito","GFI Centro","Banco","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","Borrador");
-		controller.createResource(r);
-		controller.createResource(r);
+		controller.createReferencia(r);
+		controller.createReferencia(r);
 	}
 }
