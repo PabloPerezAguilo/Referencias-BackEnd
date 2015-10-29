@@ -9,6 +9,7 @@ import java.util.Random;
 import org.apache.commons.codec.binary.Base64;
 
 import com.example.dao.UsuarioDAO;
+import com.example.models.Referencia;
 import com.example.models.Usuario;
 
 public class UsuarioController {
@@ -59,7 +60,7 @@ public class UsuarioController {
 		
 		// TO DO integrar ldap
 		// Get the user hashed and salted password
-		Usuario user = dao.getUsuario(idUser);
+		Usuario user = dao.getUsuarioLogin(idUser);
 		if (user == null) {
 			throw new Exception("User not found");
 		}
@@ -77,20 +78,40 @@ public class UsuarioController {
 	/**
 	 * Create new user
 	 */
-	public void createUser(String name, String role, String password) throws Exception {
+	public void createUsuario(String name, String role, String password) throws Exception {
 		dao.insertUsuario(new Usuario(name, role, this.makePasswordHash(password, this.generateSalting())));
+		
 	}
 
 	/**
 	 * Get all users
 	 */
-	public List<Usuario> getUsers() throws Exception {
+	public List<Usuario> getUsuarios() throws Exception {
 		List<Usuario> list = new ArrayList<Usuario>();
 		Iterator<Usuario> i = dao.getUsuarios();
 		while (i.hasNext()) {
 			list.add(i.next());
 		}
 		return list;
+	}
+	
+	/**
+	 * Get un usuario
+	 */
+	public Usuario getUsuario(String id) throws Exception {
+		Usuario usu = new Usuario();
+		usu = dao.getUsuario(id);
+		return usu;
+	}
+	
+	public String deleteUsuario(String key) throws Exception{
+		dao.deleteUsuario(key);
+		return key;
+	}
+	
+	public Usuario updateReferencia(String key, Usuario r){
+		dao.updateUsuario(key,r);
+		return r;
 	}
 
 	// PRIVATE METHODS TO GENERATE PASSWORDS
