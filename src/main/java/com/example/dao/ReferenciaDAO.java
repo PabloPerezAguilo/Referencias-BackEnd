@@ -6,33 +6,41 @@ import org.jongo.MongoCollection;
 
 import com.example.models.Referencia;
 
-public class ResourceDAO {
+public class ReferenciaDAO {
 
-	private static ResourceDAO singleton;
+	private static ReferenciaDAO singleton;
 	private static MongoCollection dao;
 	private static final String COLLECTION_NAME_MONGO = "resources";
 
-	private ResourceDAO() throws Exception {
+	private ReferenciaDAO() throws Exception {
 		dao = DataBase.getInstance().getCollection(COLLECTION_NAME_MONGO);
 	}
 
-	public static ResourceDAO getInstance() throws Exception {
+	public static ReferenciaDAO getInstance() throws Exception {
 		if (singleton == null) {
-			singleton = new ResourceDAO();
+			singleton = new ReferenciaDAO();
 		}
 		return singleton;
 	}
 
-	public Iterator<Referencia> getResources() throws Exception {
+	public Iterator<Referencia> getReferencias() throws Exception {
 		return dao.find().as(Referencia.class).iterator();
 	}
 
-	public Referencia getResource(int key) {
+	public Referencia getReferencia(int key) {
 		return dao.findOne("{'_id':#}", key).as(Referencia.class);
 	}
 
-	public void insertResource(Referencia r) {
+	public void insertReferencia(Referencia r) {
 		dao.insert(r);
+	}
+	
+	public void deleteReferencia(int key){
+		dao.remove("{_id:"+key+"}");
+	}
+	
+	public void updateReferencia(int key, Referencia r){
+		dao.update("{_id:"+key+"}").with(r);
 	}
 
 	public void clearStore() {

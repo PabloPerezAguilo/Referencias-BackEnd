@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.switchuser.SwitchUserGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.example.controllers.UserController;
+import com.example.controllers.UsuarioController;
 
 @Component
 public class CustomAuthentication implements AuthenticationProvider {
@@ -35,7 +35,7 @@ public class CustomAuthentication implements AuthenticationProvider {
 		Authentication auth = null;
 		String rol = "";
 		try {
-			UserController user = UserController.getInstance();
+			UsuarioController user = UsuarioController.getInstance();
 			rol = user.loginUser(name, password);
 		} catch (Exception e) {
 			log.error("Authentication error: ", e);
