@@ -32,6 +32,8 @@ public class UserController {
 	 * Check user/password and return the role
 	 */
 	public String loginUser(String idUser, String pass) throws Exception {
+		
+		// TO DO integrar ldap
 		// Get the user hashed and salted password
 		Usuario user = dao.getUser(idUser);
 		if (user == null) {

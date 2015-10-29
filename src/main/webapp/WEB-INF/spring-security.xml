@@ -7,7 +7,7 @@
 
 	<http auto-config="true">
 		<!-- this services can be accessed without login -->
-		<intercept-url pattern="/api/api-docs/" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/api/resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/api/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<!-- this services requires login -->

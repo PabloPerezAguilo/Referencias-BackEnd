@@ -24,7 +24,9 @@ import com.wordnik.swagger.annotations.ApiParam;
 public class LoginService {
 
 	private static final Logger log = Logger.getLogger(LoginService.class.getName());
-
+	
+	// pepito.usuario
+	 //user.password
 	@POST
 	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
 	public Response login(@ApiParam(value = "Role field is not required", required = true) Usuario usuario) {
