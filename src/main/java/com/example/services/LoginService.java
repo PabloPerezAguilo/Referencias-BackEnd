@@ -26,7 +26,68 @@ public class LoginService {
 	private static final Logger log = Logger.getLogger(LoginService.class.getName());
 	
 	// pepito.usuario
-	 //user.password
+	 //ñuser.password
+	/*
+	@POST
+	@Path("/RealizarLogin")
+	@ApiOperation(value = "Validación del acceso de un usuario", notes = "Devuelve un mensaje de estado")
+	public Response loginUsuario(
+			@ApiParam(value = "Datos de la reserva", required = true) Usuario usuario) {
+		Status estado = Response.Status.BAD_REQUEST;
+		Mensaje mensaje;
+		Map<String, Object> salidaMap = new HashMap<String, Object>();
+		String user = usuario.getNombre();
+		String pass = usuario.getPassword();
+		String userName;
+
+		try {
+			UsuarioControlador usuarioControlador = new UsuarioControlador();
+			String rol;
+			boolean primeraVez;
+			String template;
+			boolean existeUsuario = usuarioControlador.existeUsuario(user);
+
+			// Se trata de loguear contra LDAP
+			final String ldapActive = Configuracion.getInstance().getProperty(Configuracion.LDAP_ACTIVE);
+			if (!"false".equalsIgnoreCase(ldapActive)) {
+				usuarioControlador.loginLdapUsuario(user, pass);
+				userName = usuarioControlador.obtenerNombreUsuarioLdap(user);
+				usuario.setNombreCompleto(userName);
+			} else {
+				if (existeUsuario) {
+					userName = usuarioControlador.obtenerNombreUsuarioMongo(user);
+					usuario.setNombreCompleto(userName);
+				}
+			}
+
+			if (!existeUsuario) {
+				usuarioControlador.insertarUsuario(user, ROLE_USER, 0, false, "", usuario.getNombreCompleto());
+			}
+
+			primeraVez = usuarioControlador.isPrimeraVez(user);
+			rol = usuarioControlador.obtenerRol(user);
+			template = usuarioControlador.obtenerTemplate(user);
+
+			mensaje = new Mensaje(0, "La autenticación es correcta.");
+			salidaMap.put("primeraVez", primeraVez);
+			salidaMap.put("rol", rol);
+			salidaMap.put("template", template);
+			salidaMap.put("nombreCompleto", StringUtils.hasText(usuario
+					.getNombreCompleto()) ? usuario.getNombreCompleto() : user);
+			estado = Response.Status.OK;
+			LOGGER.info("Login del usuario " + usuario.getNombre() + ": "
+					+ mensaje.getMensaje());
+		} catch (Exception e) {
+			LOGGER.error(
+					"Error al autenticar al usuario " + usuario.getNombre()
+							+ ": ", e);
+			mensaje = new Mensaje(1, "Operacion incorrecta: " + e.getMessage());
+		}
+
+		salidaMap.put("mensaje", mensaje);
+		return Response.status(estado).entity(salidaMap).build();
+	}
+	/*
 	@POST
 	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
 	public Response login(@ApiParam(value = "Role field is not required", required = true) Usuario usuario) {
@@ -47,5 +108,5 @@ public class LoginService {
 			out = new Message(e.getMessage());
 		}
 		return Response.status(status).entity(out).build();
-	}
+	} */
 }

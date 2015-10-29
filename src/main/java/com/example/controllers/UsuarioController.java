@@ -27,6 +27,30 @@ public class UsuarioController {
 		}
 		return singleton;
 	}
+	/*
+	public void loginLdapUsuario(String user, String pass) throws Exception {
+
+		DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(
+				Configuracion.getInstance().getProperty(Configuracion.LDAP_URL));
+		contextSource.setCacheEnvironmentProperties(false);
+
+		BindAuthenticator authenticator = new BindAuthenticator(contextSource);
+		String[] patterns = { Configuracion.getInstance().getProperty(
+				Configuracion.LDAP_USER_DN_PATTERN) };
+		authenticator.setUserDnPatterns(patterns);
+
+		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
+				authenticator);
+
+		Authentication authentication = ldapAuthenticationProvider
+				.authenticate(new UsernamePasswordAuthenticationToken(user,
+						pass));
+
+		if (authentication == null) {
+			throw new Exception("El password introducido no es valido");
+		}
+
+	}
 
 	/**
 	 * Check user/password and return the role
