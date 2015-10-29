@@ -87,7 +87,7 @@ public class LoginService {
 		salidaMap.put("mensaje", mensaje);
 		return Response.status(estado).entity(salidaMap).build();
 	}
-	/*
+	*/
 	@POST
 	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
 	public Response login(@ApiParam(value = "Role field is not required", required = true) Usuario usuario) {
@@ -108,5 +108,5 @@ public class LoginService {
 			out = new Message(e.getMessage());
 		}
 		return Response.status(status).entity(out).build();
-	} */
+	} 
 }
