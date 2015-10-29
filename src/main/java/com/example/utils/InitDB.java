@@ -26,6 +26,7 @@ public class InitDB {
 		UsuarioController controller = UsuarioController.getInstance();
 		controller.createUsuario("a", "ROLE_USER", "a");
 		controller.createUsuario("test", "ROLE_ADMIN", "test");
+		controller.createUsuario("dmonco","ROLE_ADMIN","password");
 		LOG.info("Users inserted in DB");
 	}
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
@@ -14,6 +16,7 @@ import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 
 import com.example.dao.UsuarioDAO;
+import com.example.filters.CustomAuthentication;
 import com.example.models.Referencia;
 import com.example.models.Usuario;
 import com.example.utils.Config;
@@ -23,6 +26,7 @@ public class UsuarioController {
 	// Singleton instances
 	private UsuarioDAO dao;
 	private static UsuarioController singleton;
+	private static final Logger log = LoggerFactory.getLogger(CustomAuthentication.class);
 
 	private UsuarioController() throws Exception {
 		dao = UsuarioDAO.getInstance();
@@ -86,7 +90,9 @@ public class UsuarioController {
 						pass));
 		
 		if (authentication == null) {
-			throw new Exception("User not found");
+			throw new Exception("User not found in LDAP");
+		}else{
+			log.info("User en LDAP");
 		}
 		
 		// If its all right return the role
