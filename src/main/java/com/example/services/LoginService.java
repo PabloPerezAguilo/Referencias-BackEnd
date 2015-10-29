@@ -90,6 +90,7 @@ public class LoginService {
 	*/
 	@POST
 	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
+	
 	public Response login(@ApiParam(value = "Role field is not required", required = true) Usuario usuario) {
 		Status status = Response.Status.BAD_REQUEST;
 		Object out;

@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import com.example.dao.UsuarioDAO;
 import com.example.models.Referencia;
 import com.example.models.Usuario;
+import com.example.utils.Config;
 
 public class UsuarioController {
 
@@ -64,13 +67,25 @@ public class UsuarioController {
 		if (user == null) {
 			throw new Exception("User not found");
 		}
-		String hashedAndSalted = user.getPassword();
-		String salt = hashedAndSalted.split(",")[1];
-		String newHashedAndSalted = makePasswordHash(pass, salt);
-		// Takes both hashed and salted passwords and compare it
-		if (!hashedAndSalted.equals(newHashedAndSalted)) {
-			throw new Exception("Password wrong");
+		
+		// conectar ldap y comprobar si esta con su pass 
+		DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(
+				Config.getInstance().getProperty(Config.LDAP_URL));
+		contextSource.setCacheEnvironmentProperties(false);
+		BindAuthenticator authenticator = new BindAuthenticator(contextSource);
+		String[] patterns = { Config.getInstance().getProperty(
+				Config.LDAP_USER_DN_PATTERN) };
+		authenticator.setUserDnPatterns(patterns);
+		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
+				authenticator);
+		Authentication authentication = ldapAuthenticationProvider
+				.authenticate(new UsernamePasswordAuthenticationToken(idUser,
+						pass));
+		
+		if (authentication == null) {
+			throw new Exception("User not found");
 		}
+		
 		// If its all right return the role
 		return user.getRole();
 	}
