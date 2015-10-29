@@ -50,7 +50,7 @@ public class UserControllerTest {
 	public void emptyUsers() {
 		log.info("Start 'Empty Users test'");
 		try {
-			List<Usuario> list = controller.getUsers();
+			List<Usuario> list = controller.getUsuarios();
 			assertTrue(list.isEmpty());
 		} catch (Exception e) {
 			fail("Error: " + e.getMessage());
@@ -67,8 +67,8 @@ public class UserControllerTest {
 	public void createUser() {
 		try {
 			log.info("Start 'Create User test'");
-			controller.createUser("userTest", "roleTest", "passwordTest");
-			List<Usuario> list = controller.getUsers();
+			controller.createUsuario("userTest", "roleTest", "passwordTest");
+			List<Usuario> list = controller.getUsuarios();
 			Usuario user = list.get(0);
 			assertNotNull(user);
 		} catch (Exception e) {
@@ -79,7 +79,7 @@ public class UserControllerTest {
 	@Test(expected = Exception.class)
 	public void loginWrongPassword() throws Exception {
 		log.info("Start 'Login with wrong password test'");
-		controller.createUser("userTest", "roleTest", "passwordTest");
+		controller.createUsuario("userTest", "roleTest", "passwordTest");
 		controller.loginUser("userTest", "passwordWrong");
 	}
 
@@ -87,7 +87,7 @@ public class UserControllerTest {
 	public void login() {
 		try {
 			log.info("Start 'Login test'");
-			controller.createUser("userTest", "roleTest", "passwordTest");
+			controller.createUsuario("userTest", "roleTest", "passwordTest");
 			String role = controller.loginUser("userTest", "passwordTest");
 			assertEquals(role, "roleTest");
 		} catch (Exception e) {

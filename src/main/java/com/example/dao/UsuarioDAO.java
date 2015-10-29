@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.jongo.MongoCollection;
 
+import com.example.models.Referencia;
 import com.example.models.Usuario;
 
 public class UsuarioDAO {
@@ -30,9 +31,21 @@ public class UsuarioDAO {
 	public Usuario getUsuario(String idUser) {
 		return dao.findOne("{'_id':#}", idUser).as(Usuario.class);
 	}
+	
+	public Usuario getUsuarioLogin(String idUser) {
+		return dao.findOne("{'_id':#}", idUser).as(Usuario.class);
+	}
 
 	public void insertUsuario(Usuario user) {
 		dao.insert(user);
+	}
+	
+	public void deleteUsuario(String key){
+		dao.remove("{_id:"+key+"}");
+	}
+	
+	public void updateUsuario(String key, Usuario r){
+		dao.update("{_id:"+key+"}").with(r);
 	}
 
 	public void clearStore() {
