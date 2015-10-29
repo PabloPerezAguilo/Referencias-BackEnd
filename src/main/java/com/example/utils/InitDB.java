@@ -24,9 +24,9 @@ public class InitDB {
 		UsuarioDAO userDAO = UsuarioDAO.getInstance();
 		userDAO.clearStore();
 		UsuarioController controller = UsuarioController.getInstance();
-		controller.createUsuario("a", "ROLE_USER", "a");
-		controller.createUsuario("test", "ROLE_ADMIN", "test");
-		controller.createUsuario("dmonco","ROLE_ADMIN","password");
+		controller.createUsuario("a", "ROLE_USER");
+		controller.createUsuario("test", "ROLE_ADMIN");
+		controller.createUsuario("dmonco","ROLE_ADMIN");
 		LOG.info("Users inserted in DB");
 	}
 

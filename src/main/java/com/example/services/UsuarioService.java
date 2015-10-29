@@ -63,11 +63,11 @@ public class UsuarioService extends Service{
 	}
 
 	@POST
-	@ApiOperation(value = "Create a Usuario", notes = "Create a Referencia")
+	@ApiOperation(value = "Create a Usuario", notes = "Create a Usuario")
 	public Response postUsuario(Usuario r) {
 		try {
 			UsuarioController resourceController = UsuarioController.getInstance();
-			resourceController.createUsuario(r.getName(),r.getRole(),r.getPassword());
+			resourceController.createUsuario(r.getName(),r.getRole());
 			log.info("Insert Usuario: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;

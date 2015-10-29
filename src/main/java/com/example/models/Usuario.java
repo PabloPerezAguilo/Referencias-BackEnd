@@ -9,15 +9,13 @@ public class Usuario {
 	@Id
 	private String name;
 	private String role;
-	private String password;
 
 	public Usuario() {
 	}
 
-	public Usuario(String name, String role, String password) {
+	public Usuario(String name, String role) {
 		this.name = name;
 		this.role = role;
-		this.password = password;
 	}
 
 	public Usuario(Usuario u) {
@@ -41,16 +39,9 @@ public class Usuario {
 		this.role = role;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	@Override
 	public String toString() {
-		return name + "//" + role + "//" + password;
+		return name + "//" + role;
 	}
 }

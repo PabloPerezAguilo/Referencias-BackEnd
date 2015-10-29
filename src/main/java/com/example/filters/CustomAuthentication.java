@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.switchuser.SwitchUserGran
 import org.springframework.stereotype.Component;
 
 import com.example.controllers.UsuarioController;
+import com.example.models.UsuarioLdap;
 
 @Component
 public class CustomAuthentication implements AuthenticationProvider {
@@ -36,7 +37,8 @@ public class CustomAuthentication implements AuthenticationProvider {
 		String rol = "";
 		try {
 			UsuarioController user = UsuarioController.getInstance();
-			rol = user.loginUser(name, password);
+			UsuarioLdap usuarioldap = new UsuarioLdap(name,password);
+			rol = user.loginUserLdap(usuarioldap);
 		} catch (Exception e) {
 			log.error("Authentication error: ", e);
 		}
