@@ -54,6 +54,7 @@ public class UsuarioService extends Service{
 			UsuarioController resourceController = UsuarioController.getInstance();
 			out = resourceController.getUsuario(key);
 			log.info("Get Referencia by key: Operation successful");
+			
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -69,6 +70,7 @@ public class UsuarioService extends Service{
 			UsuarioController resourceController = UsuarioController.getInstance();
 			resourceController.createUsuario(r.getName(),r.getRole());
 			log.info("Insert Usuario: Operation successful");
+			status = Response.Status.ACCEPTED;
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -79,11 +81,12 @@ public class UsuarioService extends Service{
 	@DELETE
 	@Path("/{key}")
 	@ApiOperation(value = "Delete a Usuario", notes = "Delete a Usuario")
-	public Response postReferenciaDelete(@PathParam("key") int key){
+	public Response postReferenciaDelete(@PathParam("key") String key){
 		try{
 			UsuarioController resourceController = UsuarioController.getInstance();
-			/*out = resourceController.delete(key);*/
+			out = resourceController.deleteUsuario(key);
 			log.info("Delete Referencia : Operation successful");
+			status = Response.Status.ACCEPTED;
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -99,7 +102,8 @@ public class UsuarioService extends Service{
 		try{
 			UsuarioController resourceController = UsuarioController.getInstance();
 			out = resourceController.updateUsuario(r.getName(), r);
-			log.info("| Update Referencia | : Operation successful");
+			log.info("Update Referencia : Operation successful");
+			status = Response.Status.ACCEPTED;
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);

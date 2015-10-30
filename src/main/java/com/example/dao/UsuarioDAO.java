@@ -2,10 +2,7 @@ package com.example.dao;
 
 import java.util.Iterator;
 
-import org.jongo.FindOne;
 import org.jongo.MongoCollection;
-
-import com.example.models.Referencia;
 import com.example.models.Usuario;
 
 public class UsuarioDAO {
@@ -42,11 +39,11 @@ public class UsuarioDAO {
 	}
 	
 	public void deleteUsuario(String key){
-		dao.remove("{_id:"+key+"}");
+		dao.remove("{'_id':#}", key);
 	}
 	
 	public void updateUsuario(String key, Usuario r){
-		dao.update("{_id:"+key+"}").with(r);
+		dao.update("{'_id':#}", key).with(r);
 	}
 
 	public void clearStore() {
