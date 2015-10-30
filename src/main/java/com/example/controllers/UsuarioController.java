@@ -107,7 +107,7 @@ public class UsuarioController {
 	 * @param r
 	 * @return
 	 */
-	public Usuario updateReferencia(String key, Usuario r){
+	public Usuario updateUsuario(String key, Usuario r){
 		dao.updateUsuario(key,r);
 		return r;
 	}
