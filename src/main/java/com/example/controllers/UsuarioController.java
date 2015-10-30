@@ -134,9 +134,9 @@ public class UsuarioController {
 		return usu.getRole();
 	}
 	
-	public ArrayList<String> getAllUserLdap() throws Exception {
-		ArrayList<String> res = null;
-		Hashtable env = new Hashtable();
+	public String getAllUserLdap() throws Exception {
+		/*ArrayList<String> res = null;
+		Hashtable<String, String> env = new Hashtable<String, String>();
 
 	    String sp = "com.sun.jndi.ldap.LdapCtxFactory";
 	    env.put(Context.INITIAL_CONTEXT_FACTORY, sp);
@@ -149,26 +149,52 @@ public class UsuarioController {
 	    String base = "ou=People";
 
 	    SearchControls sc = new SearchControls();
-	    String[] attributeFilter = { "cn", "mail" };
+	    String[] attributeFilter = { "sn", "number", "value", "mail"};
 	    sc.setReturningAttributes(attributeFilter);
 	    sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
-	    String filter = "uid={0}";
+	    String filter = "(&(sn=YourName)(mail=*))";
 
 	    NamingEnumeration results = dctx.search(base, filter, sc);
 	    while (results.hasMore()) {
 	      SearchResult sr = (SearchResult) results.next();
 	      Attributes attrs = (Attributes) sr.getAttributes();
+	      log.info(attrs.toString());
 
 	      Attribute attr = attrs.get("cn");
-	      System.out.print(attr.get() + ": ");
+	      log.info((attr.get() + ": "));
 	      res.add(attr.get().toString());
 	      attr = attrs.get("mail");
-	      System.out.println(attr.get());
+	      log.info(attr.get().toString());
 	      res.add(attr.get().toString()); 
 	    }
 	    dctx.close();
-		return res;
-	}
+		return res;*/
+		
+		   Hashtable env = new Hashtable();
+	        env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
+	        env.put(Context.PROVIDER_URL,Config.getInstance().getProperty(Config.LDAP_URL));
 
+	        DirContext ctx = new InitialDirContext(env);
+	        String base = "ou=People, o=gfi-info.com";
+
+	        SearchControls sc = new SearchControls();
+	        String[] attributeFilter = {"mail", "cn"};
+	        sc.setReturningAttributes(attributeFilter);
+	        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+	        String filter = "(&(uid=*))";
+	        NamingEnumeration results = ctx.search(base, filter, sc);
+	        String userName = null;
+	        while (results.hasMore()) {
+	            SearchResult sr = (SearchResult) results.next();
+	            Attributes attrs = sr.getAttributes();
+	            log.info(attrs.toString());
+	            Attribute attr = attrs.get("mail");
+	            userName = attr.toString();
+	            userName = userName.replace("mail: ", "");
+	        }
+	        ctx.close();
+	        return (userName.toString());
+	}
 }
