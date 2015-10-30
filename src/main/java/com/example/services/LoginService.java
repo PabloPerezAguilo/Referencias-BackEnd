@@ -21,6 +21,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @Path("/login/")
 @Api(value = "/login", description = "Login operations")
 @Produces(MediaType.APPLICATION_JSON)
+
 public class LoginService {
 
 	private static final Logger log = Logger.getLogger(LoginService.class.getName());
@@ -29,8 +30,10 @@ public class LoginService {
 	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
 	
 	public Response login(UsuarioLdap usuario) {
+		
 		Status status = Response.Status.BAD_REQUEST;
 		Object out;
+
 		try {
 			UsuarioController userController = UsuarioController.getInstance();
 			// Make login
@@ -41,6 +44,7 @@ public class LoginService {
 			out = outMap;
 			status = Response.Status.OK;
 			log.info("Login successful from user:" + usuario.getName());
+			
 		} catch (Exception e) {
 			log.error("Error in login from user " + usuario.getName() + ": ", e);
 			out = new Message(e.getMessage());

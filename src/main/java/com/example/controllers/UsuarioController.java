@@ -1,11 +1,9 @@
 package com.example.controllers;
 
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -16,7 +14,6 @@ import javax.naming.directory.SearchResult;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +23,7 @@ import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 
 import com.example.dao.UsuarioDAO;
+import com.example.dao.UsuarioLdapDAO;
 import com.example.filters.CustomAuthentication;
 import com.example.models.Usuario;
 import com.example.models.UsuarioLdap;
@@ -111,36 +109,6 @@ public class UsuarioController {
 		dao.updateUsuario(key,r);
 		return r;
 	}
-
-	// PRIVATE METHODS TO GENERATE PASSWORDS
-
-	/**
-	 * Generate a Hash for given Password.
-	 */
-	private String makePasswordHash(String password, String salt) throws Exception {
-
-		String saltedAndHashed = password + "," + salt;
-		MessageDigest digest = MessageDigest.getInstance("MD5");
-		digest.update(saltedAndHashed.getBytes("UTF-8"));
-		Base64 encoder = new Base64();
-		byte[] hashedBytes = (new String(digest.digest(), "UTF-8")).getBytes("UTF-8");
-		return new String(encoder.encode(hashedBytes), "UTF-8") + "," + salt;
-	}
-
-	/**
-	 * Generate a random salting.
-	 */
-	private String generateSalting() {
-		char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-		StringBuilder sb = new StringBuilder();
-		Random random = new Random();
-		for (int i = 0; i < 10; i++) {
-			char c = chars[random.nextInt(chars.length)];
-			sb.append(c);
-		}
-		return sb.toString();
-	}
-	
 	/**
 	 * Check user/password and return the role
 	 */
@@ -153,13 +121,8 @@ public class UsuarioController {
 		}
 		
 		// conectar ldap y comprobar si esta con su pass 
-		DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(Config.getInstance().getProperty(Config.LDAP_URL));
-		contextSource.setCacheEnvironmentProperties(false);
-		BindAuthenticator authenticator = new BindAuthenticator(contextSource);
-		String[] patterns = { Config.getInstance().getProperty(Config.LDAP_USER_DN_PATTERN) };
-		authenticator.setUserDnPatterns(patterns);
-		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(authenticator);
-		Authentication authentication = ldapAuthenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(usuario.getName(),usuario.getPassword()));
+		UsuarioLdapDAO usuarioLdap = new UsuarioLdapDAO(usuario);
+		Authentication authentication = usuarioLdap.LoginLdap();
 		
 		if (authentication == null) {
 			throw new Exception("User not found in LDAP");
