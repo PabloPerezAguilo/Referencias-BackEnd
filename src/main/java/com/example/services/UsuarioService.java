@@ -12,9 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-import com.example.controllers.ReferenciaController;
 import com.example.controllers.UsuarioController;
-import com.example.models.Referencia;
 import com.example.models.Usuario;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;

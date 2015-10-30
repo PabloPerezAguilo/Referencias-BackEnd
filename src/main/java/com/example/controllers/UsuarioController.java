@@ -16,18 +16,14 @@ import javax.naming.directory.Attributes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.security.core.Authentication;
-import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
-import org.springframework.security.ldap.authentication.BindAuthenticator;
-import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 
 import com.example.dao.UsuarioDAO;
 import com.example.dao.UsuarioLdapDAO;
 import com.example.filters.CustomAuthentication;
 import com.example.models.Usuario;
 import com.example.models.UsuarioLdap;
-import com.example.utils.Config;
 
 public class UsuarioController {
 
