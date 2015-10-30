@@ -94,11 +94,11 @@ public class UsuarioService extends Service{
 	
 	@PUT
 	@ApiOperation(value = "Update a Usuario", notes = "Update a Usuario")
-	public Response postReferenciaUpdate(Referencia r){
+	public Response postReferenciaUpdate(Usuario r){
 		
 		try{
-			ReferenciaController resourceController = ReferenciaController.getInstance();
-			/*out = resourceController.updateReferencia(r.get_id(),r);*/
+			UsuarioController resourceController = UsuarioController.getInstance();
+			out = resourceController.updateUsuario(r.getName(), r);
 			log.info("| Update Referencia | : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
