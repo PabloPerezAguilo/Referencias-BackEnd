@@ -16,7 +16,6 @@ import javax.naming.directory.Attributes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.security.core.Authentication;
 
 import com.example.dao.UsuarioDAO;
@@ -24,6 +23,7 @@ import com.example.dao.UsuarioLdapDAO;
 import com.example.filters.CustomAuthentication;
 import com.example.models.Usuario;
 import com.example.models.UsuarioLdap;
+import com.example.utils.Config;
 
 public class UsuarioController {
 
@@ -175,22 +175,35 @@ public class UsuarioController {
 	        String base = "ou=People, o=gfi-info.com";
 
 	        SearchControls sc = new SearchControls();
-	        String[] attributeFilter = {"mail", "cn"};
+	        String[] attributeFilter = {"uid","cn","mail"};
 	        sc.setReturningAttributes(attributeFilter);
 	        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
 	        String filter = "(&(uid=*))";
 	        NamingEnumeration results = ctx.search(base, filter, sc);
 	        String userName = null;
+	        SearchResult sr = null ;
+	        Attributes[] personasLdap = null;
+	        int i=0;
 	        while (results.hasMore()) {
-	            SearchResult sr = (SearchResult) results.next();
+	        	
+	        	sr = (SearchResult) results.next();
 	            Attributes attrs = sr.getAttributes();
-	            log.info(attrs.toString());
-	            Attribute attr = attrs.get("mail");
-	            userName = attr.toString();
-	            userName = userName.replace("mail: ", "");
+	            personasLdap[i]= attrs;
+	            i ++;
+//	            log.info(attrs.toString());
+//	            Attribute attr = attrs.get("mail");
+//	            userName = attr.toString();
+//	            userName = userName.replace("mail: ", "");
 	        }
 	        ctx.close();
-	        return (userName.toString());
+	        return (sr.toString());
+	}
+	public static void main(String[] args) throws Exception {
+		
+		UsuarioController usuario = new UsuarioController();
+		//usuario.getAllUserLdap();
+		log.info(usuario.getAllUserLdap());
+		log.info("----------------------------------------------------------------------------");
 	}
 }
