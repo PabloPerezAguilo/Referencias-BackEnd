@@ -14,7 +14,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/usuariosldap/")
-@Api(value = "/usuariosldap", description = "LDAP operations")
+@Api(value = "/usuariosldap", description = "conexion a Ldap")
 @Produces(MediaType.APPLICATION_JSON)
 public class UsuarioLdapService extends Service{
 

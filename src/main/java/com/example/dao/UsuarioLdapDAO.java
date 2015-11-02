@@ -24,6 +24,7 @@ public class UsuarioLdapDAO {
 
 	public Authentication LoginLdap() throws IOException {
 		
+		// conecta a ldap y si existe un usuario con esa contraseña te lo devuelve, si no, retorna null.
 		DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(Config.getInstance().getProperty(Config.LDAP_URL));
 		contextSource.setCacheEnvironmentProperties(false);
 		BindAuthenticator authenticator = new BindAuthenticator(contextSource);
