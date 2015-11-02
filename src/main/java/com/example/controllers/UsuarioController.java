@@ -183,21 +183,24 @@ public class UsuarioController {
 	        NamingEnumeration results = ctx.search(base, filter, sc);
 	        String userName = null;
 	        SearchResult sr = null ;
-	        Attributes[] personasLdap = null;
+	        Attributes[] personasLdap = null ;
+	        Attributes attrs = null;
 	        int i=0;
+	        log.info("---------------------");
 	        while (results.hasMore()) {
 	        	
 	        	sr = (SearchResult) results.next();
-	            Attributes attrs = sr.getAttributes();
-	            personasLdap[i]= attrs;
+	            attrs = sr.getAttributes();
+	            //personasLdap[i] = new Attributes();
+	            //personasLdap[i]= sr.getAttributes();
 	            i ++;
-//	            log.info(attrs.toString());
+	            log.info(attrs.toString());
 //	            Attribute attr = attrs.get("mail");
 //	            userName = attr.toString();
 //	            userName = userName.replace("mail: ", "");
 	        }
 	        ctx.close();
-	        return (sr.toString());
+	        return (attrs.toString());
 	}
 	public static void main(String[] args) throws Exception {
 		
