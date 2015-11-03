@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import com.example.dao.UsuarioDAO;
 import com.example.dao.UsuarioLdapDAO;
 import com.example.filters.CustomAuthentication;
+import com.example.models.InformacionUsuarioLdap;
 import com.example.models.Usuario;
 import com.example.models.UsuarioLdap;
 import com.example.utils.Config;
@@ -130,7 +131,7 @@ public class UsuarioController {
 		return usu.getRole();
 	}
 	
-	public String getAllUserLdap() throws Exception {
+	public ArrayList<InformacionUsuarioLdap> getAllUserLdap() throws Exception {
 		/*ArrayList<String> res = null;
 		Hashtable<String, String> env = new Hashtable<String, String>();
 
@@ -183,30 +184,55 @@ public class UsuarioController {
 	        NamingEnumeration results = ctx.search(base, filter, sc);
 	        String userName = null;
 	        SearchResult sr = null ;
-	        Attributes[] personasLdap = null ;
+	        Attributes[] personasLdap =  new Attributes[300] ;
 	        Attributes attrs = null;
 	        int i=0;
 	        log.info("---------------------");
+	        
+	        ArrayList<InformacionUsuarioLdap> usuarios = new ArrayList<InformacionUsuarioLdap>();
+	        
+	        
 	        while (results.hasMore()) {
 	        	
+	        	InformacionUsuarioLdap usuario = new InformacionUsuarioLdap(); 
 	        	sr = (SearchResult) results.next();
 	            attrs = sr.getAttributes();
-	            //personasLdap[i] = new Attributes();
+	            
+	            if(attrs.get("mail") != null){
+	            	String aux = attrs.get("mail").toString();
+	            	aux = aux.replaceAll("mail: ","");
+	            	usuario.setMail(aux);	           
+	            }
+	            if(attrs.get("cn") != null){
+	            	String aux = attrs.get("cn").toString();
+	            	aux = aux.replaceAll("cn: ","");
+	            	usuario.setUsuario(aux);	            	
+	            }
+	            if(attrs.get("uid") != null){
+	            	String aux = attrs.get("uid").toString();
+	            	aux = aux.replaceAll("uid: ","");
+	            	usuario.setNick(aux);	            	
+	            }
+	           
 	            //personasLdap[i]= sr.getAttributes();
 	            i ++;
-	            log.info(attrs.toString());
+	            //log.info(attrs.toString());
+	            log.info(usuario.getMail());	        
+	            log.info(usuario.getNick());	            
+	            log.info(usuario.getUsuario());
+	            usuarios.add(usuario);
 //	            Attribute attr = attrs.get("mail");
 //	            userName = attr.toString();
 //	            userName = userName.replace("mail: ", "");
 	        }
 	        ctx.close();
-	        return (attrs.toString());
+	        return (usuarios);
 	}
 	public static void main(String[] args) throws Exception {
 		
 		UsuarioController usuario = new UsuarioController();
 		//usuario.getAllUserLdap();
-		log.info(usuario.getAllUserLdap());
+		//log.info(usuario.getAllUserLdap());0
 		log.info("----------------------------------------------------------------------------");
 	}
 }

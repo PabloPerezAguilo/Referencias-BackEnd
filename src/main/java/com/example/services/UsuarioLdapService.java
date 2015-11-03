@@ -25,7 +25,7 @@ public class UsuarioLdapService extends Service{
 	public Response getUsersLdap() {
 		try {
 			UsuarioController resourceController = UsuarioController.getInstance();
-			out = new Message(resourceController.getAllUserLdap());
+			out = resourceController.getAllUserLdap();
 			log.info(out);
 			log.info(out.toString());
 			log.info("Get All Users Ldap: Operation successful");
