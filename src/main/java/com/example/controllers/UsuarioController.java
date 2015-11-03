@@ -132,43 +132,8 @@ public class UsuarioController {
 	}
 	
 	public ArrayList<InformacionUsuarioLdap> getAllUserLdap() throws Exception {
-		/*ArrayList<String> res = null;
-		Hashtable<String, String> env = new Hashtable<String, String>();
-
-	    String sp = "com.sun.jndi.ldap.LdapCtxFactory";
-	    env.put(Context.INITIAL_CONTEXT_FACTORY, sp);
-
-	    String ldapUrl = "ldap://ldap.gfi-info.com:389/o=gfi-info.com";
-	    env.put(Context.PROVIDER_URL, ldapUrl);
-
-	    DirContext dctx = new InitialDirContext(env);
-
-	    String base = "ou=People";
-
-	    SearchControls sc = new SearchControls();
-	    String[] attributeFilter = { "sn", "number", "value", "mail"};
-	    sc.setReturningAttributes(attributeFilter);
-	    sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
-
-	    String filter = "(&(sn=YourName)(mail=*))";
-
-	    NamingEnumeration results = dctx.search(base, filter, sc);
-	    while (results.hasMore()) {
-	      SearchResult sr = (SearchResult) results.next();
-	      Attributes attrs = (Attributes) sr.getAttributes();
-	      log.info(attrs.toString());
-
-	      Attribute attr = attrs.get("cn");
-	      log.info((attr.get() + ": "));
-	      res.add(attr.get().toString());
-	      attr = attrs.get("mail");
-	      log.info(attr.get().toString());
-	      res.add(attr.get().toString()); 
-	    }
-	    dctx.close();
-		return res;*/
 		
-		   Hashtable env = new Hashtable();
+			Hashtable env = new Hashtable();
 	        env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
 	        env.put(Context.PROVIDER_URL,Config.getInstance().getProperty(Config.LDAP_URL));
 
@@ -179,60 +144,36 @@ public class UsuarioController {
 	        String[] attributeFilter = {"uid","cn","mail"};
 	        sc.setReturningAttributes(attributeFilter);
 	        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
-
 	        String filter = "(&(uid=*))";
-	        NamingEnumeration results = ctx.search(base, filter, sc);
-	        String userName = null;
-	        SearchResult sr = null ;
-	        Attributes[] personasLdap =  new Attributes[300] ;
-	        Attributes attrs = null;
-	        int i=0;
-	        log.info("---------------------");
-	        
+	        NamingEnumeration results = ctx.search(base, filter, sc);	  ;	        
 	        ArrayList<InformacionUsuarioLdap> usuarios = new ArrayList<InformacionUsuarioLdap>();
 	        
 	        
 	        while (results.hasMore()) {
 	        	
-	        	InformacionUsuarioLdap usuario = new InformacionUsuarioLdap(); 
-	        	sr = (SearchResult) results.next();
-	            attrs = sr.getAttributes();
+	        	SearchResult sr = (SearchResult) results.next();
+	        	Attributes attrs = sr.getAttributes();
 	            
-	            if(attrs.get("mail") != null){
-	            	String aux = attrs.get("mail").toString();
-	            	aux = aux.replaceAll("mail: ","");
-	            	usuario.setMail(aux);	           
-	            }
-	            if(attrs.get("cn") != null){
-	            	String aux = attrs.get("cn").toString();
-	            	aux = aux.replaceAll("cn: ","");
-	            	usuario.setUsuario(aux);	            	
-	            }
-	            if(attrs.get("uid") != null){
-	            	String aux = attrs.get("uid").toString();
-	            	aux = aux.replaceAll("uid: ","");
-	            	usuario.setNick(aux);	            	
-	            }
-	           
-	            //personasLdap[i]= sr.getAttributes();
-	            i ++;
-	            //log.info(attrs.toString());
-	            log.info(usuario.getMail());	        
-	            log.info(usuario.getNick());	            
-	            log.info(usuario.getUsuario());
+	        	InformacionUsuarioLdap usuario = new InformacionUsuarioLdap(attrs); 
+//	            if(attrs.get("mail") != null){
+//	            	String aux = attrs.get("mail").toString();
+//	            	aux = aux.replaceAll("mail: ","");
+//	            	usuario.setMail(aux);	           
+//	            }
+//	            if(attrs.get("cn") != null){
+//	            	String aux = attrs.get("cn").toString();
+//	            	aux = aux.replaceAll("cn: ","");
+//	            	usuario.setUsuario(aux);	            	
+//	            }
+//	            if(attrs.get("uid") != null){
+//	            	String aux = attrs.get("uid").toString();
+//	            	aux = aux.replaceAll("uid: ","");
+//	            	usuario.setNick(aux);	            	
+//	            }    
 	            usuarios.add(usuario);
-//	            Attribute attr = attrs.get("mail");
-//	            userName = attr.toString();
-//	            userName = userName.replace("mail: ", "");
 	        }
 	        ctx.close();
 	        return (usuarios);
 	}
-	public static void main(String[] args) throws Exception {
-		
-		UsuarioController usuario = new UsuarioController();
-		//usuario.getAllUserLdap();
-		//log.info(usuario.getAllUserLdap());0
-		log.info("----------------------------------------------------------------------------");
-	}
+
 }

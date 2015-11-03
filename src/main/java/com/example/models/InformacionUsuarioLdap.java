@@ -1,5 +1,7 @@
 package com.example.models;
 
+import javax.naming.directory.Attributes;
+
 /**
  * The Class Usuario.
  */
@@ -19,6 +21,24 @@ public class InformacionUsuarioLdap {
 		this.usuario = usuario;
 		this.nick = nick;
 		
+	}
+	public InformacionUsuarioLdap(Attributes usuarioAtributo) {
+		
+			if(usuarioAtributo.get("mail") != null){
+				this.mail = usuarioAtributo.get("mail").toString().replaceAll("mail: ","");
+			}else{
+				this.mail = "No introducido";
+			}
+			if(usuarioAtributo.get("cn") != null){
+				this.usuario = usuarioAtributo.get("cn").toString().replaceAll("cn: ","");
+			}else{
+				this.usuario = "No introducido";
+			}
+			if(usuarioAtributo.get("uid") != null){
+				this.nick =  usuarioAtributo.get("uid").toString().replaceAll("uid: ","");
+			}else{
+				this.nick = "No introducido";
+			}
 	}
 
 	public InformacionUsuarioLdap(InformacionUsuarioLdap u) {
