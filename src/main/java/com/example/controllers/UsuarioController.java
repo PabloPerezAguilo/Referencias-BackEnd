@@ -148,28 +148,13 @@ public class UsuarioController {
 	        NamingEnumeration results = ctx.search(base, filter, sc);	  ;	        
 	        ArrayList<InformacionUsuarioLdap> usuarios = new ArrayList<InformacionUsuarioLdap>();
 	        
-	        
-	        while (results.hasMore()) {
-	        	
+	        //comentado para prueba sde front
+	       // while (results.hasMore()) {
+	        for(int i=0;i<10;i++) {
 	        	SearchResult sr = (SearchResult) results.next();
 	        	Attributes attrs = sr.getAttributes();
 	            
-	        	InformacionUsuarioLdap usuario = new InformacionUsuarioLdap(attrs); 
-//	            if(attrs.get("mail") != null){
-//	            	String aux = attrs.get("mail").toString();
-//	            	aux = aux.replaceAll("mail: ","");
-//	            	usuario.setMail(aux);	           
-//	            }
-//	            if(attrs.get("cn") != null){
-//	            	String aux = attrs.get("cn").toString();
-//	            	aux = aux.replaceAll("cn: ","");
-//	            	usuario.setUsuario(aux);	            	
-//	            }
-//	            if(attrs.get("uid") != null){
-//	            	String aux = attrs.get("uid").toString();
-//	            	aux = aux.replaceAll("uid: ","");
-//	            	usuario.setNick(aux);	            	
-//	            }    
+	        	InformacionUsuarioLdap usuario = new InformacionUsuarioLdap(attrs);    
 	            usuarios.add(usuario);
 	        }
 	        ctx.close();
