@@ -145,7 +145,7 @@ public class UsuarioController {
 	        sc.setReturningAttributes(attributeFilter);
 	        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 	        String filter = "(&(uid=*))";
-	        NamingEnumeration results = ctx.search(base, filter, sc);	  ;	        
+	        NamingEnumeration results = ctx.search(base, filter, sc);        
 	        ArrayList<InformacionUsuarioLdap> usuarios = new ArrayList<InformacionUsuarioLdap>();
 	        
 	        //comentado para prueba sde front
