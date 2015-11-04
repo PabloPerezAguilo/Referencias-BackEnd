@@ -66,6 +66,9 @@ public class UsuarioService extends Service{
 	public Response postUsuario(Usuario r) {
 		try {
 			UsuarioController resourceController = UsuarioController.getInstance();
+			if(r.getRole()== "" || r.getName().isEmpty()){
+				return Response.status(status).entity(out).build();
+			}
 			resourceController.createUsuario(r.getName(),r.getRole());
 			log.info("Insert Usuario: Operation successful");
 			status = Response.Status.ACCEPTED;
