@@ -26,8 +26,6 @@ public class UsuarioLdapService extends Service{
 		try {
 			UsuarioController resourceController = UsuarioController.getInstance();
 			out = resourceController.getAllUserLdap();
-			log.info(out);
-			log.info(out.toString());
 			log.info("Get All Users Ldap: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;

@@ -11,7 +11,6 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
 import org.slf4j.Logger;
@@ -133,7 +132,7 @@ public class UsuarioController {
 	
 	public ArrayList<InformacionUsuarioLdap> getAllUserLdap() throws Exception {
 		
-			Hashtable env = new Hashtable();
+			Hashtable<String, String> env = new Hashtable<String, String>();
 	        env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
 	        env.put(Context.PROVIDER_URL,Config.getInstance().getProperty(Config.LDAP_URL));
 
@@ -145,7 +144,7 @@ public class UsuarioController {
 	        sc.setReturningAttributes(attributeFilter);
 	        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 	        String filter = "(&(uid=*))";
-	        NamingEnumeration results = ctx.search(base, filter, sc);        
+	        NamingEnumeration<?> results = ctx.search(base, filter, sc);        
 	        ArrayList<InformacionUsuarioLdap> usuarios = new ArrayList<InformacionUsuarioLdap>();
 	        
 	        //comentado para prueba sde front
