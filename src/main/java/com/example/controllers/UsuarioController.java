@@ -113,7 +113,7 @@ public class UsuarioController {
 		// Comprobacion usuario en MongoDB
 		Usuario usu = dao.getUsuarioLogin(usuario.getName());
 		if (usu == null) {
-			throw new Exception("User not found");
+			throw new Exception("User not found in DB");
 		}
 		
 		// conectar ldap y comprobar si esta con su pass 
