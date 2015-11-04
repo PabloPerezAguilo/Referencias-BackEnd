@@ -10,7 +10,7 @@ public class ReferenciaDAO {
 
 	private static ReferenciaDAO singleton;
 	private static MongoCollection dao;
-	private static final String COLLECTION_NAME_MONGO = "resources";
+	private static final String COLLECTION_NAME_MONGO = "referencias";
 
 	private ReferenciaDAO() throws Exception {
 		dao = DataBase.getInstance().getCollection(COLLECTION_NAME_MONGO);
