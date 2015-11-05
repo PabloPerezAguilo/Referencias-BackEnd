@@ -31,9 +31,9 @@ public class UsuarioTest {
 	@Before
 	public void init() throws Exception {
 		
-		//dao.getInstance();
-		//dao.clearStore();
-		log.info("Inicio test");
+//		dao = UsuarioDAO.getInstance();
+//		dao.clearStore();
+//		log.info("Inicio test");
 		
 	}
 
@@ -47,8 +47,10 @@ public class UsuarioTest {
 
 	@BeforeClass
 	public  static void initTest() throws Exception {
-//		controller.dropReferencia();
-//		log.info("Storage cleaned");
+		
+		dao = UsuarioDAO.getInstance();
+		dao.clearStore();
+		log.info("Inicio de los test");
 	}
 
 	@Test
