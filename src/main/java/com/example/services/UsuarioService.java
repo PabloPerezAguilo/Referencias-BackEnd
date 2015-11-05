@@ -65,13 +65,15 @@ public class UsuarioService extends Service{
 	@ApiOperation(value = "Create a Usuario", notes = "Create a Usuario")
 	public Response postUsuario(Usuario r) {
 		try {
+			
 			UsuarioController resourceController = UsuarioController.getInstance();
 			if(r.getRole()== "" || r.getName().isEmpty()){
-				return Response.status(status).entity(out).build();
+				 throw new Exception("Nombre o rol vacio");
 			}
 			resourceController.createUsuario(r.getName(),r.getRole());
 			log.info("Insert Usuario: Operation successful");
 			status = Response.Status.ACCEPTED;
+			
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);

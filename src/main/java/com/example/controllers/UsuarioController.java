@@ -53,6 +53,18 @@ public class UsuarioController {
 	 * @throws Exception
 	 */
 	public void createUsuario(String name, String role) throws Exception {
+		
+		switch(role){
+			case "administrador": role = "ROLE_ADMINISTRADOR";
+		break;
+			case "validador": role = "ROLE_VALIDADOR";
+		break;
+			case "consultor": role = "ROLE_CONSULTOR";
+		break;
+			case "mantenimiento": role = "ROLE_MANTENIMIENTO";
+		break;
+			default: throw new Exception("Role incorrecto");
+		}
 		dao.insertUsuario(new Usuario(name, role));
 		//dao.insertUsuario(new Usuario(name, role, this.makePasswordHash(password, this.generateSalting())));
 		
