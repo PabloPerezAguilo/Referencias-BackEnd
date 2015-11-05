@@ -126,6 +126,8 @@ public class UsuarioController {
 		Usuario usu = dao.getUsuarioLogin(usuario.getName());
 		if (usu == null) {
 			throw new Exception("User not found in DB");
+		}else{
+			log.info("User en Mongo");
 		}
 		
 		// conectar ldap y comprobar si esta con su pass 
