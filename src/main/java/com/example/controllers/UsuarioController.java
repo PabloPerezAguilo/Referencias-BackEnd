@@ -160,8 +160,8 @@ public class UsuarioController {
 	        ArrayList<InformacionUsuarioLdap> usuarios = new ArrayList<InformacionUsuarioLdap>();
 	        
 	        //comentado para prueba sde front
-	       // while (results.hasMore()) {
-	        for(int i=0;i<10;i++) {
+	       while (results.hasMore()) {
+	       // for(int i=0;i<10;i++) {
 	        	SearchResult sr = (SearchResult) results.next();
 	        	Attributes attrs = sr.getAttributes();
 	            
