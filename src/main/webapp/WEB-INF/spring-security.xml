@@ -12,8 +12,8 @@
 		<intercept-url pattern="/api/referencia/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/api/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<!-- this services requires login -->
-		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" />
-		<intercept-url pattern="/api/usuariosldap/**" access="ROLE_ADMINISTRADOR"/>
+		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="GET"/>
+		<intercept-url pattern="/api/usuariosldap/**" access="ROLE_ADMINISTRADOR" method="GET"/>
 		<intercept-url pattern="/api/resource2/**" access="ROLE_USER,ROLE_ADMIN" method="GET" requires-channel="https"/>
 		<intercept-url pattern="/api/Login2/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="https"/>
 
