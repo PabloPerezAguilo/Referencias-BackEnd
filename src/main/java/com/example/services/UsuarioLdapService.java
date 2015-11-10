@@ -25,7 +25,7 @@ public class UsuarioLdapService extends Service{
 	 * @return ArrayList<UsuarioLdap>
 	 */
 	@GET
-	@ApiOperation(value = "Get all users ldap", notes = "Return all users of ldap")
+	@ApiOperation(value = "Devuelve todos los usuarios del Ldap", notes = "Devuelve todos los usuarios del Ldap")
 	public Response getUsersLdap() {
 		try {
 			UsuarioController resourceController = UsuarioController.getInstance();

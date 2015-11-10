@@ -34,7 +34,7 @@ public class UsuarioService extends Service{
 	 * @return ArrayList<Usuarios>
 	 */
 	@GET
-	@ApiOperation(value = "Get all usuarios", notes = "Return all usuarios")
+	@ApiOperation(value = "Devuelve todos los usuarios", notes = "Devuelve todos los usuarios")
 	public Response getUsuarios() {
 		try {
 			UsuarioController resourceController = UsuarioController.getInstance();
@@ -55,7 +55,7 @@ public class UsuarioService extends Service{
 	 */
 	@GET
 	@Path("/{key}")
-	@ApiOperation(value = "Get usuario by key", notes = "Get usuario by key")
+	@ApiOperation(value = "Devuelve un usuario por parametro", notes = "Devuelve un usuario por parametro")
 	public Response getUsuario(@PathParam("key") String key) {
 		try {
 			UsuarioController resourceController = UsuarioController.getInstance();
@@ -76,7 +76,7 @@ public class UsuarioService extends Service{
 	 * @return r
 	 */
 	@POST
-	@ApiOperation(value = "Create a Usuario", notes = "Create a Usuario")
+	@ApiOperation(value = "Crear un Usuario", notes = "Crear un Usuario")
 	public Response postUsuario(Usuario r) {
 		try {
 			
@@ -104,7 +104,7 @@ public class UsuarioService extends Service{
 	 */
 	@DELETE
 	@Path("/{key}")
-	@ApiOperation(value = "Delete a Usuario", notes = "Delete a Usuario")
+	@ApiOperation(value = "Borrar un Usuario", notes = "Borrar un Usuario")
 	public Response postReferenciaDelete(@PathParam("key") String key){
 		try{
 			UsuarioController resourceController = UsuarioController.getInstance();
@@ -125,7 +125,7 @@ public class UsuarioService extends Service{
 	 * @return r
 	 */
 	@PUT
-	@ApiOperation(value = "Update a Usuario", notes = "Update a Usuario")
+	@ApiOperation(value = "Modifica un Usuario", notes = "Modifica un Usuario")
 	public Response postReferenciaUpdate(Usuario r){
 		
 		try{

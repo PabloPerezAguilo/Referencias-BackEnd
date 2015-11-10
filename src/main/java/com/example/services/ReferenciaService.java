@@ -34,7 +34,7 @@ public class ReferenciaService extends Service{
 	 * @return Referencias
 	 */
 	@GET
-	@ApiOperation(value = "Get all referencias", notes = "Return all referencias")
+	@ApiOperation(value = "Devuelve todas las referencias", notes = "Devuelve todas las referencias")
 	public Response getReferencias() {
 		try {
 			ReferenciaController resourceController = ReferenciaController.getInstance();
@@ -55,7 +55,7 @@ public class ReferenciaService extends Service{
 	 */
 	@GET
 	@Path("/{key}")
-	@ApiOperation(value = "Get Referencia by key", notes = "Get Referencia by key")
+	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
 	public Response getResource(@PathParam("key") int key) {
 		try {
 			ReferenciaController resourceController = ReferenciaController.getInstance();
@@ -75,7 +75,7 @@ public class ReferenciaService extends Service{
 	 * @return Referencia
 	 */
 	@POST
-	@ApiOperation(value = "Create a Referencia", notes = "Create a Referencia")
+	@ApiOperation(value = "Crea una nueva referencia", notes = "Crea una nueva referencia")
 	public Response postReferencia(Referencia r) {
 		try {
 			ReferenciaController resourceController = ReferenciaController.getInstance();
@@ -96,7 +96,7 @@ public class ReferenciaService extends Service{
 	 */
 	@DELETE
 	@Path("/{key}")
-	@ApiOperation(value = "Delete a Referencia", notes = "Delete a Referencia")
+	@ApiOperation(value = "Borra una Referencia", notes = "Borra una Referencia")
 	public Response postReferenciaDelete(@PathParam("key") int key){
 		try{
 			ReferenciaController resourceController = ReferenciaController.getInstance();
@@ -116,7 +116,7 @@ public class ReferenciaService extends Service{
 	 * @return r
 	 */
 	@PUT
-	@ApiOperation(value = "Update a Referencia", notes = "Update a Referencia")
+	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
 	public Response postReferenciaUpdate(Referencia r){
 		
 		try{

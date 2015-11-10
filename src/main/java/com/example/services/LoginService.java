@@ -31,7 +31,7 @@ public class LoginService {
 	 * @return Response.status
 	 */
 	@POST
-	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
+	@ApiOperation(value = "Make login user", notes = "Comprueba usuario/password y devuelve el rol")
 	public Response login(UsuarioLdap usuario) {
 		
 		Status status = Response.Status.BAD_REQUEST;
