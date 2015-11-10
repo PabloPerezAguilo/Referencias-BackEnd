@@ -20,6 +20,10 @@ public class UsuarioLdapService extends Service{
 
 	private static final Logger log = Logger.getLogger(UsuarioLdapService.class.getName());
 	
+	/**
+	 * GET UsuariosLdap
+	 * @return ArrayList<UsuarioLdap>
+	 */
 	@GET
 	@ApiOperation(value = "Get all users ldap", notes = "Return all users of ldap")
 	public Response getUsersLdap() {

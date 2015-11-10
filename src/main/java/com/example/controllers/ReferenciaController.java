@@ -9,7 +9,6 @@ import com.example.models.Referencia;
 
 public class ReferenciaController {
 
-	// Singleton instances
 	private static ReferenciaDAO dao;
 	private static ReferenciaController singleton;
 
@@ -25,8 +24,9 @@ public class ReferenciaController {
 	}
 
 	/**
-	 * Get Referencias
-	 * @return
+	 * getReferencias.
+	 * Recoge todas las referencias de la base de datos
+	 * @return List<Referencia> 
 	 * @throws Exception
 	 */
 	public List<Referencia> getReferencias() throws Exception {
@@ -40,9 +40,10 @@ public class ReferenciaController {
 	}
 
 	/**
-	 * Get Referencia by Key
-	 * @param key
-	 * @return
+	 * getReferencia
+	 * Recoge la referencia de la base de datos indicada por parametro
+	 * @param key | Clave para identificar la referencia en la base de datos
+	 * @return Referencia
 	 * @throws Exception
 	 */
 	public Referencia getReferencia(int key) throws Exception {
@@ -54,9 +55,10 @@ public class ReferenciaController {
 	}
 
 	/**
-	 * Create Referencia
-	 * @param r
-	 * @return
+	 * createReferencia
+	 * Crea una nueva referencia en la base de datos
+	 * @param r | Objeto Referencia que se creara en la base de datos
+	 * @return Referencia
 	 * @throws Exception
 	 */
 	public Referencia createReferencia(Referencia r) throws Exception {
@@ -65,9 +67,10 @@ public class ReferenciaController {
 	}
 	
 	/**
-	 * Delete Referencia
-	 * @param key
-	 * @return
+	 * deleteReferencia
+	 * Borra una referencia de la base de datos
+	 * @param key | Clave para identificar la referencia en la base de datos
+	 * @return key
 	 * @throws Exception
 	 */
 	public int deleteReferencia(int key) throws Exception{
@@ -76,18 +79,20 @@ public class ReferenciaController {
 	}
 	
 	/**
-	 * Update Referencia
-	 * @param key
-	 * @param r
-	 * @return
+	 * updateReferencia
+	 * @param key | Clave para identificar la referencia en la base de datos
+	 * @param r | Objeto Referencia que se modificará en la base de datos
+	 * @return Referencia
+	 * @throws Exception
 	 */
-	public Referencia updateReferencia(int key, Referencia r){
+	public Referencia updateReferencia(int key, Referencia r) throws Exception{
 		dao.updateReferencia(key,r);
 		return r;
 	}
 
 	/**
-	 * Borrar Referencias
+	 * dropReferencia
+	 * Borra la coleccion de Referencias.
 	 */
 	public void dropReferencia() {
 		dao.clearStore();

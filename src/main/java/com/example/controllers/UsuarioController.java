@@ -27,7 +27,6 @@ import com.example.utils.Config;
 
 public class UsuarioController {
 
-	// Singleton instances
 	private UsuarioDAO dao;
 	private static UsuarioController singleton;
 	private static final Logger log = LoggerFactory.getLogger(CustomAuthentication.class);
@@ -43,13 +42,11 @@ public class UsuarioController {
 		return singleton;
 	}
 
-	
-
 	/**
-	 * Create nuevo Usuario
+	 * createUsuario
+	 * Crea un nuevo usuario en la base de datos
 	 * @param name
 	 * @param role
-	 * @param password
 	 * @throws Exception
 	 */
 	public void createUsuario(String name, String role) throws Exception {
@@ -66,13 +63,13 @@ public class UsuarioController {
 			default: throw new Exception("Role incorrecto");
 		}
 		dao.insertUsuario(new Usuario(name, role));
-		//dao.insertUsuario(new Usuario(name, role, this.makePasswordHash(password, this.generateSalting())));
 		
 	}
 
 	/**
-	 * Get Usuarios
-	 * @return
+	 * getUsuarios
+	 * Recoge todos los usuarios de la base de datos
+	 * @return List<Usuario> 
 	 * @throws Exception
 	 */
 	public List<Usuario> getUsuarios() throws Exception {
@@ -85,9 +82,10 @@ public class UsuarioController {
 	}
 	
 	/**
-	 * Get Usuario By ID
-	 * @param id
-	 * @return
+	 * getUsuario
+	 * Recoge un usuario de la base de datos indicada por parametro
+	 * @param id | Identificador de usuario que será el nickname del LDAP
+	 * @return Usuario
 	 * @throws Exception
 	 */
 	public Usuario getUsuario(String id) throws Exception {
@@ -97,28 +95,37 @@ public class UsuarioController {
 	}
 	
 	/**
-	 * Delete Usuario
-	 * @param key
-	 * @return
+	 * deleteUsuario
+	 * Borra un usuario de la base de datos indicado por parametro
+	 * @param id | Identificador de usuario que será el nickname del LDAP
+	 * @return id
 	 * @throws Exception
 	 */
-	public String deleteUsuario(String key) throws Exception{
-		dao.deleteUsuario(key);
-		return key;
+	public String deleteUsuario(String id) throws Exception{
+		dao.deleteUsuario(id);
+		return id;
 	}
 	
 	/**
-	 * Update Usuario
-	 * @param key
+	 * updateUsuario
+	 * Modifica un usuario de la base de datos indicado por parametro
+	 * @param id | Identificador de usuario que será el nickname del LDAP
 	 * @param r
-	 * @return
+	 * @return Usuario
+	 * @throws Exception
 	 */
-	public Usuario updateUsuario(String key, Usuario r){
-		dao.updateUsuario(key,r);
+	public Usuario updateUsuario(String id, Usuario r) throws Exception{
+		dao.updateUsuario(id,r);
 		return r;
 	}
+	
 	/**
-	 * Check user/password and return the role
+	 * loginUserLdap
+	 * Servicio para loguearse en la aplicacion. Comprueba que el usuario este en la base de datos
+	 * y en el LDAP
+	 * @param usuario | Objeto UsuarioLdap
+	 * @return rol del usuario
+	 * @throws Exception
 	 */
 	public String loginUserLdap(UsuarioLdap usuario) throws Exception {
 		
@@ -132,7 +139,7 @@ public class UsuarioController {
 		
 		// conectar ldap y comprobar si esta con su pass 
 		UsuarioLdapDAO usuarioLdap = new UsuarioLdapDAO(usuario);
-		Authentication authentication = usuarioLdap.LoginLdap();
+		Authentication authentication = usuarioLdap.loginLdap();
 		
 		if (authentication == null) {
 			throw new Exception("User not found in LDAP");
@@ -144,6 +151,12 @@ public class UsuarioController {
 		return usu.getRole();
 	}
 	
+	/**
+	 * getAllUserLdap
+	 * Recoge todos los usuarios del Ldap de GFI
+	 * @return ArrayList<InformacionUsuarioLdap>
+	 * @throws Exception
+	 */
 	public ArrayList<InformacionUsuarioLdap> getAllUserLdap() throws Exception {
 		
 			Hashtable<String, String> env = new Hashtable<String, String>();

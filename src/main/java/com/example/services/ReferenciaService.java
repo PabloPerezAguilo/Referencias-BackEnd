@@ -29,6 +29,10 @@ public class ReferenciaService extends Service{
 		super();
 	}
 	
+	/**
+	 * GET Referencias
+	 * @return Referencias
+	 */
 	@GET
 	@ApiOperation(value = "Get all referencias", notes = "Return all referencias")
 	public Response getReferencias() {
@@ -44,6 +48,11 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 
+	/**
+	 * GET Referencia
+	 * @param key
+	 * @return Referencia
+	 */
 	@GET
 	@Path("/{key}")
 	@ApiOperation(value = "Get Referencia by key", notes = "Get Referencia by key")
@@ -60,6 +69,11 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 
+	/**
+	 * POST Referencia
+	 * @param r
+	 * @return Referencia
+	 */
 	@POST
 	@ApiOperation(value = "Create a Referencia", notes = "Create a Referencia")
 	public Response postReferencia(Referencia r) {
@@ -75,6 +89,11 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	
+	/**
+	 * DELETE Referencia
+	 * @param key
+	 * @return key
+	 */
 	@DELETE
 	@Path("/{key}")
 	@ApiOperation(value = "Delete a Referencia", notes = "Delete a Referencia")
@@ -91,6 +110,11 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	
+	/**
+	 * PUT Referencia
+	 * @param r
+	 * @return r
+	 */
 	@PUT
 	@ApiOperation(value = "Update a Referencia", notes = "Update a Referencia")
 	public Response postReferenciaUpdate(Referencia r){

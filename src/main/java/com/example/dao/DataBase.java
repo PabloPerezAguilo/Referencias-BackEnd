@@ -29,7 +29,10 @@ public class DataBase {
 	}
 
 	/**
-	 * Return a specific collection using Jongo framework
+	 * getCollection
+	 * Devuelve una coleccion especifica usando Jongo Framework
+	 * @param collection
+	 * @return MongoCollection
 	 */
 	public MongoCollection getCollection(String collection) {
 		Jongo jongo = new Jongo(db);
@@ -37,7 +40,10 @@ public class DataBase {
 	}
 
 	/**
-	 * Return a real Mongo Database
+	 * getDBMongo
+	 * Devuelve una base de datos real de Mongo
+	 * @return DB
+	 * @throws Exception
 	 */
 	private static DB getBDMongo() throws Exception {
 		MongoDB db = new MongoDB();
@@ -45,7 +51,9 @@ public class DataBase {
 	}
 
 	/**
-	 * Return a mock Mongo Database using Fongo framework
+	 * getDBMock
+	 * Devuelve una base de datos mock de Mongo
+	 * @return DB
 	 */
 	private static DB getBDMock() {
 		DB db = new Fongo("Test").getDB("Database");

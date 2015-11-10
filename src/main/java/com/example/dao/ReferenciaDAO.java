@@ -23,26 +23,56 @@ public class ReferenciaDAO {
 		return singleton;
 	}
 
+	/**
+	 * getReferencias
+	 * @return Iterator<Referencia>
+	 * @throws Exception
+	 */
 	public Iterator<Referencia> getReferencias() throws Exception {
 		return dao.find().as(Referencia.class).iterator();
 	}
 
-	public Referencia getReferencia(int key) {
+	/**
+	 * getReferencia
+	 * @param key
+	 * @return Referencia
+	 * @throws Exception
+	 */
+	public Referencia getReferencia(int key) throws Exception{
 		return dao.findOne("{'_id':#}", key).as(Referencia.class);
 	}
 
-	public void insertReferencia(Referencia r) {
+	/**
+	 * insertReferencia
+	 * @param r
+	 * @throws Exception
+	 */
+	public void insertReferencia(Referencia r) throws Exception{
 		dao.insert(r);
 	}
 	
-	public void deleteReferencia(int key){
+	/**
+	 * deleteReferencia
+	 * @param key
+	 * @throws Exception
+	 */
+	public void deleteReferencia(int key) throws Exception{
 		dao.remove("{_id:"+key+"}");
 	}
 	
-	public void updateReferencia(int key, Referencia r){
+	/**
+	 * updateReferencia
+	 * @param key
+	 * @param r
+	 * @throws Exception
+	 */
+	public void updateReferencia(int key, Referencia r) throws Exception{
 		dao.update("{_id:"+key+"}").with(r);
 	}
 
+	/**
+	 * clearStore
+	 */
 	public void clearStore() {
 		dao.drop();
 	}

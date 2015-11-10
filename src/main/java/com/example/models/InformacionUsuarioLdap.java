@@ -42,11 +42,11 @@ public class InformacionUsuarioLdap {
 	}
 
 	public InformacionUsuarioLdap(InformacionUsuarioLdap u) {
-		
 		this.mail = u.getMail();
 		this.usuario = u.getUsuario();
 		this.nick = u.getNick();
 	}
+	
 	public String getMail() {
 		return mail;
 	}

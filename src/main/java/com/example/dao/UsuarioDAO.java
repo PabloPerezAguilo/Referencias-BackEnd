@@ -3,6 +3,7 @@ package com.example.dao;
 import java.util.Iterator;
 
 import org.jongo.MongoCollection;
+
 import com.example.models.Usuario;
 
 public class UsuarioDAO {
@@ -22,30 +23,66 @@ public class UsuarioDAO {
 		return singleton;
 	}
 
-	public Iterator<Usuario> getUsuarios() {
+	/**
+	 * getUsuarios
+	 * @return Iterator<Usuario>
+	 * @throws Exception
+	 */
+	public Iterator<Usuario> getUsuarios() throws Exception {
 		return dao.find(). as(Usuario.class).iterator();
 	}
 
-	public Usuario getUsuario(String idUser) {
+	/**
+	 * getUsuario
+	 * @param idUser
+	 * @return Usuario
+	 * @throws Exception
+	 */
+	public Usuario getUsuario(String idUser) throws Exception {
 		return dao.findOne("{'_id':#}", idUser).as(Usuario.class);
 	}
 	
-	public Usuario getUsuarioLogin(String idUser) {
+	/**
+	 * getUsuarioLogin
+	 * @param idUser
+	 * @return Usuario
+	 * @throws Exception
+	 */
+	public Usuario getUsuarioLogin(String idUser) throws Exception {
 		return dao.findOne("{'_id':#}", idUser).as(Usuario.class);
 	}
 
-	public void insertUsuario(Usuario user) {
+	/**
+	 * insertUsuario
+	 * @param user
+	 * @throws Exception
+	 */
+	public void insertUsuario(Usuario user) throws Exception {
 		dao.insert(user);
 	}
 	
-	public void deleteUsuario(String key){
+	/**
+	 * deleteUsuario
+	 * @param key
+	 * @throws Exception
+	 */
+	public void deleteUsuario(String key) throws Exception {
 		dao.remove("{'_id':#}", key);
 	}
 	
-	public void updateUsuario(String key, Usuario r){
+	/**
+	 * updateUsuario
+	 * @param key
+	 * @param r
+	 * @throws Exception
+	 */
+	public void updateUsuario(String key, Usuario r) throws Exception {
 		dao.update("{'_id':#}", key).with(r);
 	}
 
+	/**
+	 * clearStore
+	 */
 	public void clearStore() {
 		dao.drop();
 	}

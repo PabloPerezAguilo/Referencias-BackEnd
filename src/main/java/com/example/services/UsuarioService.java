@@ -29,6 +29,10 @@ public class UsuarioService extends Service{
 		super();
 	}
 	
+	/**
+	 * GET Usuarios
+	 * @return ArrayList<Usuarios>
+	 */
 	@GET
 	@ApiOperation(value = "Get all usuarios", notes = "Return all usuarios")
 	public Response getUsuarios() {
@@ -44,6 +48,11 @@ public class UsuarioService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 
+	/**
+	 * GET Usuario
+	 * @param key
+	 * @return Usuario
+	 */
 	@GET
 	@Path("/{key}")
 	@ApiOperation(value = "Get usuario by key", notes = "Get usuario by key")
@@ -61,6 +70,11 @@ public class UsuarioService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 
+	/**
+	 * POST Usuario
+	 * @param r
+	 * @return r
+	 */
 	@POST
 	@ApiOperation(value = "Create a Usuario", notes = "Create a Usuario")
 	public Response postUsuario(Usuario r) {
@@ -73,14 +87,21 @@ public class UsuarioService extends Service{
 			resourceController.createUsuario(r.getName(),r.getRole());
 			log.info("Insert Usuario: Operation successful");
 			status = Response.Status.ACCEPTED;
+			out = r;
 			
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
 		}
 		return Response.status(status).entity(out).build();
 	}
 	
+	/**
+	 * DELETE Usuario
+	 * @param key
+	 * @return key
+	 */
 	@DELETE
 	@Path("/{key}")
 	@ApiOperation(value = "Delete a Usuario", notes = "Delete a Usuario")
@@ -98,6 +119,11 @@ public class UsuarioService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	
+	/**
+	 * PUT Usuario
+	 * @param r
+	 * @return r
+	 */
 	@PUT
 	@ApiOperation(value = "Update a Usuario", notes = "Update a Usuario")
 	public Response postReferenciaUpdate(Usuario r){

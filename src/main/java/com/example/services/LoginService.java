@@ -25,9 +25,13 @@ public class LoginService {
 
 	private static final Logger log = Logger.getLogger(LoginService.class.getName());
 	
+	/**
+	 * POST Login
+	 * @param usuario | Objeto UsuarioLdap
+	 * @return Response.status
+	 */
 	@POST
 	@ApiOperation(value = "Make login user", notes = "Check user/password and return their role")
-	
 	public Response login(UsuarioLdap usuario) {
 		
 		Status status = Response.Status.BAD_REQUEST;
