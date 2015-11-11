@@ -35,7 +35,7 @@ public class CatalogoClienteDAO {
 
 	/**
 	 * getUsuario
-	 * @param idUser
+	 * @param nombre
 	 * @return CatalogoCliente
 	 * @throws Exception
 	 */
@@ -45,7 +45,7 @@ public class CatalogoClienteDAO {
 	
 	/**
 	 * insertCatalogoCliente
-	 * @param user
+	 * @param cliente
 	 * @throws Exception
 	 */
 	public void insertUsuario(CatalogoCliente cliente) throws Exception {
@@ -54,7 +54,7 @@ public class CatalogoClienteDAO {
 	
 	/**
 	 * deleteCatalogoCliente
-	 * @param key
+	 * @param nombre
 	 * @throws Exception
 	 */
 	public void deleteUsuario(String nombre) throws Exception {
@@ -64,11 +64,11 @@ public class CatalogoClienteDAO {
 	/**
 	 * updateCatalogoCliente
 	 * @param nombre
-	 * @param r
+	 * @param cliente
 	 * @throws Exception
 	 */
-	public void updateUsuario(String nombre, CatalogoCliente r) throws Exception {
-		dao.update("{'_id':#}", nombre).with(r);
+	public void updateUsuario(String nombre, CatalogoCliente cliente) throws Exception {
+		dao.update("{'_id':#}", nombre).with(cliente);
 	}
 	public void clearStore() {
 		dao.drop();
