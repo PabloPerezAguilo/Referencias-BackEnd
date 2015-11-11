@@ -41,7 +41,7 @@ public class Referencia implements Serializable {
 	
 	public Referencia(int _id, String cliente, String sociedad,
 			String sectorEmpresarial, String tipoProyecto, Object fechaInicio,
-			int durancionMeses, String denominacion, String resumenProyecto,
+			int duracionMeses, String denominacion, String resumenProyecto,
 			String problematicaCliente, String solucionGfi,
 			String tecnologias, int fteTotales, String imagenProyecto,
 			String certificado, int[] regPedidoAsociadoReferencia,
@@ -58,7 +58,7 @@ public class Referencia implements Serializable {
 		}else{
 			this.fechaInicio = (Date) fechaInicio;
 		}
-		this.duracionMeses = durancionMeses;
+		this.duracionMeses = duracionMeses;
 		this.denominacion = denominacion;
 		this.resumenProyecto = resumenProyecto;
 		this.problematicaCliente = problematicaCliente;
@@ -123,12 +123,12 @@ public class Referencia implements Serializable {
 		this.fechaInicio = fechaInicio;
 	}
 
-	public int getDurancionMeses() {
+	public int getDuracionMeses() {
 		return duracionMeses;
 	}
 
-	public void setDurancionMeses(int durancionMeses) {
-		this.duracionMeses = durancionMeses;
+	public void setDuracionMeses(int duracionMeses) {
+		this.duracionMeses = duracionMeses;
 	}
 
 	public String getDenominacion() {
