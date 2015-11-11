@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -39,9 +40,21 @@ public class UsuarioStepDef {
 	}
 
 	@Then("^El resultado es vacio$")
-	public void the_result_its_empty() throws Throwable {
+	public void listaUsuariosVacia() throws Throwable {
 		assertTrue(list.isEmpty());
 		//assertFalse("prueba",list.isEmpty());
+	}
+	
+	@When("^Yo creo un usuario con nick <key> y rol <rol>$")
+	public void setUsuario() throws Throwable {
+		controller.createUsuario("rbrito", "validador");
+	}
+
+	@Then("^yo puedo encontrarlo con el nick <key> y el rol <rol>$")
+	public void the_result_its_empty() throws Throwable {
+		List<Usuario> list = new ArrayList<Usuario>();
+		list = controller.getUsuarios();
+		assertTrue(list.size() == 1);
 	}
 
 //	@When("^I create a resource with key (\\d+) and value (.+)$")
