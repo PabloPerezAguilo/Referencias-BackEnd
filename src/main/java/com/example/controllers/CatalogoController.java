@@ -35,10 +35,10 @@ public class CatalogoController {
 	
 	/**
 	 * getCatalogos
-	 * @return Map<String,Object>
+	 * @return Map<String,? extends Object>
 	 * @throws Exception
 	 */
-	public Map<String,Object> getCatalogos() throws Exception {
+	public Map<String,? extends Object> getCatalogos() throws Exception {
 		
 		Map<String,Object> m = new HashMap<String, Object>();
 		List<CatalogoClientes> listaClientes = daoClientes.getCatalogoClientes();

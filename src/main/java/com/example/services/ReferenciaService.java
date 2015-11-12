@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import com.example.controllers.ReferenciaController;
-import com.example.models.Referencia;
+import com.example.models.ReferenciaWithAutoID;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -31,7 +31,7 @@ public class ReferenciaService extends Service{
 	
 	/**
 	 * GET Referencias
-	 * @return Referencias
+	 * @return ReferenciaWithAutoID
 	 */
 	@GET
 	@ApiOperation(value = "Devuelve todas las referencias", notes = "Devuelve todas las referencias")
@@ -76,7 +76,7 @@ public class ReferenciaService extends Service{
 	 */
 	@POST
 	@ApiOperation(value = "Crea una nueva referencia", notes = "Crea una nueva referencia")
-	public Response postReferencia(Referencia r) {
+	public Response postReferencia(ReferenciaWithAutoID r) {
 		try {
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.createReferencia(r);
@@ -117,7 +117,7 @@ public class ReferenciaService extends Service{
 	 */
 	@PUT
 	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
-	public Response updateReferencia(Referencia r){
+	public Response updateReferencia(ReferenciaWithAutoID r){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
