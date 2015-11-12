@@ -37,8 +37,8 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Devuelve todas las referencias", notes = "Devuelve todas las referencias")
 	public Response getReferencias() {
 		try {
-			ReferenciaController resourceController = ReferenciaController.getInstance();
-			out = resourceController.getReferencias();
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.getReferencias();
 			log.info("Get All Referencias: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
@@ -56,10 +56,10 @@ public class ReferenciaService extends Service{
 	@GET
 	@Path("/{key}")
 	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
-	public Response getResource(@PathParam("key") int key) {
+	public Response getReferencia(@PathParam("key") int key) {
 		try {
-			ReferenciaController resourceController = ReferenciaController.getInstance();
-			out = resourceController.getReferencia(key);
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.getReferencia(key);
 			log.info("Get Referencia by key: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
@@ -78,8 +78,8 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Crea una nueva referencia", notes = "Crea una nueva referencia")
 	public Response postReferencia(Referencia r) {
 		try {
-			ReferenciaController resourceController = ReferenciaController.getInstance();
-			out = resourceController.createReferencia(r);
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.createReferencia(r);
 			log.info("Insert Referencia: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
@@ -97,10 +97,10 @@ public class ReferenciaService extends Service{
 	@DELETE
 	@Path("/{key}")
 	@ApiOperation(value = "Borra una Referencia", notes = "Borra una Referencia")
-	public Response postReferenciaDelete(@PathParam("key") int key){
+	public Response deleteReferencia(@PathParam("key") int key){
 		try{
-			ReferenciaController resourceController = ReferenciaController.getInstance();
-			out = resourceController.deleteReferencia(key);
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.deleteReferencia(key);
 			log.info("Delete Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
@@ -117,11 +117,11 @@ public class ReferenciaService extends Service{
 	 */
 	@PUT
 	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
-	public Response postReferenciaUpdate(Referencia r){
+	public Response updateReferencia(Referencia r){
 		
 		try{
-			ReferenciaController resourceController = ReferenciaController.getInstance();
-			out = resourceController.updateReferencia(r.get_id(),r);
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.updateReferencia(r.get_id(),r);
 			log.info("| Update Referencia | : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

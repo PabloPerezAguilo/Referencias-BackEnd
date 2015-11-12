@@ -1,6 +1,8 @@
 package com.example.dao;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jongo.MongoCollection;
 
@@ -25,21 +27,31 @@ public class CatalogoCoDeDAO {
 
 	/**
 	 * getCatalogoCoDe
-	 * @return Iterator<CatalogoCoDe>
+	 * @return List<CatalogoCoDe>
 	 * @throws Exception
 	 */
-	public Iterator<CatalogoCoDe> getCatalogoCoDe() throws Exception {
-		return dao.find(). as(CatalogoCoDe.class).iterator();
+	public List<CatalogoCoDe> getCatalogoCoDe() throws Exception {
+		Iterator<CatalogoCoDe> ite = dao.find().as(CatalogoCoDe.class).iterator();
+		List<CatalogoCoDe> listCoDe = new ArrayList<CatalogoCoDe>();
+		while (ite.hasNext()) {
+			listCoDe.add(ite.next());
+		}
+		return listCoDe;
 	}
 	
 	/**
 	 * getCatalogoCoDePorTipo
 	 * @param entidad
-	 * @return Iterator<CatalogoCoDe>
+	 * @return List<CatalogoCoDe>
 	 * @throws Exception
 	 */
-	public Iterator<CatalogoCoDe> getGerentesPorTipo(String entidad) throws Exception {
-		return dao.find("{'tipoGerente':#}", entidad).as(CatalogoCoDe.class);
+	public List<CatalogoCoDe> getCoDePorTipo(String entidad) throws Exception {
+		Iterator<CatalogoCoDe> ite = dao.find("{'entidad':#}", entidad).as(CatalogoCoDe.class).iterator();
+		List<CatalogoCoDe> listCoDe = new ArrayList<CatalogoCoDe>();
+		while (ite.hasNext()) {
+			listCoDe.add(ite.next());
+		}
+		return listCoDe;
 	}
 
 	/**
@@ -48,7 +60,7 @@ public class CatalogoCoDeDAO {
 	 * @return CatalogoCoDe
 	 * @throws Exception
 	 */
-	public CatalogoCoDe getGerente(String codigo) throws Exception {
+	public CatalogoCoDe getCoDe(String codigo) throws Exception {
 		return dao.findOne("{'_id':#}", codigo).as(CatalogoCoDe.class);
 	}
 
@@ -57,7 +69,7 @@ public class CatalogoCoDeDAO {
 	 * @param CatalogoCoDe
 	 * @throws Exception
 	 */
-	public void insertGerente(CatalogoCoDe code) throws Exception {
+	public void insertCoDe(CatalogoCoDe code) throws Exception {
 		dao.insert(code);
 	}
 	
@@ -66,7 +78,7 @@ public class CatalogoCoDeDAO {
 	 * @param codigo
 	 * @throws Exception
 	 */
-	public void deleteUsuario(String codigo) throws Exception {
+	public void deleteCoDe(String codigo) throws Exception {
 		dao.remove("{'_id':#}", codigo);
 	}
 	
@@ -76,7 +88,7 @@ public class CatalogoCoDeDAO {
 	 * @param code
 	 * @throws Exception
 	 */
-	public void updateGerente(String codigo, CatalogoCoDe code) throws Exception {
+	public void updateCoDe(String codigo, CatalogoCoDe code) throws Exception {
 		dao.update("{'_id':#}", codigo).with(codigo);
 	}
 

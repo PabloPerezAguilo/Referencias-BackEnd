@@ -1,6 +1,8 @@
 package com.example.dao;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jongo.MongoCollection;
 
@@ -25,21 +27,31 @@ public class CatalogoGerentesDAO {
 
 	/**
 	 * getGerentes
-	 * @return Iterator<CatalogoGerentes>
+	 * @return List<CatalogoGerentes>
 	 * @throws Exception
 	 */
-	public Iterator<CatalogoGerentes> getGerentes() throws Exception {
-		return dao.find(). as(CatalogoGerentes.class).iterator();
+	public List<CatalogoGerentes> getGerentes() throws Exception {
+		Iterator<CatalogoGerentes> ite = dao.find().as(CatalogoGerentes.class).iterator();
+		List<CatalogoGerentes> listGerentes = new ArrayList<CatalogoGerentes>();
+		while (ite.hasNext()) {
+			listGerentes.add(ite.next());
+		}
+		return listGerentes;
 	}
 	
 	/**
 	 * getGerentesPorTipo
 	 * @param tipoGerente
-	 * @return Iterator<CatalogoGerentes>
+	 * @return List<CatalogoGerentes>
 	 * @throws Exception
 	 */
-	public Iterator<CatalogoGerentes> getGerentesPorTipo(String tipoGerente) throws Exception {
-		return dao.find("{'tipoGerente':#}", tipoGerente).as(CatalogoGerentes.class);
+	public List<CatalogoGerentes> getGerentesPorTipo(String tipoGerente) throws Exception {
+		Iterator<CatalogoGerentes> ite = dao.find("{'tipoGerente':#}", tipoGerente).as(CatalogoGerentes.class).iterator();
+		List<CatalogoGerentes> listGerentes = new ArrayList<CatalogoGerentes>();
+		while (ite.hasNext()) {
+			listGerentes.add(ite.next());
+		}
+		return listGerentes;
 	}
 
 	/**

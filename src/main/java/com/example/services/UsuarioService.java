@@ -37,8 +37,8 @@ public class UsuarioService extends Service{
 	@ApiOperation(value = "Devuelve todos los usuarios", notes = "Devuelve todos los usuarios")
 	public Response getUsuarios() {
 		try {
-			UsuarioController resourceController = UsuarioController.getInstance();
-			out = resourceController.getUsuarios();
+			UsuarioController usuarioController = UsuarioController.getInstance();
+			out = usuarioController.getUsuarios();
 			log.info("Get All Usuarios: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
@@ -58,8 +58,8 @@ public class UsuarioService extends Service{
 	@ApiOperation(value = "Devuelve un usuario por parametro", notes = "Devuelve un usuario por parametro")
 	public Response getUsuario(@PathParam("key") String key) {
 		try {
-			UsuarioController resourceController = UsuarioController.getInstance();
-			out = resourceController.getUsuario(key);
+			UsuarioController usuarioController = UsuarioController.getInstance();
+			out = usuarioController.getUsuario(key);
 			log.info("Get Referencia by key: Operation successful");
 			
 		} catch (Exception e) {
@@ -80,11 +80,11 @@ public class UsuarioService extends Service{
 	public Response postUsuario(Usuario r) {
 		try {
 			
-			UsuarioController resourceController = UsuarioController.getInstance();
+			UsuarioController usuarioController = UsuarioController.getInstance();
 			if(r.getRole()== "" || r.getName().isEmpty()){
 				 throw new Exception("Nombre o rol vacio");
 			}
-			resourceController.createUsuario(r.getName(),r.getRole());
+			usuarioController.createUsuario(r.getName(),r.getRole());
 			log.info("Insert Usuario: Operation successful");
 			status = Response.Status.ACCEPTED;
 			out = r;
@@ -105,10 +105,10 @@ public class UsuarioService extends Service{
 	@DELETE
 	@Path("/{key}")
 	@ApiOperation(value = "Borrar un Usuario", notes = "Borrar un Usuario")
-	public Response postReferenciaDelete(@PathParam("key") String key){
+	public Response deleteUsuario(@PathParam("key") String key){
 		try{
-			UsuarioController resourceController = UsuarioController.getInstance();
-			out = resourceController.deleteUsuario(key);
+			UsuarioController usuarioController = UsuarioController.getInstance();
+			out = usuarioController.deleteUsuario(key);
 			log.info("Delete Referencia : Operation successful");
 			status = Response.Status.ACCEPTED;
 		}catch(Exception e){
@@ -126,11 +126,11 @@ public class UsuarioService extends Service{
 	 */
 	@PUT
 	@ApiOperation(value = "Modifica un Usuario", notes = "Modifica un Usuario")
-	public Response postReferenciaUpdate(Usuario r){
+	public Response updateUsuario(Usuario r){
 		
 		try{
-			UsuarioController resourceController = UsuarioController.getInstance();
-			out = resourceController.updateUsuario(r.getName(), r);
+			UsuarioController usuarioController = UsuarioController.getInstance();
+			out = usuarioController.updateUsuario(r.getName(), r);
 			log.info("Update Referencia : Operation successful");
 			status = Response.Status.ACCEPTED;
 		}catch(Exception e){

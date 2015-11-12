@@ -1,129 +1,82 @@
-//package com.example.controllers;
-//
-//import java.util.ArrayList;
-//import java.util.Iterator;
-//import java.util.List;
-//
-//import com.example.dao.CatalogoClienteDAO;
-//import com.example.dao.CatalogoCoDeDAO;
-//import com.example.dao.CatalogoGerentesDAO;
-//import com.example.dao.ReferenciaDAO;
-//import com.example.models.CatalogoCliente;
-//import com.example.models.CatalogoGerentes;
-//import com.example.models.Referencia;
-//
-//public class CatalogoController {
-//
-//	private static CatalogoClienteDAO daoCliente;
-//	private static CatalogoCoDeDAO daoCoDe;
-//	private static CatalogoGerentesDAO daoGerentes;
-//	private static CatalogoController singleton;
-//	
-//
-//	private CatalogoController() throws Exception {
-//		daoCliente = CatalogoClienteDAO.getInstance();
-//		daoCoDe = CatalogoCoDeDAO.getInstance();
-//		daoGerentes = CatalogoGerentesDAO.getInstance();
-//	}
-//
-//	public static CatalogoController getInstance() throws Exception {
-//		if (singleton == null) {
-//			singleton = new CatalogoController();
-//		}
-//		return singleton;
-//	}
-//
-//	/**
-//	 * getCatalogos.
-//	 * Recoge todas las referencias de la base de datos
-//	 * @return List<Referencia> 
-//	 * @throws Exception
-//	 */
-//	public List getcatalogo(String entidad) throws Exception {
-//		// Transform an iterator object to a list
-//		
-//		switch(entidad){
-//		case "cliente":
-//			List<CatalogoCliente> list = new ArrayList<CatalogoCliente>();
-//			Iterator<CatalogoCliente> i = daoCliente.getCatalogoCliente();
-//			while (i.hasNext()) {
-//				list.add(i.next());
-//			}
-//			break;
-//		case "comercial":
-//			List<CatalogoGerentes> list = new ArrayList<CatalogoGerentes>();
-//			Iterator<CatalogoCliente> i = daoCliente.getCatalogoCliente();
-//			while (i.hasNext()) {
-//				list.add(i.next());
-//			}
-//			break;
-//		
-//		}
-//		List<Referencia> list = new ArrayList<Referencia>();
-//		Iterator<Referencia> i = dao.getReferencias();
-//		while (i.hasNext()) {
-//			list.add(i.next());
-//		}
-//		return list;
-//	}
-//
-//	/**
-//	 * getReferencia
-//	 * Recoge la referencia de la base de datos indicada por parametro
-//	 * @param key | Clave para identificar la referencia en la base de datos
-//	 * @return Referencia
-//	 * @throws Exception
-//	 */
-//	public Referencia getReferencia(int key) throws Exception {
-//		Referencia resource = dao.getReferencia(key);
-//		if (resource == null) {
-//			throw new Exception("Resource not found");
-//		}
-//		return resource;
-//	}
-//
-//	/**
-//	 * createReferencia
-//	 * Crea una nueva referencia en la base de datos
-//	 * @param r | Objeto Referencia que se creara en la base de datos
-//	 * @return Referencia
-//	 * @throws Exception
-//	 */
-//	public Referencia createReferencia(Referencia r) throws Exception {
-//		dao.insertReferencia(r);
-//		return r;
-//	}
-//	
-//	/**
-//	 * deleteReferencia
-//	 * Borra una referencia de la base de datos
-//	 * @param key | Clave para identificar la referencia en la base de datos
-//	 * @return key
-//	 * @throws Exception
-//	 */
-//	public int deleteReferencia(int key) throws Exception{
-//		dao.deleteReferencia(key);
-//		return key;
-//	}
-//	
-//	/**
-//	 * updateReferencia
-//	 * @param key | Clave para identificar la referencia en la base de datos
-//	 * @param r | Objeto Referencia que se modificará en la base de datos
-//	 * @return Referencia
-//	 * @throws Exception
-//	 */
-//	public Referencia updateReferencia(int key, Referencia r) throws Exception{
-//		dao.updateReferencia(key,r);
-//		return r;
-//	}
-//
-//	/**
-//	 * dropReferencia
-//	 * Borra la coleccion de Referencias.
-//	 */
-//	public void dropReferencia() {
-//		dao.clearStore();
-//	}
-//}
-//}
+package com.example.controllers;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.example.dao.CatalogoClientesDAO;
+import com.example.dao.CatalogoCoDeDAO;
+import com.example.dao.CatalogoGerentesDAO;
+import com.example.models.CatalogoClientes;
+import com.example.models.CatalogoCoDe;
+import com.example.models.CatalogoGerentes;
+
+public class CatalogoController {
+
+	private static CatalogoClientesDAO daoClientes;
+	private static CatalogoCoDeDAO daoCoDe;
+	private static CatalogoGerentesDAO daoGerentes;
+	private static CatalogoController singleton;
+	
+
+	private CatalogoController() throws Exception {
+		daoClientes = CatalogoClientesDAO.getInstance();
+		daoCoDe = CatalogoCoDeDAO.getInstance();
+		daoGerentes = CatalogoGerentesDAO.getInstance();
+	}
+
+	public static CatalogoController getInstance() throws Exception {
+		if (singleton == null) {
+			singleton = new CatalogoController();
+		}
+		return singleton;
+	}
+	
+	/**
+	 * getCatalogos
+	 * @return Map<String,Object>
+	 * @throws Exception
+	 */
+	public Map<String,Object> getCatalogos() throws Exception {
+		
+		Map<String,Object> m = new HashMap<String, Object>();
+		List<CatalogoClientes> listaClientes = daoClientes.getCatalogoClientes();
+		List<CatalogoCoDe> listaCoDe1 = daoCoDe.getCoDePorTipo("sectorempresarial");
+		List<CatalogoCoDe> listaCoDe2 = daoCoDe.getCoDePorTipo("actividad");
+		List<CatalogoCoDe> listaCoDe3 = daoCoDe.getCoDePorTipo("proyecto");
+		List<CatalogoCoDe> listaCoDe4 = daoCoDe.getCoDePorTipo("tecnologia");
+		List<CatalogoCoDe> listaCoDe5 = daoCoDe.getCoDePorTipo("sociedades");
+		List<CatalogoGerentes> listaGerentesComercial = daoGerentes.getGerentesPorTipo("comercial");
+		List<CatalogoGerentes> listaGerentesTecnico = daoGerentes.getGerentesPorTipo("tecnico");
+		m.put("clientes", listaClientes);
+		m.put("sectorempresarial", listaCoDe1);
+		m.put("actividad", listaCoDe2);
+		m.put("proyecto", listaCoDe3);
+		m.put("tecnologia", listaCoDe4);
+		m.put("comercial", listaGerentesComercial);
+		m.put("tecnico", listaGerentesTecnico);
+		m.put("sociedades", listaCoDe5);
+		 
+		return m;
+	}
+	
+	public CatalogoClientes createCliente(CatalogoClientes r) throws Exception {
+		daoClientes.insertCliente(r);
+		return r;
+	}
+	
+	public CatalogoCoDe createCoDe(CatalogoCoDe r) throws Exception {
+		daoCoDe.insertCoDe(r);
+		return r;
+	}
+	
+	public CatalogoGerentes createGerente(CatalogoGerentes r) throws Exception{
+		daoGerentes.insertGerente(r);
+		return r;
+	}
+	
+	
+
+}
+

@@ -2,7 +2,7 @@ package com.example.models;
 
 import org.jongo.marshall.jackson.oid.Id;
 
-public class CatalogoCliente {
+public class CatalogoClientes {
 
 	@Id
 	private String nombre;
@@ -11,10 +11,10 @@ public class CatalogoCliente {
 	private String alias;
 	private String imagen;
 	
-	public void CatalogoClientes() {
+	public CatalogoClientes() {
 		
 	}
-	public void CatalogoClientes(String nombre, String siglas, boolean publico, String alias, String imagen) {
+	public CatalogoClientes(String nombre, String siglas, boolean publico, String alias, String imagen) {
 		
 		this.nombre = nombre;
 		this.siglas = siglas;
@@ -23,7 +23,7 @@ public class CatalogoCliente {
 		this.imagen = imagen;
 		
 	}
-	public void CatalogoClientes(CatalogoCliente cliente) {
+	public CatalogoClientes(CatalogoClientes cliente) {
 		
 		this.nombre = cliente.getNombre();
 		this.siglas = cliente.getSiglas();
