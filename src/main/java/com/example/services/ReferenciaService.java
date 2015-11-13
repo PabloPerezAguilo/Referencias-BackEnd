@@ -122,7 +122,7 @@ public class ReferenciaService extends Service{
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.updateReferencia(r.get_id(),r);
-			log.info("| Update Referencia | : Operation successful");
+			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
