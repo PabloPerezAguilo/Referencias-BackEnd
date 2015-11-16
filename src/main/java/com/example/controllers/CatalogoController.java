@@ -50,11 +50,11 @@ public class CatalogoController {
 		List<CatalogoGerentes> listaGerentesComercial = daoGerentes.getGerentesPorTipo("comercial");
 		List<CatalogoGerentes> listaGerentesTecnico = daoGerentes.getGerentesPorTipo("tecnico");
 		m.put("clientes", listaClientes);
-		m.put("sectorempresarial", listaCoDeActividad);
-		m.put("actividad", listaCoDeProyecto);
-		m.put("proyecto", listaCoDeTecnologia);
-		m.put("tecnologia", listaCoDeSociedades);
-		m.put("sociedades", listaCoDeSectorEmpresarial);
+		m.put("sectorempresarial", listaCoDeSectorEmpresarial);
+		m.put("actividad", listaCoDeActividad);
+		m.put("proyecto", listaCoDeProyecto);
+		m.put("tecnologia", listaCoDeTecnologia);
+		m.put("sociedades", listaCoDeSociedades);
 		m.put("comercial", listaGerentesComercial);
 		m.put("tecnico", listaGerentesTecnico);
 		
