@@ -16,7 +16,4 @@ Scenario Outline: Creando un usuario
     | val   | "validador" |
     
 
-Scenario: Creando un usuario que ya esta dado de alta
-	Given BDD iniciada sin datos
-    Then Yo intento dar de alta a un usuario dos veces con nick mant y rol mantenimiento
    

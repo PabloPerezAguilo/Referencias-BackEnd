@@ -46,8 +46,8 @@ public class UsuarioStepDef {
 	}
 	
 	@When("^Yo creo un usuario con nick <key> y rol <rol>$")
-	public void setUsuario() throws Throwable {
-		controller.createUsuario("rbrito", "validador");
+	public void setUsuario(String key, String rol) throws Throwable {
+		controller.createUsuario(key, rol);
 	}
 
 	@Then("^yo puedo encontrarlo con el nick <key> y el rol <rol>$")
