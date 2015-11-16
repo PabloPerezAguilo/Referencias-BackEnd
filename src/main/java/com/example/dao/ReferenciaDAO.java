@@ -2,9 +2,10 @@ package com.example.dao;
 
 import java.util.Iterator;
 
+import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
-import com.example.models.Referencia;
+import com.example.models.ReferenciaWithAutoID;
 
 public class ReferenciaDAO {
 
@@ -25,21 +26,21 @@ public class ReferenciaDAO {
 
 	/**
 	 * getReferencias
-	 * @return Iterator<Referencia>
+	 * @return Iterator<ReferenciaWithAutoID>
 	 * @throws Exception
 	 */
-	public Iterator<Referencia> getReferencias() throws Exception {
-		return dao.find().as(Referencia.class).iterator();
+	public Iterator<ReferenciaWithAutoID> getReferencias() throws Exception {
+		return dao.find().as(ReferenciaWithAutoID.class).iterator();
 	}
 
 	/**
 	 * getReferencia
 	 * @param key
-	 * @return Referencia
+	 * @return ReferenciaWithAutoID
 	 * @throws Exception
 	 */
-	public Referencia getReferencia(int key) throws Exception{
-		return dao.findOne("{'_id':#}", key).as(Referencia.class);
+	public ReferenciaWithAutoID getReferencia(int key) throws Exception{
+		return dao.findOne("{'_id':#}", key).as(ReferenciaWithAutoID.class);
 	}
 
 	/**
@@ -47,7 +48,7 @@ public class ReferenciaDAO {
 	 * @param r
 	 * @throws Exception
 	 */
-	public void insertReferencia(Referencia r) throws Exception{
+	public void insertReferencia(ReferenciaWithAutoID r) throws Exception{
 		dao.insert(r);
 	}
 	
@@ -66,7 +67,7 @@ public class ReferenciaDAO {
 	 * @param r
 	 * @throws Exception
 	 */
-	public void updateReferencia(int key, Referencia r) throws Exception{
+	public void updateReferencia(ObjectId key, ReferenciaWithAutoID r) throws Exception{
 		dao.update("{_id:"+key+"}").with(r);
 	}
 

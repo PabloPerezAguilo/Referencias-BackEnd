@@ -19,6 +19,7 @@ public class Referencia implements Serializable {
 	private String sociedad;
 	private String sectorEmpresarial;
 	private String tipoProyecto;
+	private String tipoActividad;
 	private Date fechaInicio;
 	private int duracionMeses;
 	private String denominacion;
@@ -40,7 +41,7 @@ public class Referencia implements Serializable {
 	}
 	
 	public Referencia(int _id, String cliente, String sociedad,
-			String sectorEmpresarial, String tipoProyecto, Object fechaInicio,
+			String sectorEmpresarial, String tipoProyecto,String tipoActividad, Object fechaInicio,
 			int duracionMeses, String denominacion, String resumenProyecto,
 			String problematicaCliente, String solucionGfi,
 			String tecnologias, int fteTotales, String imagenProyecto,
@@ -53,6 +54,7 @@ public class Referencia implements Serializable {
 		this.sociedad = sociedad;
 		this.sectorEmpresarial = sectorEmpresarial;
 		this.tipoProyecto = tipoProyecto;
+		this.tipoActividad = tipoActividad;
 		if(fechaInicio==null){
 			this.fechaInicio = new Date();
 		}else{
@@ -113,6 +115,22 @@ public class Referencia implements Serializable {
 
 	public void setTipoProyecto(String tipoProyecto) {
 		this.tipoProyecto = tipoProyecto;
+	}
+	
+	public String getTipoActividad() {
+		return tipoActividad;
+	}
+
+	public void setTipoActividad(String tipoActividad) {
+		this.tipoActividad = tipoActividad;
+	}
+
+	public String getTecnologia() {
+		return tecnologia;
+	}
+
+	public void setTecnologia(String tecnologia) {
+		this.tecnologia = tecnologia;
 	}
 
 	public Date getFechaInicio() {

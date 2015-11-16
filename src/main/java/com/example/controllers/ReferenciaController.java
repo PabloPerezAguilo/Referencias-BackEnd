@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import com.example.dao.ReferenciaDAO;
-import com.example.models.Referencia;
+import com.example.models.ReferenciaWithAutoID;
 
 public class ReferenciaController {
 
@@ -26,13 +28,13 @@ public class ReferenciaController {
 	/**
 	 * getReferencias.
 	 * Recoge todas las referencias de la base de datos
-	 * @return List<Referencia> 
+	 * @return List<ReferenciaWithAutoID> 
 	 * @throws Exception
 	 */
-	public List<Referencia> getReferencias() throws Exception {
+	public List<ReferenciaWithAutoID> getReferencias() throws Exception {
 		// Transform an iterator object to a list
-		List<Referencia> list = new ArrayList<Referencia>();
-		Iterator<Referencia> i = dao.getReferencias();
+		List<ReferenciaWithAutoID> list = new ArrayList<ReferenciaWithAutoID>();
+		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
 		while (i.hasNext()) {
 			list.add(i.next());
 		}
@@ -43,11 +45,11 @@ public class ReferenciaController {
 	 * getReferencia
 	 * Recoge la referencia de la base de datos indicada por parametro
 	 * @param key | Clave para identificar la referencia en la base de datos
-	 * @return Referencia
+	 * @return ReferenciaWithAutoID
 	 * @throws Exception
 	 */
-	public Referencia getReferencia(int key) throws Exception {
-		Referencia resource = dao.getReferencia(key);
+	public ReferenciaWithAutoID getReferencia(int key) throws Exception {
+		ReferenciaWithAutoID resource = dao.getReferencia(key);
 		if (resource == null) {
 			throw new Exception("Resource not found");
 		}
@@ -58,10 +60,10 @@ public class ReferenciaController {
 	 * createReferencia
 	 * Crea una nueva referencia en la base de datos
 	 * @param r | Objeto Referencia que se creara en la base de datos
-	 * @return Referencia
+	 * @return ReferenciaWithAutoID
 	 * @throws Exception
 	 */
-	public Referencia createReferencia(Referencia r) throws Exception {
+	public ReferenciaWithAutoID createReferencia(ReferenciaWithAutoID r) throws Exception {
 		dao.insertReferencia(r);
 		return r;
 	}
@@ -85,7 +87,7 @@ public class ReferenciaController {
 	 * @return Referencia
 	 * @throws Exception
 	 */
-	public Referencia updateReferencia(int key, Referencia r) throws Exception{
+	public ReferenciaWithAutoID updateReferencia(ObjectId key, ReferenciaWithAutoID r) throws Exception{
 		dao.updateReferencia(key,r);
 		return r;
 	}

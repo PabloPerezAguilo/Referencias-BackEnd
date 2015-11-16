@@ -35,29 +35,29 @@ public class CatalogoController {
 	
 	/**
 	 * getCatalogos
-	 * @return Map<String,Object>
+	 * @return Map<String,? extends Object>
 	 * @throws Exception
 	 */
-	public Map<String,Object> getCatalogos() throws Exception {
+	public Map<String,? extends Object> getCatalogos() throws Exception {
 		
 		Map<String,Object> m = new HashMap<String, Object>();
 		List<CatalogoClientes> listaClientes = daoClientes.getCatalogoClientes();
-		List<CatalogoCoDe> listaSectorEmpresarial = daoCoDe.getCoDePorTipo("sectorempresarial");
-		List<CatalogoCoDe> listaActividad = daoCoDe.getCoDePorTipo("actividad");
-		List<CatalogoCoDe> listaProyecto = daoCoDe.getCoDePorTipo("proyecto");
-		List<CatalogoCoDe> listaTecnologia = daoCoDe.getCoDePorTipo("tecnologia");
-		List<CatalogoCoDe> listaSociedades = daoCoDe.getCoDePorTipo("sociedades");
+		List<CatalogoCoDe> listaCoDeSectorEmpresarial = daoCoDe.getCoDePorTipo("sectorempresarial");
+		List<CatalogoCoDe> listaCoDeActividad = daoCoDe.getCoDePorTipo("actividad");
+		List<CatalogoCoDe> listaCoDeProyecto = daoCoDe.getCoDePorTipo("proyecto");
+		List<CatalogoCoDe> listaCoDeTecnologia = daoCoDe.getCoDePorTipo("tecnologia");
+		List<CatalogoCoDe> listaCoDeSociedades = daoCoDe.getCoDePorTipo("sociedades");
 		List<CatalogoGerentes> listaGerentesComercial = daoGerentes.getGerentesPorTipo("comercial");
 		List<CatalogoGerentes> listaGerentesTecnico = daoGerentes.getGerentesPorTipo("tecnico");
 		m.put("clientes", listaClientes);
-		m.put("sectorempresarial", listaSectorEmpresarial);
-		m.put("actividad", listaActividad);
-		m.put("proyecto", listaProyecto);
-		m.put("tecnologia", listaTecnologia);
+		m.put("sectorempresarial", listaCoDeSectorEmpresarial);
+		m.put("actividad", listaCoDeActividad);
+		m.put("proyecto", listaCoDeProyecto);
+		m.put("tecnologia", listaCoDeTecnologia);
+		m.put("sociedades", listaCoDeSociedades);
 		m.put("comercial", listaGerentesComercial);
 		m.put("tecnico", listaGerentesTecnico);
-		m.put("sociedades", listaSociedades);
-		 
+				 
 		return m;
 	}
 	

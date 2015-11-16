@@ -21,13 +21,14 @@ public class ReferenciaWithAutoID implements Serializable {
 	private String sociedad;
 	private String sectorEmpresarial;
 	private String tipoProyecto;
+	private String tipoActividad;
 	private Date fechaInicio;
 	private int duracionMeses;
 	private String denominacion;
 	private String resumenProyecto;
 	private String problematicaCliente;
 	private String solucionGfi;
-	private String[] tecnologias;
+	private String tecnologias;
 	private int fteTotales;
 	private String imagenProyecto;
 	private String certificado;
@@ -38,25 +39,24 @@ public class ReferenciaWithAutoID implements Serializable {
 	private String codigoQr;
 	private String estado;
 
+	
 	public ReferenciaWithAutoID() {
 	}
-
 	
-	
-	public ReferenciaWithAutoID(ObjectId _id, String cliente, String sociedad,
-			String sectorEmpresarial, String tipoProyecto, Date fechaInicio,
+	public ReferenciaWithAutoID(String cliente, String sociedad,
+			String sectorEmpresarial, String tipoProyecto,String tipoActividad, Date fechaInicio,
 			int duracionMeses, String denominacion, String resumenProyecto,
 			String problematicaCliente, String solucionGfi,
-			String[] tecnologias, int fteTotales, String imagenProyecto,
+			String tecnologias, int fteTotales, String imagenProyecto,
 			String certificado, int[] regPedidoAsociadoReferencia,
 			String responsableComercial, String responsableTecnico,
 			String creadorReferencia, String codigoQr, String estado) {
 		super();
-		this._id = _id;
 		this.cliente = cliente;
 		this.sociedad = sociedad;
 		this.sectorEmpresarial = sectorEmpresarial;
 		this.tipoProyecto = tipoProyecto;
+		this.tipoActividad = tipoActividad;
 		if(fechaInicio==null){
 			this.fechaInicio = new Date();
 		}else{
@@ -121,6 +121,14 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.tipoProyecto = tipoProyecto;
 	}
 
+	public String getTipoActividad() {
+		return tipoActividad;
+	}
+
+	public void setTipoActividad(String tipoActividad) {
+		this.tipoActividad = tipoActividad;
+	}
+
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
@@ -169,11 +177,11 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.solucionGfi = solucionGfi;
 	}
 
-	public String[] getTecnologias() {
+	public String getTecnologias() {
 		return tecnologias;
 	}
 
-	public void setTecnologias(String[] tecnologias) {
+	public void setTecnologias(String tecnologias) {
 		this.tecnologias = tecnologias;
 	}
 
@@ -196,7 +204,7 @@ public class ReferenciaWithAutoID implements Serializable {
 	public String getCertificado() {
 		return certificado;
 	}
-
+	
 	public void setCertificado(String certificado) {
 		this.certificado = certificado;
 	}
@@ -259,7 +267,7 @@ public class ReferenciaWithAutoID implements Serializable {
 				+ ", resumenProyecto=" + resumenProyecto
 				+ ", problematicaCliente=" + problematicaCliente
 				+ ", solucionGfi=" + solucionGfi + ", tecnologias="
-				+ Arrays.toString(tecnologias) + ", fteTotales=" + fteTotales
+				+ tecnologias + ", fteTotales=" + fteTotales
 				+ ", imagenProyecto=" + imagenProyecto + ", certificado="
 				+ certificado + ", regPedidoAsociadoReferencia="
 				+ Arrays.toString(regPedidoAsociadoReferencia)

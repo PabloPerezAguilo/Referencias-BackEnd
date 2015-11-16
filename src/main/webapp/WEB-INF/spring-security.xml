@@ -9,13 +9,24 @@
 		<!-- LOS ROLES SON: ROLE_ADMINISTRADOR , ROLE_VALIDADOR , ROLE_CONSULTOR , ROLE_MANTENIMIENTO -->
 	
 		<!-- this services can be accessed without login -->
-		<intercept-url pattern="/api/referencia/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<!-- LOGIN -->
 		<intercept-url pattern="/api/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<!-- this services requires login -->
-		<intercept-url pattern="/api/usuarios/**" access="IS_AUTHENTICATED_ANONYMOUSLY" method="GET"/>
-		<intercept-url pattern="/api/usuariosldap/**" access="IS_AUTHENTICATED_ANONYMOUSLY" method="GET"/>
-		<intercept-url pattern="/api/resource2/**" access="ROLE_USER,ROLE_ADMIN" method="GET" requires-channel="https"/>
-		<intercept-url pattern="/api/Login2/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="https"/>
+		<!-- REFERENCIA -->
+		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_CONSULTOR,ROLE_VALIDADOR" method="GET"/>
+		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="POST"/>
+		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_VALIDADOR" method="PUT"/>
+		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="DELETE"/>
+		<!-- USUARIOS -->
+		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="GET"/>
+		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="POST"/>
+		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
+		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
+		<!-- USUARIOSLDAP -->
+		<intercept-url pattern="/api/usuariosldap/**" access="ROLE_ADMINISTRADOR" method="GET"/>
+		<!-- CATALOGO -->
+		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="GET"/>
+		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
 
 		<http-basic />
 		<!-- Service to logout -->
