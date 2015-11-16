@@ -42,21 +42,21 @@ public class CatalogoController {
 		
 		Map<String,Object> m = new HashMap<String, Object>();
 		List<CatalogoClientes> listaClientes = daoClientes.getCatalogoClientes();
-		List<CatalogoCoDe> listaCoDe1 = daoCoDe.getCoDePorTipo("sectorempresarial");
-		List<CatalogoCoDe> listaCoDe2 = daoCoDe.getCoDePorTipo("actividad");
-		List<CatalogoCoDe> listaCoDe3 = daoCoDe.getCoDePorTipo("proyecto");
-		List<CatalogoCoDe> listaCoDe4 = daoCoDe.getCoDePorTipo("tecnologia");
-		List<CatalogoCoDe> listaCoDe5 = daoCoDe.getCoDePorTipo("sociedades");
+		List<CatalogoCoDe> listaSectorEmpresarial = daoCoDe.getCoDePorTipo("sectorempresarial");
+		List<CatalogoCoDe> listaActividad = daoCoDe.getCoDePorTipo("actividad");
+		List<CatalogoCoDe> listaProyecto = daoCoDe.getCoDePorTipo("proyecto");
+		List<CatalogoCoDe> listaTecnologia = daoCoDe.getCoDePorTipo("tecnologia");
+		List<CatalogoCoDe> listaSociedades = daoCoDe.getCoDePorTipo("sociedades");
 		List<CatalogoGerentes> listaGerentesComercial = daoGerentes.getGerentesPorTipo("comercial");
 		List<CatalogoGerentes> listaGerentesTecnico = daoGerentes.getGerentesPorTipo("tecnico");
 		m.put("clientes", listaClientes);
-		m.put("sectorempresarial", listaCoDe1);
-		m.put("actividad", listaCoDe2);
-		m.put("proyecto", listaCoDe3);
-		m.put("tecnologia", listaCoDe4);
+		m.put("sectorempresarial", listaSectorEmpresarial);
+		m.put("actividad", listaActividad);
+		m.put("proyecto", listaProyecto);
+		m.put("tecnologia", listaTecnologia);
 		m.put("comercial", listaGerentesComercial);
 		m.put("tecnico", listaGerentesTecnico);
-		m.put("sociedades", listaCoDe5);
+		m.put("sociedades", listaSociedades);
 		 
 		return m;
 	}
