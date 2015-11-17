@@ -68,6 +68,26 @@ public class ReferenciaService extends Service{
 		}
 		return Response.status(status).entity(out).build();
 	}
+	
+	/**
+	 * GET ReferenciasPendientes
+	 * @return Referencias
+	 */
+	@GET
+	@Path("/pendientes")
+	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
+	public Response getReferenciasPendientes() {
+		try {
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.getReferenciasPendientes();
+			log.info("Get Referencias Pendientes: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
 
 	/**
 	 * POST Referencia

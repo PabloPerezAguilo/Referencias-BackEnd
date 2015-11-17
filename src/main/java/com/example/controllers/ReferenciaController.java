@@ -40,6 +40,22 @@ public class ReferenciaController {
 		}
 		return list;
 	}
+	
+	/**
+	 * getReferenciasPendientes.
+	 * Recoge todas las referencias de la base de datos
+	 * @return List<ReferenciaWithAutoID> 
+	 * @throws Exception
+	 */
+	public List<ReferenciaWithAutoID> getReferenciasPendientes() throws Exception {
+		// Transform an iterator object to a list
+		List<ReferenciaWithAutoID> list = new ArrayList<ReferenciaWithAutoID>();
+		Iterator<ReferenciaWithAutoID> i = dao.getReferenciasPendientes();
+		while (i.hasNext()) {
+			list.add(i.next());
+		}
+		return list;
+	}
 
 	/**
 	 * getReferencia
