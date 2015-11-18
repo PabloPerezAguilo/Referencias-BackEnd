@@ -151,6 +151,23 @@ public class ReferenciaService extends Service{
 		
 		return Response.status(status).entity(out).build();
 	}
+	@PUT
+	@Path("/{key}/{estado}")
+	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
+	public Response updateReferenciaEstado(@PathParam("key") int key,@PathParam("estado") String estado){
+		
+		try{
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.updateReferenciaEstado(key,estado);
+			log.info("Update Referencia : Operation successful");
+		}catch(Exception e){
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		
+		return Response.status(status).entity(out).build();
+	}
 	
 	
 }

@@ -107,6 +107,21 @@ public class ReferenciaController {
 		dao.updateReferencia(key,r);
 		return r;
 	}
+	
+	/**
+	 * updateReferenciaEstado
+	 * @param key | Clave para identificar la referencia en la base de datos
+	 * @param estado | estado al que se actualiza la referencia
+	 * @return Referencia
+	 * @throws Exception
+	 */
+	public ReferenciaWithAutoID updateReferenciaEstado(int key,String estado) throws Exception{
+		
+		ReferenciaWithAutoID resource = dao.getReferencia(key);
+		resource.setEstado(estado);
+		dao.updateReferencia(resource.get_id(),resource);
+		return resource;
+	}
 
 	/**
 	 * dropReferencia
