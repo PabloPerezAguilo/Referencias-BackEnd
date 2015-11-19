@@ -1,9 +1,10 @@
 package com.example.services;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 
+import org.apache.commons.io.FileUtils;
+
+import javax.xml.bind.DatatypeConverter;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -32,12 +33,11 @@ public class PruebaImagen extends Service{
 	@ApiOperation(value = "Recibe una imagen", notes = "imagen d eprueba")
 	public Response postPruebaImagen(String r) {
 		try {
-			File file = new File("theimage.png");
-			BufferedWriter imagen;
-			imagen = new BufferedWriter(new FileWriter(file));
-	        imagen.write(r);
-	        imagen.close();
-			out = "ok";
+			
+			byte[] imagenByte= DatatypeConverter.parseBase64Binary(r);
+	        FileUtils.writeByteArrayToFile(new File("/prueba.png"),imagenByte);
+	        
+			out = r;
 			log.info("Insert imagen: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
