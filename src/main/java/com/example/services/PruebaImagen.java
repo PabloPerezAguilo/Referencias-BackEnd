@@ -35,8 +35,10 @@ public class PruebaImagen extends Service{
 		try {
 			
 			byte[] imagenByte= DatatypeConverter.parseBase64Binary(r);
-	        FileUtils.writeByteArrayToFile(new File("/prueba.png"),imagenByte);
-	        
+			File archivo = new File("imagenes/temporal.png");
+			String path = archivo.getCanonicalPath();
+			log.info(path);
+	        FileUtils.writeByteArrayToFile(archivo,imagenByte);
 			out = r;
 			log.info("Insert imagen: Operation successful");
 		} catch (Exception e) {

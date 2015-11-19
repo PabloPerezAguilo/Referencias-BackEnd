@@ -1,21 +1,27 @@
 package com.example.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.bson.types.ObjectId;
 
+import com.example.dao.ImagenDAO;
 import com.example.dao.ReferenciaDAO;
 import com.example.models.ReferenciaWithAutoID;
 
 public class ReferenciaController {
 
 	private static ReferenciaDAO dao;
+	private static ImagenDAO daoImagen;
 	private static ReferenciaController singleton;
 
 	private ReferenciaController() throws Exception {
 		dao = ReferenciaDAO.getInstance();
+		daoImagen = ImagenDAO.getInstance();
 	}
 
 	public static ReferenciaController getInstance() throws Exception {
@@ -80,6 +86,13 @@ public class ReferenciaController {
 	 * @throws Exception
 	 */
 	public ReferenciaWithAutoID createReferencia(ReferenciaWithAutoID r) throws Exception {
+		/*Creamos fichero con el nombre de la referencia y se guarda en la DB. A continuacion pasamos el id
+		 * de la imagen al campo imagen de referencia*/
+		
+		byte[] imagenByte= DatatypeConverter.parseBase64Binary(r.getImagenProyecto());
+		String aleatorio = Double.toString(Math.random()*10000);
+		File archivo = new File("imagenes/"+aleatorio+".png");
+		daoImagen.guardarImagen(archivo);
 		dao.insertReferencia(r);
 		return r;
 	}

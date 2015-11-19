@@ -59,4 +59,8 @@ public class DataBase {
 		DB db = new Fongo("Test").getDB("Database");
 		return db;
 	}
+	
+	public static DB getbd(){
+		return db;
+	}
 }
