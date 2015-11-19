@@ -11,6 +11,7 @@
 		<!-- this services can be accessed without login -->
 		<!-- LOGIN -->
 		<intercept-url pattern="/api/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<intercept-url pattern="/api/imagen/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<!-- this services requires login -->
 		<!-- imagen -->
 		<intercept-url pattern="/api/imagen/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
