@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
 
 import com.example.dao.ImagenDAO;
@@ -89,10 +90,13 @@ public class ReferenciaController {
 		/*Creamos fichero con el nombre de la referencia y se guarda en la DB. A continuacion pasamos el id
 		 * de la imagen al campo imagen de referencia*/
 		
-		byte[] imagenByte= DatatypeConverter.parseBase64Binary(r.getImagenProyecto());
-		String aleatorio = Double.toString(Math.random()*10000);
-		File archivo = new File("imagenes/"+aleatorio+".png");
-		daoImagen.guardarImagen(archivo);
+		byte[] imagenByte = DatatypeConverter.parseBase64Binary(r.getImagenProyecto());
+		File archivo = new File("imagenes/"+r.get_id()+".png");
+		FileUtils.writeByteArrayToFile(archivo,imagenByte);
+		r.setImagenProyecto(daoImagen.insertImagen(archivo));
+		if (!archivo.delete()){
+			 throw new Exception("El fichero temporal de la imagen no ha podido borrarse");
+			}
 		dao.insertReferencia(r);
 		return r;
 	}
