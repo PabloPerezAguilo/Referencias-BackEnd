@@ -12,6 +12,8 @@
 		<!-- LOGIN -->
 		<intercept-url pattern="/api/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<!-- this services requires login -->
+		<!-- imagen -->
+		<intercept-url pattern="/api/imagen/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 		<!-- REFERENCIA -->
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_CONSULTOR,ROLE_VALIDADOR" method="GET"/>
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="POST"/>
