@@ -7,20 +7,26 @@ import org.jongo.marshall.jackson.oid.Id;
  */
 public class Usuario {
 	@Id
+	private String nick;
 	private String name;
 	private String role;
 
 	public Usuario() {
 	}
 
-	public Usuario(String name, String role) {
+	public Usuario(String nick, String name, String role) {
+		super();
+		this.nick = nick;
 		this.name = name;
 		this.role = role;
 	}
 
-	public Usuario(Usuario u) {
-		this.name = u.getName();
-		this.role = u.getRole();
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	public String getName() {
@@ -39,9 +45,13 @@ public class Usuario {
 		this.role = role;
 	}
 
-
 	@Override
 	public String toString() {
-		return name + "//" + role;
+		return "Usuario [nick=" + nick + ", name=" + name + ", role=" + role
+				+ "]";
 	}
+
+	
+	
+	
 }

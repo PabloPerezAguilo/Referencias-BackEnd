@@ -69,7 +69,7 @@ public class UsuarioTest {
 			
 			List<Usuario> list = new ArrayList<Usuario>();
 			controller = UsuarioController.getInstance();
-			controller.createUsuario("rbrito", "validador");
+			controller.createUsuario("rbrito","Ruben Brito Baldanta", "validador");
 			list = controller.getUsuarios();
 			if(list.size() != 1){
 				throw new Exception("elementos distintos de los introducidos por defecto o exceso");
@@ -84,9 +84,9 @@ public class UsuarioTest {
 			
 			List<Usuario> list = new ArrayList<Usuario>();
 			controller = UsuarioController.getInstance();
-			controller.createUsuario("msroa", "mantenimiento");
-			controller.createUsuario("dmonco","administrador");
-			controller.createUsuario("ogquevedo","consultor");
+			controller.createUsuario("msroa","Maria Sanchez Roa", "mantenimiento");
+			controller.createUsuario("dmonco","David Monco Jimenez","administrador");
+			controller.createUsuario("ogquevedo","Oscar Garcia Quevedo","consultor");
 			list = controller.getUsuarios();
 			if(list.size() != 4){
 				throw new Exception("elementos distintos de los introducidos por defecto o exceso");
