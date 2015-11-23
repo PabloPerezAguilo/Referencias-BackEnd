@@ -81,10 +81,10 @@ public class UsuarioService extends Service{
 		try {
 			
 			UsuarioController usuarioController = UsuarioController.getInstance();
-			if(r.getRole()== "" || r.getName().isEmpty()){
-				 throw new Exception("Nombre o rol vacio");
+			if(r.getRole()== "" || r.getName().isEmpty() || r.getNick().isEmpty()){
+				 throw new Exception("Nick, Nombre o Rol vacio");
 			}
-			usuarioController.createUsuario(r.getName(),r.getRole());
+			usuarioController.createUsuario(r.getNick(),r.getName(),r.getRole());
 			log.info("Insert Usuario: Operation successful");
 			status = Response.Status.ACCEPTED;
 			out = r;
@@ -108,7 +108,8 @@ public class UsuarioService extends Service{
 	public Response deleteUsuario(@PathParam("key") String key){
 		try{
 			UsuarioController usuarioController = UsuarioController.getInstance();
-			out = usuarioController.deleteUsuario(key);
+			usuarioController.deleteUsuario(key);
+			out = key;
 			log.info("Delete Referencia : Operation successful");
 			status = Response.Status.ACCEPTED;
 		}catch(Exception e){
@@ -130,7 +131,7 @@ public class UsuarioService extends Service{
 		
 		try{
 			UsuarioController usuarioController = UsuarioController.getInstance();
-			out = usuarioController.updateUsuario(r.getName(), r);
+			out = usuarioController.updateUsuario(r.getNick(), r);
 			log.info("Update Referencia : Operation successful");
 			status = Response.Status.ACCEPTED;
 		}catch(Exception e){

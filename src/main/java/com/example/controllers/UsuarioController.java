@@ -45,11 +45,12 @@ public class UsuarioController {
 	/**
 	 * createUsuario
 	 * Crea un nuevo usuario en la base de datos
+	 * @param nick
 	 * @param name
 	 * @param role
 	 * @throws Exception
 	 */
-	public void createUsuario(String name, String role) throws Exception {
+	public void createUsuario(String nick, String name, String role) throws Exception {
 		
 		switch(role){
 			case "administrador": role = "ROLE_ADMINISTRADOR";
@@ -62,7 +63,7 @@ public class UsuarioController {
 		break;
 			default: throw new Exception("Role incorrecto");
 		}
-		dao.insertUsuario(new Usuario(name, role));
+		dao.insertUsuario(new Usuario(nick, name, role));
 		
 	}
 
@@ -115,6 +116,19 @@ public class UsuarioController {
 	 * @throws Exception
 	 */
 	public Usuario updateUsuario(String id, Usuario r) throws Exception{
+		String role = r.getRole();
+		switch(role){
+		case "administrador": role = "ROLE_ADMINISTRADOR";
+	break;
+		case "validador": role = "ROLE_VALIDADOR";
+	break;
+		case "consultor": role = "ROLE_CONSULTOR";
+	break;
+		case "mantenimiento": role = "ROLE_MANTENIMIENTO";
+	break;
+		default: throw new Exception("Role incorrecto");
+	}
+		r.setRole(role);
 		dao.updateUsuario(id,r);
 		return r;
 	}
@@ -185,6 +199,7 @@ public class UsuarioController {
 	        }
 	        ctx.close();
 	        return (usuarios);
+	        
 	}
 public static void main(String[] args){
 		
