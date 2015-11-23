@@ -167,7 +167,7 @@ public class UsuarioController {
 	        String base = "ou=People, o=gfi-info.com";
 
 	        SearchControls sc = new SearchControls();
-	        String[] attributeFilter = {"uid","cn","mail"};
+	        String[] attributeFilter = {"*"};
 	        sc.setReturningAttributes(attributeFilter);
 	        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 	        String filter = "(&(uid=*))";
@@ -179,12 +179,34 @@ public class UsuarioController {
 	       // for(int i=0;i<10;i++) {
 	        	SearchResult sr = (SearchResult) results.next();
 	        	Attributes attrs = sr.getAttributes();
-	            
+	        	//System.out.println(attrs);
 	        	InformacionUsuarioLdap usuario = new InformacionUsuarioLdap(attrs);    
 	            usuarios.add(usuario);
 	        }
 	        ctx.close();
 	        return (usuarios);
 	}
-
+public static void main(String[] args){
+		
+	try {
+		System.out.println("AQUI");
+		UsuarioController aux;
+		aux = new UsuarioController();
+		ArrayList<InformacionUsuarioLdap> usu;
+		usu = aux.getAllUserLdap();
+		Iterator listUsu = usu.listIterator();
+		int i=0;
+		while(listUsu.hasNext()){
+			i++;
+			System.out.println("AAAA"+listUsu+"-num:"+i);
+			listUsu.next();
+		}
+		
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
 }

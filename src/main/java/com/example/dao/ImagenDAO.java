@@ -3,9 +3,13 @@ package com.example.dao;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+import org.jongo.FindOne;
 import org.jongo.MongoCollection;
 import org.jongo.marshall.jackson.oid.ObjectId;
 
+import com.example.models.ReferenciaWithAutoID;
+import com.example.services.ReferenciaService;
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
 import com.mongodb.gridfs.GridFS;
@@ -17,7 +21,10 @@ public class ImagenDAO {
 
 	private static ImagenDAO singleton;
 	private static MongoCollection dao;
-	private static final String COLLECTION_NAME_MONGO = "imagenes";
+	private static final String COLLECTION_NAME_MONGO = "photo.files";
+	
+	//borrar
+	private static final Logger log = Logger.getLogger(ImagenDAO.class.getName());
 
 	private ImagenDAO() throws Exception {
 		dao = DataBase.getInstance().getCollection(COLLECTION_NAME_MONGO);
@@ -68,9 +75,32 @@ public class ImagenDAO {
 	}
 	
 	/**
+	 * getImagen
+	 * @param identificadorImagen
+	 * @return String (identificador de la imagen en mongo)
+	 * @throws Exception
+	 */
+	public FindOne getImagen(String id) throws Exception {
+		
+		//String aux = dao.findOne("{_id:"+id+"}").as(String.class);
+		//return dao.findOne("{'_id':#}", id);
+		
+		FindOne aux = dao.findOne("{$or: [{_id : true},{_id: '"+id+"'}]}");
+		
+		return aux;
+	}
+	
+	/**
 	 * clearStore
 	 */
 	public void clearStore() {
 		dao.drop();
 	}
+public static void main(String[] args) throws Exception {
+	
+	ImagenDAO prueba = new ImagenDAO();
+	log.info("aqui-->"+prueba.getImagen("ObjectId(\"564db08a43e1b23ea69def6\")"));
+	
+	
+}
 }
