@@ -1,12 +1,15 @@
 package com.example.controllers;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
 
@@ -17,12 +20,10 @@ import com.example.models.ReferenciaWithAutoID;
 public class ReferenciaController {
 
 	private static ReferenciaDAO dao;
-	private static ImagenDAO daoImagen;
 	private static ReferenciaController singleton;
 
 	private ReferenciaController() throws Exception {
 		dao = ReferenciaDAO.getInstance();
-		daoImagen = ImagenDAO.getInstance();
 	}
 
 	public static ReferenciaController getInstance() throws Exception {
@@ -76,6 +77,9 @@ public class ReferenciaController {
 		if (resource == null) {
 			throw new Exception("Resource not found");
 		}
+		byte[] imagenByte = Files.readAllBytes(Paths.get("./imagenes/"+resource.get_id()+".png"));
+		String imagenBase = Base64.encodeBase64(imagenByte).toString();
+		resource.setImagenProyecto(imagenBase);
 		return resource;
 	}
 
@@ -91,12 +95,9 @@ public class ReferenciaController {
 		 * de la imagen al campo imagen de referencia*/
 		
 		byte[] imagenByte = DatatypeConverter.parseBase64Binary(r.getImagenProyecto());
-		File archivo = new File("imagenes/"+r.get_id()+".png");
+		File archivo = new File("./imagenes/"+r.get_id()+".png");
 		FileUtils.writeByteArrayToFile(archivo,imagenByte);
-		r.setImagenProyecto(daoImagen.insertImagen(archivo));
-		if (!archivo.delete()){
-			 throw new Exception("El fichero temporal de la imagen no ha podido borrarse");
-			}
+		r.setImagenProyecto(r.get_id()+".png");
 		dao.insertReferencia(r);
 		return r;
 	}

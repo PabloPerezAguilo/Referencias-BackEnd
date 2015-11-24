@@ -21,7 +21,7 @@ public class ImagenDAO {
 
 	private static ImagenDAO singleton;
 	private static MongoCollection dao;
-	private static final String COLLECTION_NAME_MONGO = "photo.files";
+	private static final String COLLECTION_NAME_MONGO = "photo.chunks";
 	
 	//borrar
 	private static final Logger log = Logger.getLogger(ImagenDAO.class.getName());
@@ -80,12 +80,12 @@ public class ImagenDAO {
 	 * @return String (identificador de la imagen en mongo)
 	 * @throws Exception
 	 */
-	public FindOne getImagen(String id) throws Exception {
+	public String getImagen(String id) throws Exception {
 		
 		//String aux = dao.findOne("{_id:"+id+"}").as(String.class);
 		//return dao.findOne("{'_id':#}", id);
 		
-		FindOne aux = dao.findOne("{$or: [{_id : true},{_id: '"+id+"'}]}");
+		String aux = dao.findOne("{$or: [{_id : true},{_id: '"+id+"'}]}").toString();
 		
 		return aux;
 	}
