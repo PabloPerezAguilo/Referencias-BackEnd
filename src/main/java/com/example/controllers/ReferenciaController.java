@@ -94,11 +94,10 @@ public class ReferenciaController {
 		/*Creamos fichero con el nombre de la referencia y se guarda en la DB. A continuacion pasamos el id
 		 * de la imagen al campo imagen de referencia*/
 		
+		dao.insertReferencia(r);
 		byte[] imagenByte = DatatypeConverter.parseBase64Binary(r.getImagenProyecto());
 		File archivo = new File("./imagenes/"+r.get_id()+".png");
 		FileUtils.writeByteArrayToFile(archivo,imagenByte);
-		r.setImagenProyecto(r.get_id()+".png");
-		dao.insertReferencia(r);
 		return r;
 	}
 	
