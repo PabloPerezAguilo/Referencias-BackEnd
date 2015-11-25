@@ -181,7 +181,7 @@ public class UsuarioController {
 	        String base = "ou=People, o=gfi-info.com";
 
 	        SearchControls sc = new SearchControls();
-	        String[] attributeFilter = {"*"};
+	        String[] attributeFilter = {"uid","cn","mail"};
 	        sc.setReturningAttributes(attributeFilter);
 	        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 	        String filter = "(&(uid=*))";
@@ -201,27 +201,4 @@ public class UsuarioController {
 	        return (usuarios);
 	        
 	}
-public static void main(String[] args){
-		
-	try {
-		System.out.println("AQUI");
-		UsuarioController aux;
-		aux = new UsuarioController();
-		ArrayList<InformacionUsuarioLdap> usu;
-		usu = aux.getAllUserLdap();
-		Iterator listUsu = usu.listIterator();
-		int i=0;
-		while(listUsu.hasNext()){
-			i++;
-			System.out.println("AAAA"+listUsu+"-num:"+i);
-			listUsu.next();
-		}
-		
-		
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-}
 }
