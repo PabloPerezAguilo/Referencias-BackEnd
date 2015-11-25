@@ -66,7 +66,7 @@ public class ReferenciaDAO {
 	 * @param key
 	 * @throws Exception
 	 */
-	public void deleteReferencia(int key) throws Exception{
+	public void deleteReferencia(ObjectId key) throws Exception{
 		dao.remove("{_id:"+key+"}");
 	}
 	

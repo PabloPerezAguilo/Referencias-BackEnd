@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 
 import com.example.controllers.ReferenciaController;
 import com.example.models.ReferenciaWithAutoID;
@@ -117,7 +118,7 @@ public class ReferenciaService extends Service{
 	@DELETE
 	@Path("/{key}")
 	@ApiOperation(value = "Borra una Referencia", notes = "Borra una Referencia")
-	public Response deleteReferencia(@PathParam("key") int key){
+	public Response deleteReferencia(@PathParam("key") ObjectId key){
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.deleteReferencia(key);

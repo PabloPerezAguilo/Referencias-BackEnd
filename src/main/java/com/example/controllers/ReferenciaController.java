@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class ReferenciaController {
 	 */
 	public List<ReferenciaWithAutoID> getReferencias() throws Exception {
 		// Transform an iterator object to a list
+		// no devolvemos las imagenes para no sobrecargar
 		List<ReferenciaWithAutoID> list = new ArrayList<ReferenciaWithAutoID>();
 		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
 		while (i.hasNext()) {
@@ -57,6 +59,7 @@ public class ReferenciaController {
 	 */
 	public List<ReferenciaWithAutoID> getReferenciasPendientes() throws Exception {
 		// Transform an iterator object to a list
+		// no devolvemos las imagenes para no sobrecargar
 		List<ReferenciaWithAutoID> list = new ArrayList<ReferenciaWithAutoID>();
 		Iterator<ReferenciaWithAutoID> i = dao.getReferenciasPendientes();
 		while (i.hasNext()) {
@@ -73,13 +76,24 @@ public class ReferenciaController {
 	 * @throws Exception
 	 */
 	public ReferenciaWithAutoID getReferencia(int key) throws Exception {
-		ReferenciaWithAutoID resource = dao.getReferencia(key);
-		if (resource == null) {
-			throw new Exception("Resource not found");
+		
+		ReferenciaWithAutoID resource = null;
+		try{
+			resource = dao.getReferencia(key);
+			if (resource == null) {
+			throw new Exception("Imagen no disponible");
+			}
+			byte[] imagenByte = Files.readAllBytes(Paths.get("./imagenes/"+resource.get_id()+".png"));
+			String imagenBase = Base64.encodeBase64(imagenByte).toString();
+			resource.setImagenProyecto(imagenBase);
 		}
-		byte[] imagenByte = Files.readAllBytes(Paths.get("./imagenes/"+resource.get_id()+".png"));
-		String imagenBase = Base64.encodeBase64(imagenByte).toString();
-		resource.setImagenProyecto(imagenBase);
+		catch (IOException eImagen) {
+			throw new Exception("Fallo al recoger la imagen del disco:"+eImagen.toString());
+		}
+		catch (Exception bdd) {
+			throw new Exception("Fallo al recoger la referencia de la BDD:"+bdd.toString());
+		}
+		
 		return resource;
 	}
 
@@ -90,14 +104,30 @@ public class ReferenciaController {
 	 * @return ReferenciaWithAutoID
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID createReferencia(ReferenciaWithAutoID r) throws Exception {
-		/*Creamos fichero con el nombre de la referencia y se guarda en la DB. A continuacion pasamos el id
-		 * de la imagen al campo imagen de referencia*/
+	public ReferenciaWithAutoID createReferencia(ReferenciaWithAutoID r) throws Exception{
 		
-		dao.insertReferencia(r);
-		byte[] imagenByte = DatatypeConverter.parseBase64Binary(r.getImagenProyecto());
+		//al crear la referencia borramos el campo imagen ya que la guardamos en disco
+		String imagen = r.getImagenProyecto();
+		r.setImagenProyecto("");
+		
+		// antes de crear la imagen es necesario insertar la referencia para conocer su id
+		try {
+			
+		dao.insertReferencia(r);	
+		byte[] imagenByte = DatatypeConverter.parseBase64Binary(imagen);
+		//guardamos en disco la imagen usando como nombre el id de su referencia
 		File archivo = new File("./imagenes/"+r.get_id()+".png");
 		FileUtils.writeByteArrayToFile(archivo,imagenByte);
+		
+		}
+		catch (IOException eImagen) {
+			dao.deleteReferencia(r.get_id());
+			throw new Exception("Fallo al guardar la imagen en disco:"+eImagen.toString());
+		}
+		catch (Exception bdd) {
+			throw new Exception("Fallo al guardar la referencia en la BDD:"+bdd.toString());
+		}
+
 		return r;
 	}
 	
@@ -108,8 +138,20 @@ public class ReferenciaController {
 	 * @return key
 	 * @throws Exception
 	 */
-	public int deleteReferencia(int key) throws Exception{
+	public ObjectId deleteReferencia(ObjectId key) throws Exception{
+		try{
+		File archivo = new File("./imagenes/"+key+".png");
+		if(!archivo.delete()){
+			throw new Exception("Fallo al borrar: delete no ha podido completarse");
+		}
 		dao.deleteReferencia(key);
+		}
+		catch (IOException eImagen) {
+			throw new Exception("Fallo al borrar la imagen en disco:"+eImagen.toString());
+		}
+		catch (Exception bdd) {
+			throw new Exception("Fallo al borrar la referencia en la BDD:"+bdd.toString());
+		}
 		return key;
 	}
 	
@@ -121,8 +163,32 @@ public class ReferenciaController {
 	 * @throws Exception
 	 */
 	public ReferenciaWithAutoID updateReferencia(ObjectId key, ReferenciaWithAutoID r) throws Exception{
-		dao.updateReferencia(key,r);
-		return r;
+		
+		//al actualizar la referencia borramos el campo imagen ya que la guardamos en disco
+		String imagen = r.getImagenProyecto();
+		r.setImagenProyecto("");
+				
+		// hacer la comprobacion de la imagen nos supone mas coste que sobreescribirla, aunque sea la misma, por tanto lo hacemos.
+		try {
+					
+			dao.updateReferencia(key,r);	
+			byte[] imagenByte = DatatypeConverter.parseBase64Binary(imagen);
+			//guardamos en disco la imagen usando como nombre el id de su referencia
+			File archivo = new File("./imagenes/"+key+".png");
+			if(!archivo.delete()){
+				throw new Exception("Fallo al actualizar: la imagen no ha podido cargarse en el servidor");
+			}
+			FileUtils.writeByteArrayToFile(archivo,imagenByte);
+				
+		}
+		catch (IOException eImagen) {
+			throw new Exception("Fallo de escritura, Por favor contacte con un administrador de su servidor de aplicaciones");
+		}
+		catch (Exception bdd) {
+			throw new Exception("Fallo al actualizar la referencia en la BDD:"+bdd.toString());
+		}
+
+		return r;		
 	}
 	
 	/**
