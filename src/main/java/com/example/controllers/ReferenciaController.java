@@ -14,9 +14,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
 
-import com.example.dao.ImagenDAO;
 import com.example.dao.ReferenciaDAO;
 import com.example.models.ReferenciaWithAutoID;
+import com.example.utils.Config;
 
 public class ReferenciaController {
 
@@ -83,7 +83,7 @@ public class ReferenciaController {
 			if (resource == null) {
 			throw new Exception("Imagen no disponible");
 			}
-			byte[] imagenByte = Files.readAllBytes(Paths.get("./imagenes/"+resource.get_id()+".png"));
+			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+resource.get_id()+".png"));
 			String imagenBase = Base64.encodeBase64(imagenByte).toString();
 			resource.setImagenProyecto(imagenBase);
 		}
@@ -116,7 +116,7 @@ public class ReferenciaController {
 		dao.insertReferencia(r);	
 		byte[] imagenByte = DatatypeConverter.parseBase64Binary(imagen);
 		//guardamos en disco la imagen usando como nombre el id de su referencia
-		File archivo = new File("./imagenes/"+r.get_id()+".png");
+		File archivo = new File(Config.getInstance().getProperty(Config.PATH_IMAGENES)+r.get_id()+".png");
 		FileUtils.writeByteArrayToFile(archivo,imagenByte);
 		
 		}
@@ -140,7 +140,7 @@ public class ReferenciaController {
 	 */
 	public ObjectId deleteReferencia(ObjectId key) throws Exception{
 		try{
-		File archivo = new File("./imagenes/"+key+".png");
+		File archivo = new File(Config.getInstance().getProperty(Config.PATH_IMAGENES)+key+".png");
 		if(!archivo.delete()){
 			throw new Exception("Fallo al borrar: delete no ha podido completarse");
 		}
@@ -174,7 +174,7 @@ public class ReferenciaController {
 			dao.updateReferencia(key,r);	
 			byte[] imagenByte = DatatypeConverter.parseBase64Binary(imagen);
 			//guardamos en disco la imagen usando como nombre el id de su referencia
-			File archivo = new File("./imagenes/"+key+".png");
+			File archivo = new File(Config.getInstance().getProperty(Config.PATH_IMAGENES)+key+".png");
 			if(!archivo.delete()){
 				throw new Exception("Fallo al actualizar: la imagen no ha podido cargarse en el servidor");
 			}
