@@ -75,7 +75,7 @@ public class ReferenciaController {
 	 * @return ReferenciaWithAutoID
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID getReferencia(int key) throws Exception {
+	public ReferenciaWithAutoID getReferencia(String key) throws Exception {
 		
 		ReferenciaWithAutoID resource = null;
 		try{
@@ -198,7 +198,7 @@ public class ReferenciaController {
 	 * @return Referencia
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID updateReferenciaEstado(int key,String estado) throws Exception{
+	public ReferenciaWithAutoID updateReferenciaEstado(String key,String estado) throws Exception{
 		
 		ReferenciaWithAutoID resource = dao.getReferencia(key);
 		resource.setEstado(estado);

@@ -48,7 +48,7 @@ public class ReferenciaDAO {
 	 * @return ReferenciaWithAutoID
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID getReferencia(int key) throws Exception{
+	public ReferenciaWithAutoID getReferencia(String key) throws Exception{
 		return dao.findOne("{'_id':#}", key).as(ReferenciaWithAutoID.class);
 	}
 

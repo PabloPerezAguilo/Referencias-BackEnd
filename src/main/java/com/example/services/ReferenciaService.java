@@ -57,7 +57,7 @@ public class ReferenciaService extends Service{
 	@GET
 	@Path("/{key}")
 	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
-	public Response getReferencia(@PathParam("key") int key) {
+	public Response getReferencia(@PathParam("key") String key) {
 		try {
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.getReferencia(key);
@@ -155,7 +155,7 @@ public class ReferenciaService extends Service{
 	@PUT
 	@Path("/{key}/{estado}")
 	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
-	public Response updateReferenciaEstado(@PathParam("key") int key,@PathParam("estado") String estado){
+	public Response updateReferenciaEstado(@PathParam("key") String key,@PathParam("estado") String estado){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
