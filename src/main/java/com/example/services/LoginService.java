@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 
 import com.example.controllers.UsuarioController;
+import com.example.models.Usuario;
 import com.example.models.UsuarioLdap;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
@@ -40,10 +41,13 @@ public class LoginService {
 		try {
 			UsuarioController userController = UsuarioController.getInstance();
 			// Make login
-			String role = userController.loginUserLdap(usuario);
+			Usuario usu = userController.loginUserLdap(usuario);
 			// Take the role and insert into a map
 			HashMap<String, Object> outMap = new HashMap<String, Object>();
-			outMap.put("role", role);
+			outMap.put("role", usu.getRole());
+			outMap.put("name", usu.getName());
+			outMap.put("nick", usu.getNick());
+			//outMap.put("name", );
 			out = outMap;
 			status = Response.Status.OK;
 			log.info("Login successful from user:" + usuario.getNick());

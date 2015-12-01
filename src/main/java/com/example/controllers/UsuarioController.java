@@ -141,7 +141,7 @@ public class UsuarioController {
 	 * @return rol del usuario
 	 * @throws Exception
 	 */
-	public String loginUserLdap(UsuarioLdap usuario) throws Exception {
+	public Usuario loginUserLdap(UsuarioLdap usuario) throws Exception {
 		
 		// Comprobacion usuario en MongoDB
 		Usuario usu = dao.getUsuarioLogin(usuario.getNick());
@@ -162,7 +162,7 @@ public class UsuarioController {
 		}
 		
 		// Si todo es correcto devuelve el Rol
-		return usu.getRole();
+		return usu;
 	}
 	
 	/**
