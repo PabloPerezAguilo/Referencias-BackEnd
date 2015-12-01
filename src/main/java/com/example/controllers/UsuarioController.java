@@ -144,7 +144,7 @@ public class UsuarioController {
 	public String loginUserLdap(UsuarioLdap usuario) throws Exception {
 		
 		// Comprobacion usuario en MongoDB
-		Usuario usu = dao.getUsuarioLogin(usuario.getName());
+		Usuario usu = dao.getUsuarioLogin(usuario.getNick());
 		if (usu == null) {
 			throw new Exception("User not found in DB");
 		}else{

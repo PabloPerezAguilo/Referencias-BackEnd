@@ -7,28 +7,28 @@ import org.jongo.marshall.jackson.oid.Id;
  */
 public class UsuarioLdap {
 	@Id
-	private String name;
+	private String nick;
 	private String password;
 
 	public UsuarioLdap() {
 	}
 
 	public UsuarioLdap(String name, String pass) {
-		this.name = name;
+		this.nick = name;
 		this.password = pass;
 	}
 
 	public UsuarioLdap(UsuarioLdap u) {
-		this.name = u.getName();
+		this.nick = u.getNick();
 		this.password = u.getPassword();
 	}
 
-	public String getName() {
-		return name;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNick(String name) {
+		this.nick = name;
 	}
 
 	public String getPassword() {
@@ -41,7 +41,7 @@ public class UsuarioLdap {
 
 	@Override
 	public String toString() {
-		return "UsuarioLdap [name=" + name + ", password=" + password + "]";
+		return "UsuarioLdap [name=" + nick + ", password=" + password + "]";
 	}
 
 	

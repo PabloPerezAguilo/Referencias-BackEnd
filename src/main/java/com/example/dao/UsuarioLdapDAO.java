@@ -18,7 +18,7 @@ public class UsuarioLdapDAO {
 	
 	public UsuarioLdapDAO(UsuarioLdap usuario){
 		
-		name = usuario.getName();
+		name = usuario.getNick();
 		password = usuario.getPassword();
 	}
 

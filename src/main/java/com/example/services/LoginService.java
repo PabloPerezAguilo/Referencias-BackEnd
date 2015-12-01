@@ -46,10 +46,10 @@ public class LoginService {
 			outMap.put("role", role);
 			out = outMap;
 			status = Response.Status.OK;
-			log.info("Login successful from user:" + usuario.getName());
+			log.info("Login successful from user:" + usuario.getNick());
 			
 		} catch (Exception e) {
-			log.error("Error in login from user " + usuario.getName() + ": ", e);
+			log.error("Error in login from user " + usuario.getNick() + ": ", e);
 			out = new Message(e.getMessage());
 		}
 		return Response.status(status).entity(out).build();
