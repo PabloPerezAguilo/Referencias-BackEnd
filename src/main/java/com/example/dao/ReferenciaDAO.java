@@ -67,7 +67,9 @@ public class ReferenciaDAO {
 	 * @throws Exception
 	 */
 	public void deleteReferencia(ObjectId key) throws Exception{
-		dao.remove("{_id:"+key+"}");
+		String i = key.toString();
+		dao.remove("{ _id: # }", new ObjectId(i));
+	
 	}
 	
 	/**
@@ -77,7 +79,10 @@ public class ReferenciaDAO {
 	 * @throws Exception
 	 */
 	public void updateReferencia(ObjectId key, ReferenciaWithAutoID r) throws Exception{
-		dao.update("{_id:"+key+"}").with(r);
+		/*dao.update no se puede realizar por error*/
+		//dao.update("{_id:"+key+"}").with(r);
+		deleteReferencia(key);
+		insertReferencia(r);
 	}
 
 	/**

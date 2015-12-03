@@ -22,9 +22,9 @@ public class InitDB {
 	public static void loadResources() throws Exception {
 		ReferenciaDAO resourceDAO = ReferenciaDAO.getInstance();
 		resourceDAO.clearStore();
-		resourceDAO.insertReferencia(new ReferenciaWithAutoID("rbrito","GFI Centro","Banco","Proyecto","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","Borrador"));
-		resourceDAO.insertReferencia(new ReferenciaWithAutoID("msr","GFI Centro","Telco","Proyecto","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","pendiente"));
-		resourceDAO.insertReferencia(new ReferenciaWithAutoID("ogarcia","GFI Norte","SQA","Proyecto","Calidad",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","pendiente"));
+		//resourceDAO.insertReferencia(new ReferenciaWithAutoID("rbrito","GFI Centro","Banco","Proyecto","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","Borrador"));
+		//resourceDAO.insertReferencia(new ReferenciaWithAutoID("msr","GFI Centro","Telco","Proyecto","Desarrollo",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","pendiente"));
+		//resourceDAO.insertReferencia(new ReferenciaWithAutoID("ogarcia","GFI Norte","SQA","Proyecto","Calidad",null,10,"Denominacion","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new int[]{10,11,12},"josem","pepes","rbrito","CodigoQR","pendiente"));
 		LOG.info("Referencias inserted in DB");
 	}
 
