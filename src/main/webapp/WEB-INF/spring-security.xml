@@ -25,10 +25,9 @@
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="POST"/>
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
-		<!-- USUARIOSLDAP -->
-		<intercept-url pattern="/api/usuariosldap/**" access="ROLE_ADMINISTRADOR" method="GET"/>
+		
 		<!-- CATALOGO -->
-		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="GET"/>
+		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_VALIDADOR" method="GET"/>
 		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
 
 		<http-basic />

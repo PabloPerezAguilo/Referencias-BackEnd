@@ -32,7 +32,7 @@ public class ReferenciaWithAutoID implements Serializable {
 	private int fteTotales;
 	private String imagenProyecto;
 	private String certificado;
-	private int[] regPedidoAsociadoReferencia;
+	private String[] regPedidoAsociadoReferencia;
 	private String responsableComercial;
 	private String responsableTecnico;
 	private String creadorReferencia;
@@ -48,7 +48,7 @@ public class ReferenciaWithAutoID implements Serializable {
 			int duracionMeses, String denominacion, String resumenProyecto,
 			String problematicaCliente, String solucionGfi,
 			String tecnologias, int fteTotales, String imagenProyecto,
-			String certificado, int[] regPedidoAsociadoReferencia,
+			String certificado, String[] regPedidoAsociadoReferencia,
 			String responsableComercial, String responsableTecnico,
 			String creadorReferencia, String codigoQr, String estado) {
 		super();
@@ -209,11 +209,11 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.certificado = certificado;
 	}
 
-	public int[] getRegPedidoAsociadoReferencia() {
+	public String[] getRegPedidoAsociadoReferencia() {
 		return regPedidoAsociadoReferencia;
 	}
 
-	public void setRegPedidoAsociadoReferencia(int[] regPedidoAsociadoReferencia) {
+	public void setRegPedidoAsociadoReferencia(String[] regPedidoAsociadoReferencia) {
 		this.regPedidoAsociadoReferencia = regPedidoAsociadoReferencia;
 	}
 
