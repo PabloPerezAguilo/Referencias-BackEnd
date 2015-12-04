@@ -46,7 +46,11 @@ public class ReferenciaController {
 		List<ReferenciaWithAutoID> list = new ArrayList<ReferenciaWithAutoID>();
 		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
 		while (i.hasNext()) {
-			list.add(i.next());
+			ReferenciaWithAutoID ref = i.next();
+			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+			ref.setImagenProyecto(imagenBase);
+			list.add(ref);
 		}
 		return list;
 	}
@@ -65,7 +69,7 @@ public class ReferenciaController {
 		while (i.hasNext()) {
 			ReferenciaWithAutoID ref = i.next();
 			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
-			String imagenBase = Base64.encodeBase64(imagenByte).toString();
+			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
 			ref.setImagenProyecto(imagenBase);
 			list.add(ref);
 		}
@@ -88,7 +92,7 @@ public class ReferenciaController {
 			throw new Exception("Imagen no disponible");
 			}
 			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+resource.get_id()+".png"));
-			String imagenBase = Base64.encodeBase64(imagenByte).toString();
+			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
 			resource.setImagenProyecto(imagenBase);
 		}
 		catch (IOException eImagen) {
