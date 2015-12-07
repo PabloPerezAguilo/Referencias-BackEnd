@@ -115,6 +115,9 @@ public class ReferenciaController {
 	public ReferenciaWithAutoID createReferencia(ReferenciaWithAutoID r) throws Exception{
 		
 		//al crear la referencia borramos el campo imagen ya que la guardamos en disco
+		if(r.getImagenProyecto()==null){
+			r.setImagenProyecto("");
+		}
 		String imagen = r.getImagenProyecto();
 		r.setImagenProyecto("");
 		
@@ -125,6 +128,7 @@ public class ReferenciaController {
 		byte[] imagenByte = DatatypeConverter.parseBase64Binary(imagen);
 		//guardamos en disco la imagen usando como nombre el id de su referencia
 		File archivo = new File(Config.getInstance().getProperty(Config.PATH_IMAGENES)+r.get_id()+".png");
+		
 		FileUtils.writeByteArrayToFile(archivo,imagenByte);
 		
 		}
