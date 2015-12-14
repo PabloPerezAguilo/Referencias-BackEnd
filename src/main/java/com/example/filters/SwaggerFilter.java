@@ -31,8 +31,7 @@ public class SwaggerFilter implements javax.servlet.Filter {
 			InitDB.loadUsers();
 			InitDB.loadCatalogos();
 		} catch (Exception e) {
-			LOG.error("Error en la carga de datos");
-			e.printStackTrace();
+			LOG.error("Error en la carga de datos:",e);
 		}
 	}
 
