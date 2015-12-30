@@ -38,8 +38,8 @@ public class ReferenciaWithAutoID implements Serializable {
 	private String creadorReferencia;
 	private String codigoQr;
 	private String estado;
+	private String motivoRechazo;
 
-	
 	public ReferenciaWithAutoID() {
 	}
 	
@@ -50,7 +50,7 @@ public class ReferenciaWithAutoID implements Serializable {
 			String tecnologias, int fteTotales, String imagenProyecto,
 			String certificado, String[] regPedidoAsociadoReferencia,
 			String responsableComercial, String responsableTecnico,
-			String creadorReferencia, String codigoQr, String estado) {
+			String creadorReferencia, String codigoQr, String estado,String motivoRechazo) {
 		super();
 		this.cliente = cliente;
 		this.sociedad = sociedad;
@@ -77,6 +77,7 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.creadorReferencia = creadorReferencia;
 		this.codigoQr = codigoQr;
 		this.estado = estado;
+		this.motivoRechazo = motivoRechazo;
 	}
 
 
@@ -257,6 +258,14 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.estado = estado;
 	}
 
+	public String getMotivoRechazo() {
+		return motivoRechazo;
+	}
+
+	public void setMotivoRechazo(String motivoRechazo) {
+		this.motivoRechazo = motivoRechazo;
+	}
+
 	@Override
 	public String toString() {
 		return "ReferenciaWithAutoID [_id=" + _id + ", cliente=" + cliente
@@ -274,7 +283,7 @@ public class ReferenciaWithAutoID implements Serializable {
 				+ ", responsableComercial=" + responsableComercial
 				+ ", responsableTecnico=" + responsableTecnico
 				+ ", creadorReferencia=" + creadorReferencia + ", codigoQr="
-				+ codigoQr + ", estado=" + estado + "]";
+				+ codigoQr + ", estado=" + estado +", motivoRechazo=" + motivoRechazo +"]";
 	}
 
 	

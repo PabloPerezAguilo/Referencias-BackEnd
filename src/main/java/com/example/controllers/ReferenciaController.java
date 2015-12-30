@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
-import org.apache.commons.codec.binary.Base64;
+//import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
 
@@ -210,10 +210,11 @@ public class ReferenciaController {
 	 * @return Referencia
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID updateReferenciaEstado(String key,String estado) throws Exception{
+	public ReferenciaWithAutoID updateReferenciaEstado(String key,String estado, String motivoRechazo) throws Exception{
 		
 		ReferenciaWithAutoID resource = dao.getReferencia(key);
 		resource.setEstado(estado);
+		resource.setMotivoRechazo(motivoRechazo);
 		dao.updateReferencia(resource.get_id(),resource);
 		return resource;
 	}

@@ -153,13 +153,13 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	@PUT
-	@Path("/{key}/{estado}")
+	@Path("/{key}")
 	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
-	public Response updateReferenciaEstado(@PathParam("key") String key,@PathParam("estado") String estado){
+	public Response updateReferenciaEstado(@PathParam("key") String key,String estado, String motivoRechazo){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			out = referenciaController.updateReferenciaEstado(key,estado);
+			out = referenciaController.updateReferenciaEstado(key,estado,motivoRechazo);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
