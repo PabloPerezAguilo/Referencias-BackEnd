@@ -31,6 +31,12 @@
 		<!-- CATALOGO -->
 		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_VALIDADOR" method="GET"/>
 		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
+		<!-- TECNOLOGIAS -->
+		<intercept-url pattern="/api/tecnologias/**" access="IS_AUTHENTICATED_ANONYMOUSLY" method="DELETE"/>
+		<intercept-url pattern="/api/tecnologias/**" access="IS_AUTHENTICATED_ANONYMOUSLY" method="POST"/>
+		<intercept-url pattern="/api/tecnologias/**" access="IS_AUTHENTICATED_ANONYMOUSLY" method="PUT"/>
+		<intercept-url pattern="/api/tecnologias/**" access="IS_AUTHENTICATED_ANONYMOUSLY" method="GET"/>
+		
 
 		<http-basic />
 		<!-- Service to logout -->

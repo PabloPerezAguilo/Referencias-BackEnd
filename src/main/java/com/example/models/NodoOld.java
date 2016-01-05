@@ -4,26 +4,26 @@ import org.jongo.marshall.jackson.oid.Id;
 import java.util.List;
 
 
-public class Nodo {
+public class NodoOld {
 	@Id
 	private String nombre;
-	private List<Nodo> nodosPadre ;
+	private List<NodoOld> nodosHijos ;
 	
-	public Nodo(String nombre, List<Nodo> nodos){
+	public NodoOld(String nombre, List<NodoOld> nodos){
 		
 		this.nombre = nombre;
-		nodosPadre = nodos;
+		nodosHijos = nodos;
 		
 	}
-	public Nodo(){
+	public NodoOld(){
 		
 	}
 	
-	public List<Nodo> getNodosPadre() {
-		return nodosPadre;
+	public List<NodoOld> getNodosPadre() {
+		return nodosHijos;
 	}
-	public void setNodosPadre(List<Nodo> nodosPadre) {
-		this.nodosPadre = nodosPadre;
+	public void setNodosPadre(List<NodoOld> nodosPadre) {
+		this.nodosHijos = nodosPadre;
 	}
 	public String getNombre() {
 		return nombre;
