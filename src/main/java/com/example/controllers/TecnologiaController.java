@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -24,6 +25,7 @@ public class TecnologiaController {
 	
 	private static TecnologiaDAO dao;
 	private static TecnologiaController singleton;
+	private static boolean encontrado = false;
 
 	private TecnologiaController() throws Exception {
 		dao = TecnologiaDAO.getInstance();
@@ -36,15 +38,9 @@ public class TecnologiaController {
 		return singleton;
 	}
 
-	public List<Tecnologia> getTecnologias() throws Exception {
+	public Tecnologia getTecnologias() throws Exception {
 		
-		List<Tecnologia> list = new ArrayList<>();
-		Iterator<Tecnologia> i = dao.getTecnologias();
-		while (i.hasNext()) {
-			Tecnologia tecnologia = i.next();
-			list.add(tecnologia);
-		}
-		return list;
+		return dao.getTecnologias();
 	}
 	
 	public Tecnologia getTecnologia(String nombre) throws Exception {
@@ -53,10 +49,13 @@ public class TecnologiaController {
 		
 	}
 
-	public Tecnologia createTecnologia(Tecnologia tec) throws Exception{
+	public Tecnologia createTecnologia(Map<String,Object> recursos) throws Exception{
 		
-		dao.insertTecnologia(tec);	
-		return tec;
+		Tecnologia arbol = dao.getTecnologias();
+		colocarNodo(arbol,(String)recursos.get("idPadre"),(Tecnologia)recursos.get("nodo"));
+		
+		
+		return arbol;	
 	}
 	
 	public String deleteTecnologia(String nombre) throws Exception{
@@ -73,5 +72,27 @@ public class TecnologiaController {
 	public void dropReferencia() {
 		dao.clearStore();
 	}
-
+	private void colocarNodo(Tecnologia busqueda, String idPadre, Tecnologia nodo){
+		
+		List<Tecnologia> hijos = busqueda.getNodosHijos();
+		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
+		Tecnologia actual;
+		while(iteradorHijos.hasNext()&& encontrado == false){
+			
+			actual = iteradorHijos.next();
+			if(actual.getNombre() == idPadre){
+				
+				encontrado = true;
+				List<Tecnologia> nueva = actual.getNodosHijos();
+				nueva.add(nodo);
+			}
+			
+			if(actual.getNodosHijos()!=null){
+			colocarNodo(actual,idPadre,nodo);
+			}
+			
+			
+		}
+		
+	}
 }

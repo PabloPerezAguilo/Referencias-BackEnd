@@ -34,9 +34,9 @@ public class TecnologiaDAO {
 	 * @return Iterator<Usuario>
 	 * @throws Exception
 	 */
-	public Iterator<Tecnologia> getTecnologias() throws Exception {
+	public Tecnologia getTecnologias() throws Exception {
 		
-		return dao.find().as(Tecnologia.class).iterator();
+		return dao.findOne("{'_id':#}", "Tecnologias").as(Tecnologia.class);
 	}
 
 	/**

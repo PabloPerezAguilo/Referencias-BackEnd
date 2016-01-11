@@ -9,16 +9,30 @@ import com.example.dao.CatalogoClientesDAO;
 import com.example.dao.CatalogoCoDeDAO;
 import com.example.dao.CatalogoGerentesDAO;
 import com.example.dao.ReferenciaDAO;
+import com.example.dao.TecnologiaDAO;
 import com.example.dao.UsuarioDAO;
 import com.example.models.CatalogoClientes;
 import com.example.models.CatalogoCoDe;
 import com.example.models.CatalogoGerentes;
 import com.example.models.ReferenciaWithAutoID;
+import com.example.models.Tecnologia;
 
 public class InitDB {
 
 	private static final Logger LOG = Logger.getLogger(InitDB.class.getName());
 	
+	public static void loadTecnologias() throws Exception {
+		
+		TecnologiaDAO tecnologiaDAO = TecnologiaDAO.getInstance();
+		
+		if(tecnologiaDAO.getTecnologia("Tecnologias")== null){
+			
+			Tecnologia raiz = new Tecnologia("Tecnologias");
+			tecnologiaDAO.insertTecnologia(raiz);
+			
+		}
+		
+	}
 	public static void loadResources() throws Exception {
 		ReferenciaDAO resourceDAO = ReferenciaDAO.getInstance();
 		resourceDAO.clearStore();
@@ -113,6 +127,7 @@ public class InitDB {
 	}
 
 	public static void main(String[] args) throws Exception {
+		InitDB.loadTecnologias();
 		InitDB.loadUsers();
 		InitDB.loadResources();
 		InitDB.loadCatalogos();
