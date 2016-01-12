@@ -90,7 +90,7 @@ public class TecnologiaService extends Service{
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.deleteTecnologia(nombre);
-			log.info("Delete Referencia : Operation successful");
+			log.info("Delete tecnologia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
