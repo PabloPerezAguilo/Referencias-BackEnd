@@ -106,11 +106,11 @@ public class TecnologiaService extends Service{
 	 */
 	@PUT
 	@ApiOperation(value = "Modifica una tecnologia", notes = "Modifica una tecnologia")
-	public Response updateReferencia(Tecnologia tec){
+	public Response updateReferencia(Map<String,Object> recursos){
 		
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
-			out = tecnologiaController.updateTecnologia(tec.getClase(),tec);
+			out = tecnologiaController.updateTecnologia(recursos);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

@@ -67,10 +67,12 @@ public class TecnologiaController {
 		return arbol;
 	}
 	
-	public Tecnologia updateTecnologia(String nombre, Tecnologia tec) throws Exception{
+	public Tecnologia updateTecnologia(Map<String,Object> recursos) throws Exception{
 			
-		dao.updateTecnologia(nombre,tec);		
-		return tec;		
+		Tecnologia arbol = dao.getTecnologias();
+		modificarNodo(arbol,(String)recursos.get("idAnterior"),(Tecnologia)recursos.get("nodo"));
+		encontrado=false;
+		return arbol;		
 	}
 	public void dropReferencia() {
 		dao.clearStore();
@@ -115,6 +117,26 @@ public class TecnologiaController {
 			if(nombre.equals(actual.getNombre())){
 				encontrado = true;
 				hijos.remove(actual);
+			}
+			if(actual.getNodosHijos()!=null){
+			borrarNodo(actual,nombre);
+			}
+			
+			
+		}
+		
+	}
+	private void modificarNodo(Tecnologia busqueda, String nombre,Tecnologia nodo){
+		
+		List<Tecnologia> hijos = busqueda.getNodosHijos();
+		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
+		Tecnologia actual;
+		while(iteradorHijos.hasNext()&& encontrado == false){
+			
+			actual = iteradorHijos.next();
+			if(nombre.equals(actual.getNombre())){
+				encontrado = true;
+				actual = nodo;
 			}
 			if(actual.getNodosHijos()!=null){
 			borrarNodo(actual,nombre);
