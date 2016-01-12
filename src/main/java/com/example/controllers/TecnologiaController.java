@@ -53,14 +53,25 @@ public class TecnologiaController {
 		
 		Tecnologia arbol = dao.getTecnologias();
 		colocarNodo(arbol,(String)recursos.get("idPadre"),(Tecnologia)recursos.get("nodo"));
-		
-		
+		System.out.println(arbol);
+		System.out.println((String)recursos.get("idPadre"));
+		System.out.println((Tecnologia)recursos.get("nodo"));
+		encontrado = false;
+		dao.updateTecnologia("Tecnologias",arbol);
 		return arbol;	
 	}
 	
 	public String deleteTecnologia(String nombre) throws Exception{
 		
-		dao.deleteTecnologia(nombre);
+		Tecnologia arbol = dao.getTecnologias();
+		System.out.println(arbol);
+		System.out.println("antes de entrar");
+		borrarNodo(arbol,nombre);
+		System.out.println("despues de entrar");
+		encontrado = false;
+		System.out.println(arbol);
+		System.out.println("toca actualizar");
+		dao.updateTecnologia("Tecnologias",arbol);
 		return nombre;
 	}
 	
@@ -89,6 +100,32 @@ public class TecnologiaController {
 			
 			if(actual.getNodosHijos()!=null){
 			colocarNodo(actual,idPadre,nodo);
+			}
+			
+			
+		}
+		
+	}
+	private void borrarNodo(Tecnologia busqueda, String nombre){
+		
+		System.out.println("entrando a borrarNodo");
+		List<Tecnologia> hijos = busqueda.getNodosHijos();
+		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
+		Tecnologia actual;
+		while(iteradorHijos.hasNext()&& encontrado == false){
+			
+			actual = iteradorHijos.next();
+			System.out.println("pasada--->"+actual.getNombre()+":"+ nombre);
+			if(nombre.equals(actual.getNombre())){
+				System.out.println("pasa");
+				encontrado = true;
+				System.out.println(hijos);
+				System.out.println("----------------->");
+				hijos.remove(actual);
+				System.out.println(hijos);
+			}
+			if(actual.getNodosHijos()!=null){
+			borrarNodo(actual,nombre);
 			}
 			
 			

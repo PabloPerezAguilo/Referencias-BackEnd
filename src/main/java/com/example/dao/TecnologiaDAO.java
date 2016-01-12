@@ -75,7 +75,7 @@ public class TecnologiaDAO {
 	 * @throws Exception
 	 */
 	public void updateTecnologia(String nombre, Tecnologia tec) throws Exception {
-		dao.update("{'nombre':#}", nombre).with(tec);
+		dao.update("{'_id':#}", nombre).with(tec);
 	}
 
 	/**

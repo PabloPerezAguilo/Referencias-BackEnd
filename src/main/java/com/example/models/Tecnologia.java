@@ -13,30 +13,47 @@ public class Tecnologia {
 	private String tipo;
 	private String clase;
 	
-	//contructor para hojas
-	public Tecnologia(String nombre, boolean producto , String tipo, String clase ){
+	public Tecnologia(){
+		
+	}
+	public Tecnologia(String nombre,List<Tecnologia> nodosHijos, boolean producto , String tipo, String clase ){
 		
 		this.nombre = nombre;
 		this.producto = producto;
+		this.nodosHijos = nodosHijos;
 		this.tipo = tipo;
 		this.clase = clase;
 		
 	}
-	//constructor para nodos
-	public Tecnologia(String nombre, List<Tecnologia> nodosHijos){
-		
-		this.nombre = nombre;
-		this.nodosHijos = nodosHijos;
-		this.tipo = null;
-		this.clase = "nodo";
-		
-	}
-	public Tecnologia(String nombre){
-		this.nombre = nombre;
-		this.nodosHijos = null;
-		this.tipo = null;
-		this.clase = "raiz";
-	}
+//	//contructor para hojas
+//	public Tecnologia(String nombre, boolean producto , String tipo, String clase ){
+//		
+//		this.nombre = nombre;
+//		this.producto = producto;
+//		this.tipo = tipo;
+//		this.clase = clase;
+//		
+//	}
+//	//constructor para nodos
+//	public Tecnologia(String nombre, List<Tecnologia> nodosHijos){
+//		
+//		this.nombre = nombre;
+//		this.nodosHijos = nodosHijos;
+//		this.tipo = null;
+//		this.clase = "nodo";
+//		
+//	}
+//	public Tecnologia(String nombre){
+//		this.nombre = nombre;
+//		this.nodosHijos = null;
+//		this.tipo = null;
+//		this.clase = "raiz";
+//	}
+//	public Tecnologia(boolean producto,String clase,String nombre){
+//		this.nombre = nombre;
+//		this.clase = clase;
+//		this.producto = producto;
+//	}
 	public String getNombre() {
 		return nombre;
 	}
