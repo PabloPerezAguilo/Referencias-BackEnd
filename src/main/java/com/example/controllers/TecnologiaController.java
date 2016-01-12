@@ -58,13 +58,13 @@ public class TecnologiaController {
 		return arbol;	
 	}
 	
-	public String deleteTecnologia(String nombre) throws Exception{
+	public Tecnologia deleteTecnologia(String nombre) throws Exception{
 		
 		Tecnologia arbol = dao.getTecnologias();
 		borrarNodo(arbol,nombre);
 		encontrado = false;
 		dao.updateTecnologia("Tecnologias",arbol);
-		return nombre;
+		return arbol;
 	}
 	
 	public Tecnologia updateTecnologia(String nombre, Tecnologia tec) throws Exception{
