@@ -1,6 +1,8 @@
 package com.example.services;
 
 
+import java.util.Map;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,11 +27,11 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @Path("/tecnologias")
 @Api(value = "/tecnologias", description = "Gestion del arbol de tecnologias")
 @Produces(MediaType.APPLICATION_JSON)
-public class TecnologiasService extends Service{
+public class TecnologiaService extends Service{
 
-	private static final Logger log = Logger.getLogger(TecnologiasService.class.getName());
+	private static final Logger log = Logger.getLogger(TecnologiaService.class.getName());
 
-	public TecnologiasService() {
+	public TecnologiaService() {
 		super();
 	}
 	
@@ -67,10 +69,10 @@ public class TecnologiasService extends Service{
 	
 	@POST
 	@ApiOperation(value = "Crea una nueva tecnologia", notes = "Crea una nueva tecnologia")
-	public Response postReferencia(Tecnologia tec) {
+	public Response postReferencia(Map<String,Object>  recursos) {
 		try {
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
-			out = tecnologiaController.createTecnologia(tec);
+			out = tecnologiaController.createTecnologia(recursos);
 			log.info("Insert Referencia: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
@@ -88,7 +90,7 @@ public class TecnologiasService extends Service{
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.deleteTecnologia(nombre);
-			log.info("Delete Referencia : Operation successful");
+			log.info("Delete tecnologia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -104,11 +106,11 @@ public class TecnologiasService extends Service{
 	 */
 	@PUT
 	@ApiOperation(value = "Modifica una tecnologia", notes = "Modifica una tecnologia")
-	public Response updateReferencia(Tecnologia tec){
+	public Response updateReferencia(Map<String,Object> recursos){
 		
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
-			out = tecnologiaController.updateTecnologia(tec.getClase(),tec);
+			out = tecnologiaController.updateTecnologia(recursos);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

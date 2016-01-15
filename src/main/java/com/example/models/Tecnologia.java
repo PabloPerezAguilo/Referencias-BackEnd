@@ -9,35 +9,51 @@ public class Tecnologia {
 	@Id
 	private String nombre;
 	private List<Tecnologia> nodosHijos ;
-	private List<Tecnologia> nodosPadre ;
 	private boolean producto;
 	private String tipo;
 	private String clase;
 	
-	//contructor para hojas
-	public Tecnologia(String nombre, List<Tecnologia> nodosHijos, List<Tecnologia> nodosPadre, boolean producto , String tipo, String clase ){
+	public Tecnologia(){
+		
+	}
+	public Tecnologia(String nombre,List<Tecnologia> nodosHijos, boolean producto , String tipo, String clase ){
 		
 		this.nombre = nombre;
-		this.nodosHijos = nodosHijos;
-		this.nodosPadre = nodosPadre;
 		this.producto = producto;
+		this.nodosHijos = nodosHijos;
 		this.tipo = tipo;
 		this.clase = clase;
 		
 	}
-	//constructor para nodos
-	public Tecnologia(String nombre, List<Tecnologia> nodosHijos, List<Tecnologia> nodosPadre){
-		
-		this.nombre = nombre;
-		this.nodosHijos = nodosHijos;
-		this.nodosPadre = nodosPadre;
-		this.tipo = null;
-		this.clase = "nodo";
-		
-	}
-	public Tecnologia(){
-		
-	}
+//	//contructor para hojas
+//	public Tecnologia(String nombre, boolean producto , String tipo, String clase ){
+//		
+//		this.nombre = nombre;
+//		this.producto = producto;
+//		this.tipo = tipo;
+//		this.clase = clase;
+//		
+//	}
+//	//constructor para nodos
+//	public Tecnologia(String nombre, List<Tecnologia> nodosHijos){
+//		
+//		this.nombre = nombre;
+//		this.nodosHijos = nodosHijos;
+//		this.tipo = null;
+//		this.clase = "nodo";
+//		
+//	}
+//	public Tecnologia(String nombre){
+//		this.nombre = nombre;
+//		this.nodosHijos = null;
+//		this.tipo = null;
+//		this.clase = "raiz";
+//	}
+//	public Tecnologia(boolean producto,String clase,String nombre){
+//		this.nombre = nombre;
+//		this.clase = clase;
+//		this.producto = producto;
+//	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -49,12 +65,6 @@ public class Tecnologia {
 	}
 	public void setNodosHijos(List<Tecnologia> nodosHijos) {
 		this.nodosHijos = nodosHijos;
-	}
-	public List<Tecnologia> getNodosPadre() {
-		return nodosPadre;
-	}
-	public void setNodosPadre(List<Tecnologia> nodosPadre) {
-		this.nodosPadre = nodosPadre;
 	}
 	public boolean isProducto() {
 		return producto;
@@ -77,7 +87,6 @@ public class Tecnologia {
 	@Override
 	public String toString() {
 		return "Nodo [nombre=" + nombre + ", nodosHijos=" + nodosHijos
-				+ ", nodosPadre=" + nodosPadre + ", producto=" + producto
-				+ ", tipo=" + tipo + ", clase=" + clase + "]";
+				+ ", producto=" + producto + ", tipo=" + tipo + ", clase=" + clase + "]";
 	}
 }

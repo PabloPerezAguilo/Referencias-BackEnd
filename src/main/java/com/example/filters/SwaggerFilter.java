@@ -27,6 +27,7 @@ public class SwaggerFilter implements javax.servlet.Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 		LOG.info("Init the filter");
 		try {
+			InitDB.loadTecnologias();
 			InitDB.loadResources();
 			InitDB.loadUsers();
 			InitDB.loadCatalogos();

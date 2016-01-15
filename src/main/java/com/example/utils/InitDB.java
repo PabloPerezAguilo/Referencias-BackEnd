@@ -1,24 +1,59 @@
 package com.example.utils;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.example.controllers.CatalogoController;
+import com.example.controllers.TecnologiaController;
 import com.example.controllers.UsuarioController;
 import com.example.dao.CatalogoClientesDAO;
 import com.example.dao.CatalogoCoDeDAO;
 import com.example.dao.CatalogoGerentesDAO;
 import com.example.dao.ReferenciaDAO;
+import com.example.dao.TecnologiaDAO;
 import com.example.dao.UsuarioDAO;
 import com.example.models.CatalogoClientes;
 import com.example.models.CatalogoCoDe;
 import com.example.models.CatalogoGerentes;
 import com.example.models.ReferenciaWithAutoID;
+import com.example.models.Tecnologia;
 
 public class InitDB {
 
 	private static final Logger LOG = Logger.getLogger(InitDB.class.getName());
 	
+	public static void loadTecnologias() throws Exception {
+		
+		TecnologiaDAO tecnologiaDAO = TecnologiaDAO.getInstance();
+		if(tecnologiaDAO.getTecnologia("Tecnologias")== null){
+			/* borrar despues de las pruebas console.log System.out.println();*/
+			Tecnologia aux1 = new Tecnologia("nodo",null,false,null,"nodo");
+			Tecnologia aux2 = new Tecnologia("hoja",null,false,null,"hoja");
+			List<Tecnologia> lista = new ArrayList<Tecnologia>() ;
+			lista.add(aux1);
+			lista.add(aux2);
+			/* borrar despues de las pruebas console.log System.out.println();*/
+			Tecnologia raiz = new Tecnologia("Tecnologias",lista,false,null,"raiz");
+			tecnologiaDAO.insertTecnologia(raiz);
+			TecnologiaController tecon = TecnologiaController.getInstance();	
+			
+			tecon.deleteTecnologia("hoja");
+			Map<String,Object> recursos = new HashMap<String, Object>();
+			recursos.put("idPadre","nodo");
+			recursos.put("nodo",aux2);
+			tecon.createTecnologia(recursos);
+			
+		}
+		System.out.println("resultado final");
+		System.out.println(tecnologiaDAO.getTecnologia("Tecnologias"));
+		LOG.info("Raiz cargada");
+		
+	}
 	public static void loadResources() throws Exception {
 		ReferenciaDAO resourceDAO = ReferenciaDAO.getInstance();
 		resourceDAO.clearStore();
@@ -113,6 +148,7 @@ public class InitDB {
 	}
 
 	public static void main(String[] args) throws Exception {
+		InitDB.loadTecnologias();
 		InitDB.loadUsers();
 		InitDB.loadResources();
 		InitDB.loadCatalogos();
