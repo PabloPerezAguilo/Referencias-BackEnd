@@ -71,6 +71,8 @@ public class TecnologiaService extends Service{
 	@ApiOperation(value = "Crea una nueva tecnologia", notes = "Crea una nueva tecnologia")
 	public Response postReferencia(Map<String,Object>  recursos) {
 		try {
+			System.out.println(recursos.get("nodo"));
+			System.out.println("-------------------------");
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.createTecnologia(recursos);
 			log.info("Insert Referencia: Operation successful");

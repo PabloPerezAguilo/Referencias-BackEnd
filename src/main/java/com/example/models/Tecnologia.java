@@ -1,6 +1,7 @@
 package com.example.models;
 
 import java.util.List;
+import java.util.Map;
 
 import org.jongo.marshall.jackson.oid.Id;
 
@@ -25,35 +26,20 @@ public class Tecnologia {
 		this.clase = clase;
 		
 	}
-//	//contructor para hojas
-//	public Tecnologia(String nombre, boolean producto , String tipo, String clase ){
-//		
-//		this.nombre = nombre;
-//		this.producto = producto;
-//		this.tipo = tipo;
-//		this.clase = clase;
-//		
-//	}
-//	//constructor para nodos
-//	public Tecnologia(String nombre, List<Tecnologia> nodosHijos){
-//		
-//		this.nombre = nombre;
-//		this.nodosHijos = nodosHijos;
-//		this.tipo = null;
-//		this.clase = "nodo";
-//		
-//	}
-//	public Tecnologia(String nombre){
-//		this.nombre = nombre;
-//		this.nodosHijos = null;
-//		this.tipo = null;
-//		this.clase = "raiz";
-//	}
-//	public Tecnologia(boolean producto,String clase,String nombre){
-//		this.nombre = nombre;
-//		this.clase = clase;
-//		this.producto = producto;
-//	}
+	public Tecnologia(Map<String,Object> tecnologia){
+		
+		this.nombre = (String)tecnologia.get("nombre");
+		if(tecnologia.get("producto")!=null){
+			this.producto = (boolean)tecnologia.get("producto");
+		}else{
+			this.producto = false;
+		}
+		this.nodosHijos = (List<Tecnologia>)tecnologia.get("nodosHijos");
+		this.tipo = (String)tecnologia.get("tipo");
+		this.clase = (String)tecnologia.get("clase");
+		
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

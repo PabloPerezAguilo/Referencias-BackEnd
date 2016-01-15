@@ -52,8 +52,10 @@ public class TecnologiaController {
 	public Tecnologia createTecnologia(Map<String,Object> recursos) throws Exception{
 		
 		Tecnologia arbol = dao.getTecnologias();
-		colocarNodo(arbol,(String)recursos.get("idPadre"),(Tecnologia)recursos.get("nodo"));
+		Tecnologia nodo = new Tecnologia((Map<String,Object>)recursos.get("nodo"));
+		colocarNodo(arbol,(String)recursos.get("idPadre"),nodo);
 		encontrado = false;
+		System.out.println(arbol);
 		dao.updateTecnologia("Tecnologias",arbol);
 		return arbol;	
 	}
@@ -68,11 +70,24 @@ public class TecnologiaController {
 	}
 	
 	public Tecnologia updateTecnologia(Map<String,Object> recursos) throws Exception{
-			
+		
 		Tecnologia arbol = dao.getTecnologias();
-		modificarNodo(arbol,(String)recursos.get("idAnterior"),(Tecnologia)recursos.get("nodo"));
-		encontrado=false;
-		return arbol;		
+		
+		if(recursos.get("idDestino")!=null){
+			
+			Tecnologia nodo = new Tecnologia((Map<String,Object>)recursos.get("nodo"));
+			borrarNodo(arbol,nodo.getNombre());
+			encontrado=false;
+			colocarNodo(arbol, (String)recursos.get("idDestino"),nodo);
+			encontrado=false;
+				
+		}else{
+			modificarNodo(arbol,(String)recursos.get("idAnterior"),(Tecnologia)recursos.get("nodo"));
+			encontrado=false;
+			return arbol;
+		}
+	
+				
 	}
 	public void dropReferencia() {
 		dao.clearStore();
@@ -89,9 +104,9 @@ public class TecnologiaController {
 				
 				encontrado = true;
 				if(actual.getNodosHijos()!=null){
-				List<Tecnologia> nueva = new ArrayList<Tecnologia>(actual.getNodosHijos());
-				nueva.add(nodo);}
-				else{
+					actual.getNodosHijos().add(nodo);
+				}else{
+					System.out.println("CORRECTO");
 				List<Tecnologia> primero = new ArrayList<Tecnologia>();
 				primero.add(nodo);
 				actual.setNodosHijos(primero);
@@ -146,4 +161,5 @@ public class TecnologiaController {
 		}
 		
 	}
+	
 }

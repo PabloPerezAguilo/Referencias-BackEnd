@@ -46,7 +46,8 @@ public class InitDB {
 			Map<String,Object> recursos = new HashMap<String, Object>();
 			recursos.put("idPadre","nodo");
 			recursos.put("nodo",aux2);
-			tecon.createTecnologia(recursos);
+			//tecon.createTecnologia(recursos);
+			System.out.println(recursos.get("nodo"));
 			
 		}
 		System.out.println("resultado final");
