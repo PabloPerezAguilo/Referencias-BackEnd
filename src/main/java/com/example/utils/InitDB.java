@@ -34,11 +34,11 @@ public class InitDB {
 		UsuarioDAO userDAO = UsuarioDAO.getInstance();
 		userDAO.clearStore();
 		UsuarioController controller = UsuarioController.getInstance();
-		controller.createUsuario("rbrito","Ruben Brito Baldanta", "validador");
-		controller.createUsuario("msroa","Maria Sanchez Roa", "mantenimiento");
+		controller.createUsuario("amayor","Africa Mayor Colomina", "validador");
+		controller.createUsuario("abarrero","Almudena Barrero", "mantenimiento");
 		controller.createUsuario("dmonco","David Monco Jimenez", "administrador");
-		controller.createUsuario("ogquevedo","Oscar Garcia Quevedo", "consultor");
-		controller.createUsuario("npavila","Norberto Rastafarai Avila", "mantenimiento");
+		controller.createUsuario("agonzalez","Alejandro Gonzalez Garcia", "consultor");
+		controller.createUsuario("fgmontoro","Francisco Garcia Montoro", "mantenimiento");
 		LOG.info("Users inserted in DB");
 	}
 	
