@@ -71,7 +71,7 @@ public class TecnologiaController {
 	public Tecnologia deleteTecnologia(String nombre) throws Exception{
 		
 		Tecnologia arbol = dao.getTecnologias();
-		borrarNodo(arbol,nombre);
+		borrarNodo(arbol,nombre,false);
 		encontrado = false;
 		dao.updateTecnologia("Tecnologias",arbol);
 		return arbol;
@@ -85,11 +85,15 @@ public class TecnologiaController {
 		System.out.println(recursos.get("idDestino"));
 		System.out.println("---------------");
 		if(recursos.get("idDestino")!=null){
-			
-			borrarNodo(arbol,nodo.getNombre());
-			encontrado=false;
-			colocarNodo(arbol, (String)recursos.get("idDestino"),nodo);
-			encontrado=false;
+			try{
+				borrarNodo(arbol,nodo.getNombre(),true);
+				encontrado=false;
+				colocarNodo(arbol, (String)recursos.get("idDestino"),nodo);
+				encontrado=false;
+			}catch(Exception e){
+				
+				throw new Exception("Error al mover el elemento");
+			}
 				
 		}else{
 			
@@ -145,7 +149,7 @@ public class TecnologiaController {
 		}
 		
 	}
-	private void borrarNodo(Tecnologia busqueda, String nombre) throws Exception{
+	private void borrarNodo(Tecnologia busqueda, String nombre,boolean permitir) throws Exception{
 		
 		List<Tecnologia> hijos = busqueda.getNodosHijos();
 		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
@@ -157,13 +161,13 @@ public class TecnologiaController {
 				encontrado = true;
 				System.out.println(actual.getNodosHijos());
 				System.out.println("**************************");
-				if(actual.getNodosHijos()==null || actual.getNodosHijos().isEmpty()){
+				if(actual.getNodosHijos()==null || actual.getNodosHijos().isEmpty()||permitir){
 				hijos.remove(actual);
 				}else{
 					throw new Exception("Error de borrado: El nodo contiene tecnologias asociadas a el");
 				}
 			}else if(actual.getNodosHijos()!=null){
-			borrarNodo(actual,nombre);
+			borrarNodo(actual,nombre,false);
 			}
 			
 			
