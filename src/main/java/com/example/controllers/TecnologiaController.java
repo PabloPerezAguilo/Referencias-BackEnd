@@ -72,20 +72,24 @@ public class TecnologiaController {
 	public Tecnologia updateTecnologia(Map<String,Object> recursos) throws Exception{
 		
 		Tecnologia arbol = dao.getTecnologias();
+		Tecnologia nodo = new Tecnologia((Map<String,Object>)recursos.get("nodo"));
 		
+		System.out.println(recursos.get("idDestino"));
+		System.out.println("---------------");
 		if(recursos.get("idDestino")!=null){
 			
-			Tecnologia nodo = new Tecnologia((Map<String,Object>)recursos.get("nodo"));
 			borrarNodo(arbol,nodo.getNombre());
 			encontrado=false;
 			colocarNodo(arbol, (String)recursos.get("idDestino"),nodo);
 			encontrado=false;
 				
 		}else{
-			modificarNodo(arbol,(String)recursos.get("idAnterior"),(Tecnologia)recursos.get("nodo"));
+			System.out.println("OK");
+			modificarNodo(arbol,(String)recursos.get("idAnterior"),nodo);
 			encontrado=false;
-			return arbol;
 		}
+		dao.updateTecnologia("Tecnologias",arbol);
+		return arbol;
 	
 				
 	}
@@ -94,7 +98,8 @@ public class TecnologiaController {
 	}
 	private void colocarNodo(Tecnologia busqueda, String idPadre, Tecnologia nodo){
 		
-		List<Tecnologia> hijos = busqueda.getNodosHijos();
+		List<Tecnologia> hijos = new ArrayList<Tecnologia>();
+		hijos.add(busqueda);
 		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
 		Tecnologia actual;
 		while(iteradorHijos.hasNext()&& encontrado == false){
@@ -114,7 +119,10 @@ public class TecnologiaController {
 			}
 			
 			if(actual.getNodosHijos()!=null){
-			colocarNodo(actual,idPadre,nodo);
+				for(int i=0; i<actual.getNodosHijos().size();i++){
+					colocarNodo(actual.getNodosHijos().get(i),idPadre,nodo);
+				}
+			
 			}
 			
 			
@@ -132,8 +140,7 @@ public class TecnologiaController {
 			if(nombre.equals(actual.getNombre())){
 				encontrado = true;
 				hijos.remove(actual);
-			}
-			if(actual.getNodosHijos()!=null){
+			}else if(actual.getNodosHijos()!=null){
 			borrarNodo(actual,nombre);
 			}
 			
@@ -151,10 +158,12 @@ public class TecnologiaController {
 			actual = iteradorHijos.next();
 			if(nombre.equals(actual.getNombre())){
 				encontrado = true;
-				actual = nodo;
+				hijos.remove(actual);
+				hijos.add(nodo);
+				System.out.println(nodo);
 			}
 			if(actual.getNodosHijos()!=null){
-			borrarNodo(actual,nombre);
+			modificarNodo(actual,nombre,nodo);
 			}
 			
 			
