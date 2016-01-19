@@ -66,6 +66,7 @@ public class TecnologiaService extends Service{
 		}
 		return Response.status(status).entity(out).build();
 	}
+	@GET
 	@Path("/finales")
 	@ApiOperation(value = "Devuelve todas las tecnologias finales", notes = "listado de tecnologias(hojas)")
 	public Response getReferencia() {

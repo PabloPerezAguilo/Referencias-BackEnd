@@ -237,17 +237,19 @@ public class TecnologiaController {
 	private List getFinales(Tecnologia busqueda){
 		
 		List<Tecnologia> hojas = new ArrayList<Tecnologia>();
-		List<Tecnologia> recorrido = busqueda.getNodosHijos();
-		Iterator<Tecnologia> iteradorHijos = recorrido.iterator();
+		Iterator<Tecnologia> iteradorHijos = busqueda.getNodosHijos().iterator();
 		Tecnologia actual;
 		while(iteradorHijos.hasNext()){
 			
 			actual = iteradorHijos.next();
 			if(actual.getNodosHijos()!=null){
-			hojas.addAll(getFinales(actual));
-			}else{
+				
+				hojas.addAll(getFinales(actual));
+				
+			}else if(actual.getClase().equals("hoja")){
+				
 				hojas.add(actual);
-				return hojas;
+				
 			}
 			
 			
