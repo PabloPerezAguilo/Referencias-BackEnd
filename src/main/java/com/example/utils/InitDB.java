@@ -29,31 +29,15 @@ public class InitDB {
 	
 	public static void loadTecnologias() throws Exception {
 		
+		// este metodo es neceasario para preparar la base de datos frente a la gfestion de tecnologias
+		// inserta una tecnologia raiz a partir de la cual trabajara la capa controladora
 		TecnologiaDAO tecnologiaDAO = TecnologiaDAO.getInstance();
 		if(tecnologiaDAO.getTecnologia("Tecnologias")== null){
-			/* borrar despues de las pruebas console.log System.out.println();*/
-			Tecnologia aux1 = new Tecnologia("nodo",null,false,null,"nodo");
-			Tecnologia aux2 = new Tecnologia("hoja",null,false,null,"hoja");
-			List<Tecnologia> lista = new ArrayList<Tecnologia>() ;
-			lista.add(aux1);
-			lista.add(aux2);
-			/* borrar despues de las pruebas console.log System.out.println();*/
+			
+			List<Tecnologia> lista = new ArrayList<Tecnologia>();
 			Tecnologia raiz = new Tecnologia("Tecnologias",lista,false,null,"raiz");
-			tecnologiaDAO.insertTecnologia(raiz);
-			TecnologiaController tecon = TecnologiaController.getInstance();	
-			
-			tecon.deleteTecnologia("hoja");
-			Map<String,Object> recursos = new HashMap<String, Object>();
-			recursos.put("idPadre","nodo");
-			recursos.put("nodo",aux2);
-			//tecon.createTecnologia(recursos);
-			System.out.println(recursos.get("nodo"));
-			
-		}
-		System.out.println("resultado final");
-		System.out.println(tecnologiaDAO.getTecnologia("Tecnologias"));
-		LOG.info("Raiz cargada");
-		
+			tecnologiaDAO.insertTecnologia(raiz);	
+		}	
 	}
 	public static void loadResources() throws Exception {
 		ReferenciaDAO resourceDAO = ReferenciaDAO.getInstance();

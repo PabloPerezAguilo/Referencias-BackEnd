@@ -7,7 +7,7 @@ import org.jongo.marshall.jackson.oid.Id;
 
 public class Tecnologia {
 	
-	@Id
+	
 	private String nombre;
 	private List<Tecnologia> nodosHijos ;
 	private boolean producto;

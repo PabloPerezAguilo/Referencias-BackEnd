@@ -36,7 +36,7 @@ public class TecnologiaDAO {
 	 */
 	public Tecnologia getTecnologias() throws Exception {
 		
-		return dao.findOne("{'_id':#}", "Tecnologias").as(Tecnologia.class);
+		return dao.findOne("{'nombre':#}", "Tecnologias").as(Tecnologia.class);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class TecnologiaDAO {
 	 * @throws Exception
 	 */
 	public Tecnologia getTecnologia(String nombre) throws Exception {
-		return dao.findOne("{'_id':#}", nombre).as(Tecnologia.class);
+		return dao.findOne("{'nombre':#}", nombre).as(Tecnologia.class);
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class TecnologiaDAO {
 	 * @throws Exception
 	 */
 	public void deleteTecnologia(String nombre) throws Exception {
-		dao.remove("{'_id':#}", nombre);
+		dao.remove("{'nombre':#}", nombre);
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class TecnologiaDAO {
 	 * @throws Exception
 	 */
 	public void updateTecnologia(String nombre, Tecnologia tec) throws Exception {
-		dao.update("{'_id':#}", nombre).with(tec);
+		dao.update("{'nombre':#}", nombre).with(tec);
 	}
 
 	/**
