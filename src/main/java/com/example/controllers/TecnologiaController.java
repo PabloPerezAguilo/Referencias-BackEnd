@@ -48,6 +48,13 @@ public class TecnologiaController {
 		return dao.getTecnologia(nombre);
 		
 	}
+	public List getTecnologiaFinales( ) throws Exception {
+		
+		Tecnologia arbol = dao.getTecnologias();
+		List<Tecnologia> lista = getFinales(arbol);
+		return lista;
+		
+	}
 
 	public Tecnologia createTecnologia(Map<String,Object> recursos) throws Exception{
 		
@@ -225,6 +232,27 @@ public class TecnologiaController {
 			
 		}
 		return false;
+		
+	}
+	private List getFinales(Tecnologia busqueda){
+		
+		List<Tecnologia> hojas = new ArrayList<Tecnologia>();
+		List<Tecnologia> recorrido = busqueda.getNodosHijos();
+		Iterator<Tecnologia> iteradorHijos = recorrido.iterator();
+		Tecnologia actual;
+		while(iteradorHijos.hasNext()){
+			
+			actual = iteradorHijos.next();
+			if(actual.getNodosHijos()!=null){
+			hojas.addAll(getFinales(actual));
+			}else{
+				hojas.add(actual);
+				return hojas;
+			}
+			
+			
+		}
+		return hojas;
 		
 	}
 	

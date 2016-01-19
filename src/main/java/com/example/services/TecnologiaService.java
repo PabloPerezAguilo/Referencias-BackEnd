@@ -66,6 +66,20 @@ public class TecnologiaService extends Service{
 		}
 		return Response.status(status).entity(out).build();
 	}
+	@Path("/finales")
+	@ApiOperation(value = "Devuelve todas las tecnologias finales", notes = "listado de tecnologias(hojas)")
+	public Response getReferencia() {
+		try {
+			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
+			out = tecnologiaController.getTecnologiaFinales();
+			log.info("Get Referencia by key: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
 	
 	@POST
 	@ApiOperation(value = "Crea una nueva tecnologia", notes = "Crea una nueva tecnologia")
