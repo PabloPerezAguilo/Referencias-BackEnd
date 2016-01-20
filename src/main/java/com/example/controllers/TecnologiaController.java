@@ -231,13 +231,14 @@ public class TecnologiaController {
 		while(iteradorHijos.hasNext()){
 			
 			actual = iteradorHijos.next();
-			if(actual.getNodosHijos()!=null){
-				
-				hojas.addAll(getFinales(actual));
-				
-			}else if(actual.getClase().equals("hoja")){
+			if(actual.getClase().equals("hoja")){
 				
 				hojas.add(actual);
+				
+				
+			}else if(actual.getNodosHijos()!= null){
+				
+				hojas.addAll(getFinales(actual));
 				
 			}
 			

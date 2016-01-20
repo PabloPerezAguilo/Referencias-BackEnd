@@ -176,7 +176,7 @@ public class ReferenciaWithAutoID implements Serializable {
 
 	public void setSolucionGfi(String solucionGfi) {
 		this.solucionGfi = solucionGfi;
-	}
+	}  
 
 	public String[] getTecnologias() {
 		return tecnologias;
