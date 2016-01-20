@@ -108,9 +108,8 @@ public class UsuarioService extends Service{
 	public Response deleteUsuario(@PathParam("key") String key){
 		try{
 			UsuarioController usuarioController = UsuarioController.getInstance();
-			usuarioController.deleteUsuario(key);
-			out = key;
-			log.info("Delete Referencia : Operation successful");
+			out = new Message(usuarioController.deleteUsuario(key));
+			log.info("Delete usuario : Operation successful");
 			status = Response.Status.ACCEPTED;
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
