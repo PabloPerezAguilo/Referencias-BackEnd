@@ -35,6 +35,12 @@ public class InitDB {
 		if(tecnologiaDAO.getTecnologia("Tecnologias")== null){
 			
 			List<Tecnologia> lista = new ArrayList<Tecnologia>();
+			Tecnologia t = new Tecnologia("hojaInvalida1",null,false,null,"hojaInvalida");
+			lista.add(t);
+			t = new Tecnologia("hojaInvalida2",null,false,null,"hojaInvalida");
+			lista.add(t);
+			t = new Tecnologia("hojaInvalida3",null,false,null,"hojaInvalida");
+			lista.add(t);
 			Tecnologia raiz = new Tecnologia("Tecnologias",lista,false,null,"raiz");
 			tecnologiaDAO.insertTecnologia(raiz);	
 		}	

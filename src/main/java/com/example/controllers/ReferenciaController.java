@@ -68,7 +68,12 @@ public class ReferenciaController {
 		Iterator<ReferenciaWithAutoID> i = dao.getReferenciasPendientes();
 		while (i.hasNext()) {
 			ReferenciaWithAutoID ref = i.next();
-			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+			byte[] imagenByte = null;
+			try{
+			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+			}catch(Exception e){
+			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
+			}
 			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
 			ref.setImagenProyecto(imagenBase);
 			list.add(ref);

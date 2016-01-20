@@ -89,7 +89,10 @@ public class TecnologiaController {
 				
 		}else{
 			
-			existeNodo(arbol,nodo.getNombre());
+			if(!nodo.getNombre().equals((String)recursos.get("idAnterior"))){
+				existeNodo(arbol,nodo.getNombre());	
+			}
+			
 			if(encontrado!=true){
 				encontrado=false;
 				modificarNodo(arbol,(String)recursos.get("idAnterior"),nodo);
