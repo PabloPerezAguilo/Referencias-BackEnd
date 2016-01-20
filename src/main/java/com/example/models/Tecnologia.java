@@ -3,7 +3,6 @@ package com.example.models;
 import java.util.List;
 import java.util.Map;
 
-import org.jongo.marshall.jackson.oid.Id;
 
 public class Tecnologia {
 	

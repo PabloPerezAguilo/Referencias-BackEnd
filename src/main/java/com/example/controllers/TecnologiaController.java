@@ -1,25 +1,14 @@
 package com.example.controllers;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.DatatypeConverter;
-
-import org.apache.commons.io.FileUtils;
-import org.bson.types.ObjectId;
-
-import com.example.dao.ReferenciaDAO;
 import com.example.dao.TecnologiaDAO;
-import com.example.models.NodoOld;
-import com.example.models.ReferenciaWithAutoID;
 import com.example.models.Tecnologia;
-import com.example.utils.Config;
+
 
 public class TecnologiaController {
 	
@@ -48,7 +37,7 @@ public class TecnologiaController {
 		return dao.getTecnologia(nombre);
 		
 	}
-	public List getTecnologiaFinales( ) throws Exception {
+	public List<Tecnologia> getTecnologiaFinales( ) throws Exception {
 		
 		Tecnologia arbol = dao.getTecnologias();
 		List<Tecnologia> lista = getFinales(arbol);
@@ -234,7 +223,7 @@ public class TecnologiaController {
 		return false;
 		
 	}
-	private List getFinales(Tecnologia busqueda){
+	private List<Tecnologia> getFinales(Tecnologia busqueda){
 		
 		List<Tecnologia> hojas = new ArrayList<Tecnologia>();
 		Iterator<Tecnologia> iteradorHijos = busqueda.getNodosHijos().iterator();

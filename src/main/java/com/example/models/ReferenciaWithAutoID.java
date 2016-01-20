@@ -28,7 +28,7 @@ public class ReferenciaWithAutoID implements Serializable {
 	private String resumenProyecto;
 	private String problematicaCliente;
 	private String solucionGfi;
-	private String tecnologias;
+	private String[] tecnologias;
 	private int fteTotales;
 	private String imagenProyecto;
 	private String certificado;
@@ -47,7 +47,7 @@ public class ReferenciaWithAutoID implements Serializable {
 			String sectorEmpresarial, String tipoProyecto,String tipoActividad, Date fechaInicio,
 			int duracionMeses, String denominacion, String resumenProyecto,
 			String problematicaCliente, String solucionGfi,
-			String tecnologias, int fteTotales, String imagenProyecto,
+			String[] tecnologias, int fteTotales, String imagenProyecto,
 			String certificado, String[] regPedidoAsociadoReferencia,
 			String responsableComercial, String responsableTecnico,
 			String creadorReferencia, String codigoQr, String estado,String motivoRechazo) {
@@ -178,11 +178,11 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.solucionGfi = solucionGfi;
 	}
 
-	public String getTecnologias() {
+	public String[] getTecnologias() {
 		return tecnologias;
 	}
 
-	public void setTecnologias(String tecnologias) {
+	public void setTecnologias(String[] tecnologias) {
 		this.tecnologias = tecnologias;
 	}
 

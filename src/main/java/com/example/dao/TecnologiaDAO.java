@@ -1,16 +1,11 @@
 package com.example.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
 
 import org.jongo.MongoCollection;
-import org.jongo.MongoCursor;
 
-import com.example.models.Hoja;
-import com.example.models.ReferenciaWithAutoID;
 import com.example.models.Tecnologia;
-import com.example.models.Usuario;
+
 
 public class TecnologiaDAO {
 

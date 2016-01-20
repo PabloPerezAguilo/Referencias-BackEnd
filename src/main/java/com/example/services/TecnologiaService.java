@@ -14,12 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.bson.types.ObjectId;
 
-import com.example.controllers.ReferenciaController;
 import com.example.controllers.TecnologiaController;
-import com.example.models.ReferenciaWithAutoID;
-import com.example.models.Tecnologia;
+
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
