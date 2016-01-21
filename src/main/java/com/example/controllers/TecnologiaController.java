@@ -65,6 +65,13 @@ public class TecnologiaController {
 	
 	public Tecnologia deleteTecnologia(String nombre) throws Exception{
 		
+		ReferenciaController referenciaController = ReferenciaController.getInstance();
+		try{
+		referenciaController.getReferenciaTecnologia(nombre);
+		}catch(Exception e){
+			
+			throw new Exception("Se ha asociado esta tecnologia a una referencia recientemente por lo que necesita primero actualizar esta referencia.");
+		}
 		Tecnologia arbol = dao.getTecnologias();
 		borrarNodo(arbol,nombre,false);
 		encontrado = false;

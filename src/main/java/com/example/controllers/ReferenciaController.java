@@ -15,6 +15,7 @@ import javax.xml.bind.DatatypeConverter;
 
 
 
+
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
@@ -254,6 +255,26 @@ public class ReferenciaController {
 				actual.setTecnologias(tecnologiasReferencia);
 				dao.updateReferencia(actual.get_id(), actual);	
 			}
+		}	
+	}
+	public void getReferenciaTecnologia(String tecnologia) throws Exception {
+		
+		Iterator<ReferenciaWithAutoID> resource = dao.getReferencias();
+		ReferenciaWithAutoID actual ;
+		
+		while(resource.hasNext()){
+	
+			actual = resource.next();
+			String[] tecnologiasReferencia = actual.getTecnologias();
+			for(int i=0;i<tecnologiasReferencia.length; i++){
+				
+				if(tecnologiasReferencia[i].equals(tecnologia)){
+					
+					throw new Exception("Referencias asociadas a esta tecnologia");
+						
+				}	
+			}
+			
 		}	
 	}
 	
