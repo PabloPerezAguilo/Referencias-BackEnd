@@ -66,10 +66,10 @@ public class TecnologiaService extends Service{
 	@GET
 	@Path("/finales")
 	@ApiOperation(value = "Devuelve todas las tecnologias finales", notes = "listado de tecnologias(hojas)")
-	public Response getReferencia() {
+	public Response getTecnologiasFinal() {
 		try {
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
-			out = tecnologiaController.getTecnologiaFinales();
+			out = tecnologiaController.getTecnologiasFinales();
 			log.info("Get Referencia by key: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;

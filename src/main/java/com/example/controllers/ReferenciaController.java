@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
@@ -224,6 +225,10 @@ public class ReferenciaController {
 		return resource;
 	}
 
+	public void updateReferenciaTecnologia() {
+		
+	}
+	
 	/**
 	 * dropReferencia
 	 * Borra la coleccion de Referencias.

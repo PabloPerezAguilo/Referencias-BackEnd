@@ -169,6 +169,24 @@ public class ReferenciaService extends Service{
 		
 		return Response.status(status).entity(out).build();
 	}
+	@PUT
+	@Path("/tecnologias")
+	@ApiOperation(value = "Modifica las tecnologias de una referencia", notes = "Este actualizar esta pensado para sacar una tecnologia de una referencia y meter otra")
+	public Response updateReferenciaTecnologia(){
+		
+		try{
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = null;
+			referenciaController.updateReferenciaTecnologia();
+			log.info("Update Referencia : Operation successful");
+		}catch(Exception e){
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		
+		return Response.status(status).entity(out).build();
+	}
 	
 	
 }

@@ -37,7 +37,7 @@ public class TecnologiaController {
 		return dao.getTecnologia(nombre);
 		
 	}
-	public List<Tecnologia> getTecnologiaFinales( ) throws Exception {
+	public List<Tecnologia> getTecnologiasFinales( ) throws Exception {
 		
 		Tecnologia arbol = dao.getTecnologias();
 		List<Tecnologia> lista = getFinales(arbol);
@@ -234,7 +234,7 @@ public class TecnologiaController {
 		while(iteradorHijos.hasNext()){
 			
 			actual = iteradorHijos.next();
-			if(actual.getClase().equals("hoja")){
+			if(actual.getClase().equals("hoja")||actual.getClase().equals("hojaInvalida")){
 				
 				hojas.add(actual);
 				
