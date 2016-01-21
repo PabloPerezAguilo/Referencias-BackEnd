@@ -5,11 +5,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
+
+
+
+
 
 
 
@@ -22,6 +27,7 @@ import org.bson.types.ObjectId;
 
 import com.example.dao.ReferenciaDAO;
 import com.example.models.ReferenciaWithAutoID;
+import com.example.models.Tecnologia;
 import com.example.utils.Config;
 
 public class ReferenciaController {
@@ -234,28 +240,31 @@ public class ReferenciaController {
 		
 		Iterator<ReferenciaWithAutoID> resource = dao.getReferencias();
 		String anterior = tecnologias.get("anterior");
-		String nueva = tecnologias.get("anterior");
+		String nueva = tecnologias.get("nueva");
+		TecnologiaController tecnologiaController = TecnologiaController.getInstance();
+		Tecnologia existeTecnologia = tecnologiaController.getTecnologia(nueva);
+		System.out.println(existeTecnologia);
+		if(existeTecnologia == null ||!existeTecnologia.getClase().equals("hoja")){
+			
+			throw new Exception("La tecnologia a la que se intenta asociar las referencias no exite o no es una tecnologia terminal");
+		}
+		
 		ReferenciaWithAutoID actual ;
-		boolean cambiado = false;
 		while(resource.hasNext()){
 			
 			actual = resource.next();
 			String[] tecnologiasReferencia = actual.getTecnologias();
-			for(int i=0;i<tecnologiasReferencia.length || cambiado; i++){
-				
-				if(tecnologiasReferencia[i].equals(anterior)){
-					
-					tecnologiasReferencia[i]= nueva;
-					cambiado = true;	
-				}	
+			List<String> tecnologiasLista = new ArrayList<String>(Arrays.asList(tecnologiasReferencia));
+			tecnologiasLista.remove(anterior);
+			if(!tecnologiasLista.contains(nueva)){
+				tecnologiasLista.add(nueva);
 			}
+			tecnologiasReferencia = tecnologiasLista.toArray(new String[tecnologiasLista.size()]);
+			actual.setTecnologias(tecnologiasReferencia);
+			dao.updateReferencia(actual.get_id(), actual);
 			
-			if(cambiado){
-				cambiado = false;
-				actual.setTecnologias(tecnologiasReferencia);
-				dao.updateReferencia(actual.get_id(), actual);	
-			}
-		}	
+		}
+	
 	}
 	public void getReferenciaTecnologia(String tecnologia) throws Exception {
 		

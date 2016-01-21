@@ -47,7 +47,7 @@ public class InitDB {
 	}
 	public static void loadResources() throws Exception {
 		ReferenciaDAO resourceDAO = ReferenciaDAO.getInstance();
-		resourceDAO.clearStore();
+		//resourceDAO.clearStore();
 		//resourceDAO.insertReferencia(new ReferenciaWithAutoID("Banco BBVA","GFI Centro","BANK","MANT","SQA",null,10,"Denominacionguyup","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new String[]{"ERICS13 JG01001OU","UTEAV14 AP01001PS","UTEAV13 ST10003PO"},"Jose","pepes","rbrito","CodigoQR","borrador",null));
 		//resourceDAO.insertReferencia(new ReferenciaWithAutoID("Banco BBVA","GFI Centro","BANK","MANT","SQA",null,10,"Denominacionguyup","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new String[]{"ERICS13 JG01001OU","UTEAV14 AP01001PS","UTEAV13 ST10003PO"},"Jose","pepes","rbrito","CodigoQR","borrador",null));
 		//resourceDAO.insertReferencia(new ReferenciaWithAutoID("Banco BBVA","GFI Centro","BANK","MANT","SQA",null,10,"Denominacionguyup","resumenProyecto","problematicaCliente","solucionGfi","Java",10,"http://imagen.jpg","Si",new String[]{"ERICS13 JG01001OU","UTEAV14 AP01001PS","UTEAV13 ST10003PO"},"Jose","pepes","rbrito","CodigoQR","borrador",null));

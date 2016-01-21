@@ -34,7 +34,9 @@ public class TecnologiaController {
 	
 	public Tecnologia getTecnologia(String nombre) throws Exception {
 		
-		return dao.getTecnologia(nombre);
+		System.out.println(nombre);
+		Tecnologia arbol = dao.getTecnologias();
+		return existeNodo(arbol,nombre);
 		
 	}
 	public List<Tecnologia> getTecnologiasFinales( ) throws Exception {
@@ -194,24 +196,28 @@ public class TecnologiaController {
 		}
 		
 	}
-	private void existeNodo(Tecnologia busqueda, String nombre){
+	private Tecnologia existeNodo(Tecnologia busqueda, String nombre){
 		
 		List<Tecnologia> hijos = busqueda.getNodosHijos();
 		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
-		Tecnologia actual;
+		Tecnologia actual ;
 		while(iteradorHijos.hasNext()&& encontrado == false){
 			
 			actual = iteradorHijos.next();
 			if(nombre.equals(actual.getNombre())){
 				encontrado = true;
+				return actual;
 			}
 			if(actual.getNodosHijos()!=null){
-			existeNodo(actual,nombre);
+				Tecnologia resultado = existeNodo(actual,nombre);
+				if(resultado!=null){
+				return resultado;
+				}
 			}
 			
 			
 		}
-		
+		return null;	
 	}
 	private boolean existeNodo2(Tecnologia busqueda, String nombre){
 		
