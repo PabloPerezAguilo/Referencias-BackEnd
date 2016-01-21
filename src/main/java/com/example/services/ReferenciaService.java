@@ -1,5 +1,7 @@
 package com.example.services;
 
+import java.util.Map;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -172,12 +174,12 @@ public class ReferenciaService extends Service{
 	@PUT
 	@Path("/tecnologias")
 	@ApiOperation(value = "Modifica las tecnologias de una referencia", notes = "Este actualizar esta pensado para sacar una tecnologia de una referencia y meter otra")
-	public Response updateReferenciaTecnologia(){
+	public Response updateReferenciaTecnologia(Map<String,String> tecnologias){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			out = null;
-			referenciaController.updateReferenciaTecnologia();
+			referenciaController.updateReferenciaTecnologia(tecnologias);
+			out = new Message("Actualizacion correcta");
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

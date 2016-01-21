@@ -7,8 +7,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
+
+
+
 
 
 //import org.apache.commons.codec.binary.Base64;
@@ -225,8 +229,32 @@ public class ReferenciaController {
 		return resource;
 	}
 
-	public void updateReferenciaTecnologia() {
+	public void updateReferenciaTecnologia(Map<String,String> tecnologias) throws Exception {
 		
+		Iterator<ReferenciaWithAutoID> resource = dao.getReferencias();
+		String anterior = tecnologias.get("anterior");
+		String nueva = tecnologias.get("anterior");
+		ReferenciaWithAutoID actual ;
+		boolean cambiado = false;
+		while(resource.hasNext()){
+			
+			actual = resource.next();
+			String[] tecnologiasReferencia = actual.getTecnologias();
+			for(int i=0;i<tecnologiasReferencia.length || cambiado; i++){
+				
+				if(tecnologiasReferencia[i].equals(anterior)){
+					
+					tecnologiasReferencia[i]= nueva;
+					cambiado = true;	
+				}	
+			}
+			
+			if(cambiado){
+				cambiado = false;
+				actual.setTecnologias(tecnologiasReferencia);
+				dao.updateReferencia(actual.get_id(), actual);	
+			}
+		}	
 	}
 	
 	/**
