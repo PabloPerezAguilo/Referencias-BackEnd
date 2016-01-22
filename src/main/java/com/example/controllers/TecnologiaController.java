@@ -36,7 +36,9 @@ public class TecnologiaController {
 		
 		System.out.println(nombre);
 		Tecnologia arbol = dao.getTecnologias();
-		return existeNodo(arbol,nombre);
+		Tecnologia aux = existeNodo(arbol,nombre);
+		encontrado = false;
+		return aux;
 		
 	}
 	public List<Tecnologia> getTecnologiasFinales( ) throws Exception {
@@ -160,7 +162,10 @@ public class TecnologiaController {
 		System.out.println("entro borrar nodo");
 		while(iteradorHijos.hasNext()&& encontrado == false){
 			
+			System.out.println("dentro while");
 			actual = iteradorHijos.next();
+			System.out.println(nombre);
+			System.out.println(actual.getNombre());
 			if(nombre.equals(actual.getNombre())){
 				encontrado = true;
 				if(actual.getNodosHijos()==null || actual.getNodosHijos().isEmpty()||permitir){
