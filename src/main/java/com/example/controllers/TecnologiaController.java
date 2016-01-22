@@ -157,12 +157,15 @@ public class TecnologiaController {
 		List<Tecnologia> hijos = busqueda.getNodosHijos();
 		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
 		Tecnologia actual;
+		System.out.println("entro borrar nodo");
 		while(iteradorHijos.hasNext()&& encontrado == false){
 			
 			actual = iteradorHijos.next();
 			if(nombre.equals(actual.getNombre())){
 				encontrado = true;
 				if(actual.getNodosHijos()==null || actual.getNodosHijos().isEmpty()||permitir){
+				System.out.print("borrando:");
+				System.out.println(actual);
 				hijos.remove(actual);
 				}else{
 					throw new Exception("Error de borrado: El nodo contiene tecnologias asociadas a el");

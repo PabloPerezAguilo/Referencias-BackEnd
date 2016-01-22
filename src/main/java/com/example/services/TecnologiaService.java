@@ -103,6 +103,7 @@ public class TecnologiaService extends Service{
 	public Response deleteReferencia(@PathParam("nombre") String nombre){
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
+			System.out.println(nombre);
 			out = tecnologiaController.deleteTecnologia(nombre);
 			log.info("Delete tecnologia : Operation successful");
 		}catch(Exception e){
