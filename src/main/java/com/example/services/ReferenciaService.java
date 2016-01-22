@@ -192,7 +192,7 @@ public class ReferenciaService extends Service{
 	@GET
 	@Path("/tecnologias/{tecnologia}")
 	@ApiOperation(value = "Modifica las tecnologias de una referencia", notes = "Este actualizar esta pensado para sacar una tecnologia de una referencia y meter otra")
-	public Response getReferenciaTecnologia(@PathParam("key") String tecnologia){
+	public Response getReferenciaTecnologia(@PathParam("tecnologia") String tecnologia){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();

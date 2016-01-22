@@ -271,12 +271,15 @@ public class ReferenciaController {
 		Iterator<ReferenciaWithAutoID> resource = dao.getReferencias();
 		ReferenciaWithAutoID actual ;
 		
+		System.out.println("entro");
 		while(resource.hasNext()){
-	
+			
 			actual = resource.next();
 			String[] tecnologiasReferencia = actual.getTecnologias();
 			for(int i=0;i<tecnologiasReferencia.length; i++){
 				
+				System.out.println(tecnologiasReferencia[i]);
+				System.out.println(tecnologia);
 				if(tecnologiasReferencia[i].equals(tecnologia)){
 					
 					throw new Exception("Referencias asociadas a esta tecnologia");
