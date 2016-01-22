@@ -190,9 +190,9 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	@GET
-	@Path("/tecnologias")
+	@Path("/tecnologias/{tecnologia}")
 	@ApiOperation(value = "Modifica las tecnologias de una referencia", notes = "Este actualizar esta pensado para sacar una tecnologia de una referencia y meter otra")
-	public Response getReferenciaTecnologia(String tecnologia){
+	public Response getReferenciaTecnologia(@PathParam("key") String tecnologia){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
