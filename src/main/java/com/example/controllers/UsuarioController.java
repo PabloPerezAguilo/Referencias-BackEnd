@@ -188,12 +188,10 @@ public class UsuarioController {
 	        NamingEnumeration<?> results = ctx.search(base, filter, sc);        
 	        ArrayList<InformacionUsuarioLdap> usuarios = new ArrayList<InformacionUsuarioLdap>();
 	        
-	        //comentado para prueba sde front
+	       
 	       while (results.hasMore()) {
-	       // for(int i=0;i<10;i++) {
 	        	SearchResult sr = (SearchResult) results.next();
 	        	Attributes attrs = sr.getAttributes();
-	        	//System.out.println(attrs);
 	        	InformacionUsuarioLdap usuario = new InformacionUsuarioLdap(attrs);    
 	            usuarios.add(usuario);
 	        }

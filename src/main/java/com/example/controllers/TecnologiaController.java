@@ -34,7 +34,6 @@ public class TecnologiaController {
 	
 	public Tecnologia getTecnologia(String nombre) throws Exception {
 		
-		System.out.println(nombre);
 		Tecnologia arbol = dao.getTecnologias();
 		Tecnologia aux = existeNodo(arbol,nombre);
 		encontrado = false;
@@ -179,18 +178,12 @@ public class TecnologiaController {
 		List<Tecnologia> hijos = busqueda.getNodosHijos();
 		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
 		Tecnologia actual;
-		System.out.println("entro borrar nodo");
 		while(iteradorHijos.hasNext()&& encontrado == false){
 			
-			System.out.println("dentro while");
 			actual = iteradorHijos.next();
-			System.out.println(nombre);
-			System.out.println(actual.getNombre());
 			if(nombre.equals(actual.getNombre())){
 				encontrado = true;
 				if(actual.getNodosHijos()==null || actual.getNodosHijos().isEmpty()||permitir){
-				System.out.print("borrando:");
-				System.out.println(actual);
 				hijos.remove(actual);
 				}else{
 					throw new Exception("Error de borrado: El nodo contiene tecnologias asociadas a el");

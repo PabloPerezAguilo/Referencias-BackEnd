@@ -243,7 +243,6 @@ public class ReferenciaController {
 		String nueva = tecnologias.get("nueva");
 		TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 		Tecnologia existeTecnologia = tecnologiaController.getTecnologia(nueva);
-		System.out.println(existeTecnologia);
 		if(existeTecnologia == null ||!existeTecnologia.getClase().equals("hoja")){
 			
 			throw new Exception("La tecnologia a la que se intenta asociar las referencias no exite o no es una tecnologia terminal");
@@ -271,15 +270,12 @@ public class ReferenciaController {
 		Iterator<ReferenciaWithAutoID> resource = dao.getReferencias();
 		ReferenciaWithAutoID actual ;
 		
-		System.out.println("entro");
 		while(resource.hasNext()){
 			
 			actual = resource.next();
 			String[] tecnologiasReferencia = actual.getTecnologias();
 			for(int i=0;i<tecnologiasReferencia.length; i++){
 				
-				System.out.println(tecnologiasReferencia[i]);
-				System.out.println(tecnologia);
 				if(tecnologiasReferencia[i].equals(tecnologia)){
 					
 					throw new Exception("Referencias asociadas a esta tecnologia");
