@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import com.example.controllers.TecnologiaController;
-
+import com.example.models.Tecnologia;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -81,10 +81,8 @@ public class TecnologiaService extends Service{
 	
 	@POST
 	@ApiOperation(value = "Crea una nueva tecnologia", notes = "Crea una nueva tecnologia")
-	public Response postReferencia(Map<String,Object>  recursos) {
+	public Response postTecnologia(Map<String,Object>  recursos) {
 		try {
-			System.out.println(recursos.get("nodo"));
-			System.out.println("-------------------------");
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.createTecnologia(recursos);
 			log.info("Insert Referencia: Operation successful");
@@ -96,6 +94,22 @@ public class TecnologiaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	
+	
+	@POST
+	@Path("/pendientesValidar")
+	@ApiOperation(value = "Crea una nueva tecnologia", notes = "Crea una nueva tecnologia")
+	public Response postTecnologiaInvalida(Tecnologia recurso) {
+		try {
+			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
+			out = tecnologiaController.createTecnologiaInvalida(recurso);
+			log.info("Insert Referencia: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
 	
 	@DELETE
 	@Path("/{nombre}")

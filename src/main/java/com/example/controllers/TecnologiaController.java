@@ -67,6 +67,26 @@ public class TecnologiaController {
 			
 	}
 	
+	public Tecnologia createTecnologiaInvalida(Tecnologia recurso) throws Exception{
+		
+		Tecnologia arbol = dao.getTecnologias();
+		existeNodo(arbol,recurso.getNombre());
+		if(encontrado != true){
+			encontrado = false;
+			List<Tecnologia> origen = arbol.getNodosHijos();
+			List<Tecnologia> nueva = new ArrayList<Tecnologia>();
+			nueva.add(recurso);
+			nueva.addAll(origen);
+			arbol.setNodosHijos(nueva);
+			dao.updateTecnologia("Tecnologias",arbol);
+			return arbol;
+		}else{
+			encontrado = false;
+			throw new Exception("Error de creacion: Ese nombre de tecnologia ya existe");	
+		}
+			
+	}
+	
 	public Tecnologia deleteTecnologia(String nombre) throws Exception{
 		
 		ReferenciaController referenciaController = ReferenciaController.getInstance();
@@ -226,26 +246,6 @@ public class TecnologiaController {
 			
 		}
 		return null;	
-	}
-	private boolean existeNodo2(Tecnologia busqueda, String nombre){
-		
-		List<Tecnologia> hijos = busqueda.getNodosHijos();
-		Iterator<Tecnologia> iteradorHijos = hijos.iterator();
-		Tecnologia actual;
-		while(iteradorHijos.hasNext()&& encontrado == false){
-			
-			actual = iteradorHijos.next();
-			if(nombre.equals(actual.getNombre())){
-				return true;
-			}
-			if(actual.getNodosHijos()!=null){
-			return existeNodo2(actual,nombre);
-			}
-			
-			
-		}
-		return false;
-		
 	}
 	private List<Tecnologia> getFinales(Tecnologia busqueda){
 		
