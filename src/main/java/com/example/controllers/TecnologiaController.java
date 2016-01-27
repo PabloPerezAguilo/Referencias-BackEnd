@@ -93,7 +93,7 @@ public class TecnologiaController {
 		referenciaController.getReferenciaTecnologia(nombre);
 		}catch(Exception e){
 			
-			throw new Exception("Se ha asociado esta tecnologia a una referencia recientemente por lo que necesita primero actualizar esta referencia.");
+			throw new Exception("Esta tecnologia tiene referencias asociadas a ella. Si acaba de modificarlas es posible que alguien haya creado una recientemente mientras modificaba las anteriores.");
 		}
 		Tecnologia arbol = dao.getTecnologias();
 		borrarNodo(arbol,nombre,false);

@@ -102,7 +102,7 @@ public class TecnologiaService extends Service{
 		try {
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.createTecnologiaInvalida(recurso);
-			log.info("Insert Referencia: Operation successful");
+			log.info("Insert Tecnologia: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
