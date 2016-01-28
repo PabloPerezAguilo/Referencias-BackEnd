@@ -55,7 +55,7 @@ public class TecnologiaService extends Service{
 		try {
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.getTecnologia(nombre);
-			log.info("Get Referencia by key: Operation successful");
+			log.info("Get Tecnologia by key: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -70,7 +70,7 @@ public class TecnologiaService extends Service{
 		try {
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.getTecnologiasFinales();
-			log.info("Get Referencia by key: Operation successful");
+			log.info("Get Tecnologia finales : Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -85,7 +85,7 @@ public class TecnologiaService extends Service{
 		try {
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.createTecnologia(recursos);
-			log.info("Insert Referencia: Operation successful");
+			log.info("Insert Tecnologia: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -139,7 +139,7 @@ public class TecnologiaService extends Service{
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.updateTecnologia(recursos);
-			log.info("Update Referencia : Operation successful");
+			log.info("Update tecnologia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);

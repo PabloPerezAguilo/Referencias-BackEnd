@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -22,7 +23,6 @@ import com.example.dao.UsuarioLdapDAO;
 import com.example.filters.CustomAuthentication;
 import com.example.models.InformacionUsuarioLdap;
 import com.example.models.Usuario;
-import com.example.models.UsuarioLdap;
 import com.example.utils.Config;
 
 public class UsuarioController {
@@ -141,10 +141,12 @@ public class UsuarioController {
 	 * @return rol del usuario
 	 * @throws Exception
 	 */
-	public Usuario loginUserLdap(UsuarioLdap usuario) throws Exception {
+	public Usuario loginUserLdap(Map<String,String> usuario) throws Exception {
 		
+		String nick = (String)usuario.get("nick");
+		String pass = (String)usuario.get("password");;
 		// Comprobacion usuario en MongoDB
-		Usuario usu = dao.getUsuarioLogin(usuario.getNick());
+		Usuario usu = dao.getUsuarioLogin(nick);
 		if (usu == null) {
 			throw new Exception("User not found in DB");
 		}else{
@@ -152,7 +154,7 @@ public class UsuarioController {
 		}
 		
 		// conectar ldap y comprobar si esta con su pass 
-		UsuarioLdapDAO usuarioLdap = new UsuarioLdapDAO(usuario);
+		UsuarioLdapDAO usuarioLdap = new UsuarioLdapDAO(nick,pass);
 		Authentication authentication = usuarioLdap.loginLdap();
 		
 		if (authentication == null) {

@@ -1,6 +1,7 @@
 package com.example.services;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -13,7 +14,6 @@ import org.apache.log4j.Logger;
 
 import com.example.controllers.UsuarioController;
 import com.example.models.Usuario;
-import com.example.models.UsuarioLdap;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ public class LoginService {
 	 */
 	@POST
 	@ApiOperation(value = "Make login user", notes = "Comprueba usuario/password y devuelve el rol")
-	public Response login(UsuarioLdap usuario) {
+	public Response login(Map<String,String> usuario) {
 		
 		Status status = Response.Status.BAD_REQUEST;
 		Object out;
@@ -50,10 +50,10 @@ public class LoginService {
 			//outMap.put("name", );
 			out = outMap;
 			status = Response.Status.OK;
-			log.info("Login successful from user:" + usuario.getNick());
+			log.info("Login successful from user:" + (String)usuario.get("nick"));
 			
 		} catch (Exception e) {
-			log.error("Error in login from user " + usuario.getNick() + ": ", e);
+			log.error("Error in login from user " + (String)usuario.get("nick") + ": ", e);
 			out = new Message(e.getMessage());
 		}
 		return Response.status(status).entity(out).build();

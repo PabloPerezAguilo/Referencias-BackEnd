@@ -8,7 +8,6 @@ import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 
-import com.example.models.UsuarioLdap;
 import com.example.utils.Config;
 
 public class UsuarioLdapDAO {
@@ -16,10 +15,10 @@ public class UsuarioLdapDAO {
 	private String name;
 	private String password;
 	
-	public UsuarioLdapDAO(UsuarioLdap usuario){
+	public UsuarioLdapDAO(String nick, String password){
 		
-		name = usuario.getNick();
-		password = usuario.getPassword();
+		name = nick;
+		this.password = password;
 	}
 
 	/**
