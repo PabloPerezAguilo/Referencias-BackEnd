@@ -89,17 +89,17 @@ public class TecnologiaController {
 	public Tecnologia deleteTecnologia(String nombre) throws Exception{
 		
 		ReferenciaController referenciaController = ReferenciaController.getInstance();
-		try{
-		referenciaController.getReferenciaTecnologia(nombre);
-		}catch(Exception e){
-			
+		if(referenciaController.hayReferenciaAsociada(nombre)){
 			throw new Exception("Esta tecnologia tiene referencias asociadas a ella. Si acaba de modificarlas es posible que alguien haya creado una recientemente mientras modificaba las anteriores.");
+		}else{
+			
+			Tecnologia arbol = dao.getTecnologias();
+			borrarNodo(arbol,nombre,false);
+			encontrado = false;
+			dao.updateTecnologia("Tecnologias",arbol);
+			return arbol;	
 		}
-		Tecnologia arbol = dao.getTecnologias();
-		borrarNodo(arbol,nombre,false);
-		encontrado = false;
-		dao.updateTecnologia("Tecnologias",arbol);
-		return arbol;
+	
 	}
 	
 	public Tecnologia updateTecnologia(Map<String,Object> recursos) throws Exception{
