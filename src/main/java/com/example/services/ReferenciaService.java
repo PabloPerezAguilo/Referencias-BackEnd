@@ -190,14 +190,13 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	@GET
-	@Path("/tecnologias/{tecnologia}")
+	@Path("/asociadas/{tecnologia}")
 	@ApiOperation(value = "Modifica las tecnologias de una referencia", notes = "Este actualizar esta pensado para sacar una tecnologia de una referencia y meter otra")
 	public Response getReferenciaTecnologia(@PathParam("tecnologia") String tecnologia){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			referenciaController.getReferenciaTecnologia(tecnologia);
-			out = new Message("Tecnologia libre de referencias");
+			out = referenciaController.hayReferenciaAsociada(tecnologia);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

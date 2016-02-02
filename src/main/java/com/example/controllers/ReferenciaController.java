@@ -265,7 +265,7 @@ public class ReferenciaController {
 		}
 	
 	}
-	public void getReferenciaTecnologia(String tecnologia) throws Exception {
+	public boolean hayReferenciaAsociada(String tecnologia) throws Exception {
 		
 		Iterator<ReferenciaWithAutoID> resource = dao.getReferencias();
 		ReferenciaWithAutoID actual ;
@@ -278,12 +278,13 @@ public class ReferenciaController {
 				
 				if(tecnologiasReferencia[i].equals(tecnologia)){
 					
-					throw new Exception("Referencias asociadas a esta tecnologia");
+					return true;
 						
 				}	
 			}
 			
-		}	
+		}
+		return false;
 	}
 	
 	/**
