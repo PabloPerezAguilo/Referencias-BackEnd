@@ -59,9 +59,15 @@ public class ReferenciaController {
 		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
 		while (i.hasNext()) {
 			ReferenciaWithAutoID ref = i.next();
-			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
-			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
-			ref.setImagenProyecto(imagenBase);
+//			byte[] imagenByte = null;
+//			try{
+//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+//			}catch(Exception e){
+//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
+//			}
+//			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+//			ref.setImagenProyecto(imagenBase);
+			ref.setImagenProyecto(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png");
 			list.add(ref);
 		}
 		return list;
@@ -80,14 +86,15 @@ public class ReferenciaController {
 		Iterator<ReferenciaWithAutoID> i = dao.getReferenciasPendientes();
 		while (i.hasNext()) {
 			ReferenciaWithAutoID ref = i.next();
-			byte[] imagenByte = null;
-			try{
-			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
-			}catch(Exception e){
-			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
-			}
-			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
-			ref.setImagenProyecto(imagenBase);
+//			byte[] imagenByte = null;
+//			try{
+//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+//			}catch(Exception e){
+//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
+//			}
+//			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+//			ref.setImagenProyecto(imagenBase);
+			ref.setImagenProyecto(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png");
 			list.add(ref);
 		}
 		return list;
@@ -103,22 +110,23 @@ public class ReferenciaController {
 	public ReferenciaWithAutoID getReferencia(String key) throws Exception {
 		
 		ReferenciaWithAutoID resource = null;
-		try{
-			resource = dao.getReferencia(key);
-			if (resource == null) {
-			throw new IOException("Imagen no disponible");
-			}
-			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+resource.get_id()+".png"));
-			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
-			resource.setImagenProyecto(imagenBase);
-		}
-		catch (IOException eImagen) {
-			throw new IOException("Fallo al recoger la imagen del disco:"+eImagen.toString());
-		}
-		catch (Exception bdd) {
-			throw new Exception("Fallo al recoger la referencia de la BDD:"+bdd.toString());
-		}
-		
+//		try{
+//			resource = dao.getReferencia(key);
+//			if (resource == null) {
+//			throw new IOException("Imagen no disponible");
+//			}
+//			byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+resource.get_id()+".png"));
+//			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+//			resource.setImagenProyecto(imagenBase);
+//		}
+//		catch (IOException eImagen) {
+//			throw new IOException("Fallo al recoger la imagen del disco:"+eImagen.toString());
+//		}
+//		catch (Exception bdd) {
+//			throw new Exception("Fallo al recoger la referencia de la BDD:"+bdd.toString());
+//		}
+		resource = dao.getReferencia(key);
+		resource.setImagenProyecto(Config.getInstance().getProperty(Config.PATH_IMAGENES)+resource.get_id()+".png");
 		return resource;
 	}
 
