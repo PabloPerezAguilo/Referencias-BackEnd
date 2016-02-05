@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.example.controllers.UsuarioController;
 import com.example.models.Usuario;
+import com.example.utils.Config;
 import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -47,6 +48,7 @@ public class LoginService {
 			outMap.put("role", usu.getRole());
 			outMap.put("name", usu.getName());
 			outMap.put("nick", usu.getNick());
+			outMap.put("campos", Config.getInstance().getProperty(Config.CAMPOS_MODIFICAR));
 			//outMap.put("name", );
 			out = outMap;
 			status = Response.Status.OK;

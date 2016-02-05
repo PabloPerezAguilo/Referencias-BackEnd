@@ -39,6 +39,8 @@ public class ReferenciaWithAutoID implements Serializable {
 	private String codigoQr;
 	private String estado;
 	private String motivoRechazo;
+	private ObjectId idEnlaceOriginal;
+	private String autor;
 
 	public ReferenciaWithAutoID() {
 	}
@@ -265,25 +267,44 @@ public class ReferenciaWithAutoID implements Serializable {
 	public void setMotivoRechazo(String motivoRechazo) {
 		this.motivoRechazo = motivoRechazo;
 	}
+	
+	public ObjectId getIdEnlaceOriginal() {
+		return idEnlaceOriginal;
+	}
+
+	public void setIdEnlaceOriginal(ObjectId idEnlaceOriginal) {
+		this.idEnlaceOriginal = idEnlaceOriginal;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
 
 	@Override
 	public String toString() {
 		return "ReferenciaWithAutoID [_id=" + _id + ", cliente=" + cliente
 				+ ", sociedad=" + sociedad + ", sectorEmpresarial="
 				+ sectorEmpresarial + ", tipoProyecto=" + tipoProyecto
-				+ ", fechaInicio=" + fechaInicio + ", duracionMeses="
-				+ duracionMeses + ", denominacion=" + denominacion
-				+ ", resumenProyecto=" + resumenProyecto
-				+ ", problematicaCliente=" + problematicaCliente
-				+ ", solucionGfi=" + solucionGfi + ", tecnologias="
-				+ tecnologias + ", fteTotales=" + fteTotales
-				+ ", imagenProyecto=" + imagenProyecto + ", certificado="
-				+ certificado + ", regPedidoAsociadoReferencia="
+				+ ", tipoActividad=" + tipoActividad + ", fechaInicio="
+				+ fechaInicio + ", duracionMeses=" + duracionMeses
+				+ ", denominacion=" + denominacion + ", resumenProyecto="
+				+ resumenProyecto + ", problematicaCliente="
+				+ problematicaCliente + ", solucionGfi=" + solucionGfi
+				+ ", tecnologias=" + Arrays.toString(tecnologias)
+				+ ", fteTotales=" + fteTotales + ", imagenProyecto="
+				+ imagenProyecto + ", certificado=" + certificado
+				+ ", regPedidoAsociadoReferencia="
 				+ Arrays.toString(regPedidoAsociadoReferencia)
 				+ ", responsableComercial=" + responsableComercial
 				+ ", responsableTecnico=" + responsableTecnico
 				+ ", creadorReferencia=" + creadorReferencia + ", codigoQr="
-				+ codigoQr + ", estado=" + estado +", motivoRechazo=" + motivoRechazo +"]";
+				+ codigoQr + ", estado=" + estado + ", motivoRechazo="
+				+ motivoRechazo + ", idEnlaceOriginal=" + idEnlaceOriginal
+				+ ", autor=" + autor + "]";
 	}
 
 	

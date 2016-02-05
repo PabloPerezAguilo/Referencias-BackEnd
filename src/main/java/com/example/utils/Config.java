@@ -29,6 +29,8 @@ public class Config {
 	public static final String MAIL_SEND_MESSAGE = "mail.send.message";
 	/** Direccion donde guardamos las imagenes*/
 	public static final String PATH_IMAGENES = "pathImagenes";
+	/** campos que si los modificas tienes que validar d enuevo la referencia*/
+	public static final String CAMPOS_MODIFICAR = "camposModificar" ;
 
 	private Config() throws IOException {
 		String filename = "conf.properties";
