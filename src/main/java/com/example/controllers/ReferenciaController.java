@@ -21,6 +21,7 @@ import javax.xml.bind.DatatypeConverter;
 
 
 
+
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
@@ -106,8 +107,9 @@ public class ReferenciaController {
 	public ReferenciaWithAutoID getReferencia(String key) throws Exception {
 		
 		ReferenciaWithAutoID resource = null;
+		ObjectId id = new ObjectId(key);
 		try{
-			resource = dao.getReferencia(key);
+			resource = dao.getReferencia(id);
 			if (resource == null) {
 			throw new IOException("Imagen no disponible");
 			}
@@ -229,13 +231,23 @@ public class ReferenciaController {
 	 * @return Referencia
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID updateReferenciaEstado(String key,String estado, String motivoRechazo) throws Exception{
+	public ReferenciaWithAutoID updateReferenciaEstado(Map<String,Object>  recursos) throws Exception{
 		
-		ReferenciaWithAutoID resource = dao.getReferencia(key);
-		resource.setEstado(estado);
-		resource.setMotivoRechazo(motivoRechazo);
-		dao.updateReferencia(resource.get_id(),resource);
-		return resource;
+		ObjectId id = new ObjectId((String)recursos.get("id"));
+		ReferenciaWithAutoID referencia = dao.getReferencia(id);
+		if(recursos.get("estado").equals("borrador")){
+			referencia.setMotivoRechazo((String)recursos.get("motivoRechazo"));
+			
+		}else if(recursos.get("estado").equals("validado")&&(referencia.getIdEnlaceOriginal() != null || !referencia.getIdEnlaceOriginal().equals(""))){
+				
+				dao.deleteReferencia(referencia.getIdEnlaceOriginal());
+				referencia.setIdEnlaceOriginal(null);
+					
+		}
+		referencia.setEstado((String)recursos.get("estado"));
+		dao.updateReferencia(referencia.get_id(),referencia);
+		
+		return referencia;
 	}
 
 	public void updateReferenciaTecnologia(Map<String,String> tecnologias) throws Exception {

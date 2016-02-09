@@ -1,3 +1,4 @@
+
 package com.example.services;
 
 import java.util.Map;
@@ -78,7 +79,7 @@ public class ReferenciaService extends Service{
 	 */
 	@GET
 	@Path("/pendientes")
-	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
+	@ApiOperation(value = "Devuelve todas las referencias pendientes de validar", notes = "se manda en un listado de referencias")
 	public Response getReferenciasPendientes() {
 		try {
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
@@ -155,13 +156,14 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	@PUT
-	@Path("/{key}")
-	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
-	public Response updateReferenciaEstado(@PathParam("key") String key,String estado, String motivoRechazo){
+	@Path("/estado")
+	@ApiOperation(value = "Modifica el estado de una Referencia", notes = "Modifica el estado de una Referencia")
+	public Response updateReferenciaEstado(Map<String,Object>  recursos){
 		
 		try{
+			System.out.println(recursos);
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			out = referenciaController.updateReferenciaEstado(key,estado,motivoRechazo);
+			out = referenciaController.updateReferenciaEstado(recursos);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
@@ -191,7 +193,7 @@ public class ReferenciaService extends Service{
 	}
 	@GET
 	@Path("/asociadas/{tecnologia}")
-	@ApiOperation(value = "Modifica las tecnologias de una referencia", notes = "Este actualizar esta pensado para sacar una tecnologia de una referencia y meter otra")
+	@ApiOperation(value = "comprueba en todas las referencias si hay una tecnologia", notes = "si esa tecnologia esta en una referencia devuelve true")
 	public Response getReferenciaTecnologia(@PathParam("tecnologia") String tecnologia){
 		
 		try{
@@ -205,6 +207,8 @@ public class ReferenciaService extends Service{
 		}
 		
 		return Response.status(status).entity(out).build();
+	
+	
 	}
 	
 	
