@@ -86,7 +86,7 @@ public class ReferenciaService extends Service{
 			String user = SecurityContextHolder.getContext().getAuthentication().getName();
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.getReferenciasAsociadas(user);
-			log.info("Get Referencias Pendientes: Operation successful");
+			log.info("Get Referencias asociadas a una persona: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -102,7 +102,7 @@ public class ReferenciaService extends Service{
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.hayReferenciaAsociada(tecnologia);
-			log.info("Update Referencia : Operation successful");
+			log.info("referencia asociadas : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -118,9 +118,10 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Devuelve todas las referencias pendientes de validar", notes = "se manda en un listado de referencias")
 	public Response getReferenciasValidadas() {
 		try {
+			System.out.println("servicio correcto");
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.getReferenciasEstado("validada");
-			log.info("Get Referencias Pendientes: Operation successful");
+			log.info("Get Referencias validadass: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
