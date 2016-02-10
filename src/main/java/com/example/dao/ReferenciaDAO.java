@@ -38,8 +38,8 @@ public class ReferenciaDAO {
 	 * @return Iterator<ReferenciaWithAutoID>
 	 * @throws Exception
 	 */
-	public Iterator<ReferenciaWithAutoID> getReferenciasPendientes() throws Exception {
-		return dao.find("{'estado':'pendiente'}").as(ReferenciaWithAutoID.class).iterator();
+	public Iterator<ReferenciaWithAutoID> getReferenciasEstado(String estado) throws Exception {
+		return dao.find("{'estado':'"+estado+"'}").as(ReferenciaWithAutoID.class).iterator();
 	}
 	
 	/**

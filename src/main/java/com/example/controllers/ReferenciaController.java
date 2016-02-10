@@ -10,16 +10,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
+
+
+
 import javax.xml.bind.DatatypeConverter;
-
-
-
-
-
-
-
-
-
 
 
 //import org.apache.commons.codec.binary.Base64;
@@ -78,10 +73,32 @@ public class ReferenciaController {
 	 * @return List<ReferenciaWithAutoID> 
 	 * @throws Exception
 	 */
-	public List<ReferenciaWithAutoID> getReferenciasPendientes() throws Exception {
+	public List<ReferenciaWithAutoID> getReferenciasAsociadas(String user) throws Exception {
+		
+		List<ReferenciaWithAutoID> list = new ArrayList<>();
+		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
+		while (i.hasNext()) {
+			ReferenciaWithAutoID ref = i.next();
+			if(!ref.getEstado().equals("validada") && (ref.getAutor().equals(user) || ref.getResponsableComercial().equals(user) || ref.getResponsableTecnico().equals(user))){
+				
+			
+				byte[] imagenByte = null;
+				try{
+					imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+				}catch(Exception e){
+					imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
+				}
+				String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+				ref.setImagenProyecto(imagenBase);
+				list.add(ref);
+			}
+		}
+		return list;
+	}
+	public List<ReferenciaWithAutoID> getReferenciasEstado(String estado) throws Exception {
 		// Transform an iterator object to a list
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
-		Iterator<ReferenciaWithAutoID> i = dao.getReferenciasPendientes();
+		Iterator<ReferenciaWithAutoID> i = dao.getReferenciasEstado(estado);
 		while (i.hasNext()) {
 			ReferenciaWithAutoID ref = i.next();
 			byte[] imagenByte = null;
@@ -195,8 +212,11 @@ public class ReferenciaController {
 	 * @return Referencia
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID updateReferencia(ObjectId key, ReferenciaWithAutoID r) throws Exception{
+	public ReferenciaWithAutoID updateReferencia(ReferenciaWithAutoID r) throws Exception{
 		
+		ObjectId key = r.get_id();
+		// lanza exception si no se puede realizar el update
+		comprobarCampos(Config.getInstance().getProperty(Config.CAMPOS_MODIFICAR),r);
 		//al actualizar la referencia borramos el campo imagen ya que la guardamos en disco
 		String imagen = r.getImagenProyecto();
 		r.setImagenProyecto("");
@@ -308,4 +328,143 @@ public class ReferenciaController {
 	public void dropReferencia() {
 		dao.clearStore();
 	}
+	public boolean comprobarCampos(String campos, ReferenciaWithAutoID r) throws Exception{
+		
+		ReferenciaWithAutoID rOld = dao.getReferencia(r.get_id());
+		String[] arrayCampos = campos.split(",");
+		for(int i=0; i<arrayCampos.length;i++){
+			
+			if(arrayCampos[i].equals("cliente")){
+				
+				if(!rOld.getCliente().equals(r.getCliente())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Cliente");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("sociedad")){
+				
+				if(!rOld.getSociedad().equals(r.getSociedad())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Sociedad");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("sectorEmpresarial")){
+				
+				if(!rOld.getSectorEmpresarial().equals(r.getSectorEmpresarial())){
+					throw new Exception("Se han modificado campos que no permite la edicion: S.empresarial");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("tipoActividad")){
+				
+				if(!rOld.getTipoActividad().equals(r.getTipoActividad())){
+					throw new Exception("Se han modificado campos que no permite la edicion: T.actividad");
+				}
+			}
+			else if(arrayCampos[i].equals("tipoProyecto")){
+				
+				if(!rOld.getTipoProyecto().equals(r.getTipoProyecto())){
+					throw new Exception("Se han modificado campos que no permite la edicion: T.proyecto");
+				}
+	
+			}
+			else if(arrayCampos[i].equals("fechaInicio")){
+				
+				if(!rOld.getFechaInicio().equals(r.getFechaInicio())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Fecha");
+				}
+			}
+			else if(arrayCampos[i].equals("duracionMeses")){
+				
+				if(rOld.getDuracionMeses()!= r.getDuracionMeses()){
+					throw new Exception("Se han modificado campos que no permite la edicion: Duracion");
+				}
+	
+			}
+			else if(arrayCampos[i].equals("denominacion")){
+	
+				if(!rOld.getDenominacion().equals(r.getDenominacion())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Denominacion");
+				}
+			}
+			else if(arrayCampos[i].equals("resumen")){
+				
+				if(!rOld.getResumenProyecto().equals(r.getResumenProyecto())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Resumen");
+				}
+			}
+			else if(arrayCampos[i].equals("problematicaCliente")){
+				
+				if(!rOld.getProblematicaCliente().equals(r.getProblematicaCliente())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Problematica");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("solucionGfi")){
+				
+				if(!rOld.getSolucionGfi().equals(r.getSolucionGfi())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Solucion");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("fteTotales")){
+				
+				if(rOld.getFteTotales() != r.getFteTotales()){
+					throw new Exception("Se han modificado campos que no permite la edicion: Fte");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("certificado")){
+				
+				if(!rOld.getCertificado().equals(r.getCertificado())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Certificado");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("responsableTecnico")){
+					
+				if(!rOld.getResponsableTecnico().equals(r.getResponsableTecnico())){
+					throw new Exception("Se han modificado campos que no permite la edicion: R.tecnico");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("responsableComercial")){
+				
+				if(!rOld.getResponsableComercial().equals(r.getResponsableComercial())){
+					throw new Exception("Se han modificado campos que no permite la edicion: R.comercial");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("codigoQr")){
+				
+				if(!rOld.getCodigoQr().equals(r.getCodigoQr())){
+					throw new Exception("Se han modificado campos que no permite la edicion: Codigo Qr");
+				}
+				
+				
+			}
+			else if(arrayCampos[i].equals("tecnologiasSeleccionadas")){
+				
+				List<String> tecnologiasOld = new ArrayList<String>(Arrays.asList(rOld.getTecnologias()));
+				List<String> tecnologias = new ArrayList<String>(Arrays.asList(r.getTecnologias()));
+				if(!tecnologias.containsAll(tecnologiasOld) && !tecnologiasOld.containsAll(tecnologias)){
+					throw new Exception("Se han modificado campos que no permite la edicion: Tecnologias");
+				}
+				
+			}
+			else if(arrayCampos[i].equals("imagenProyecto")){
+				
+				byte[] imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+rOld.get_id()+".png"));
+				String imagen = DatatypeConverter.printBase64Binary(imagenByte);
+				if(!rOld.getImagenProyecto().equals(imagen)){
+					throw new Exception("Se han modificado campos que no permite la edicion : Imagen");
+				}
+			}
+		
+		}
+		return true;
+		
+	}
+
+	
 }

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.controllers.ReferenciaController;
 import com.example.models.ReferenciaWithAutoID;
@@ -78,12 +79,62 @@ public class ReferenciaService extends Service{
 	 * @return Referencias
 	 */
 	@GET
+	@Path("/asociadas")
+	@ApiOperation(value = "Devuelve todas las referencias asociadas a una persona que no estan validadas", notes = "se manda en un listado de referencias")
+	public Response getReferenciasAsociadas() {
+		try {
+			String user = SecurityContextHolder.getContext().getAuthentication().getName();
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.getReferenciasAsociadas(user);
+			log.info("Get Referencias Pendientes: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
+	@GET
+	@Path("/asociadas/{tecnologia}")
+	@ApiOperation(value = "comprueba en todas las referencias si hay una tecnologia", notes = "si esa tecnologia esta en una referencia devuelve true")
+	public Response getReferenciaTecnologia(@PathParam("tecnologia") String tecnologia){
+		
+		try{
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.hayReferenciaAsociada(tecnologia);
+			log.info("Update Referencia : Operation successful");
+		}catch(Exception e){
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		
+		return Response.status(status).entity(out).build();
+	
+	
+	}
+	@GET
+	@Path("/validadas")
+	@ApiOperation(value = "Devuelve todas las referencias pendientes de validar", notes = "se manda en un listado de referencias")
+	public Response getReferenciasValidadas() {
+		try {
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.getReferenciasEstado("validada");
+			log.info("Get Referencias Pendientes: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
+	@GET
 	@Path("/pendientes")
 	@ApiOperation(value = "Devuelve todas las referencias pendientes de validar", notes = "se manda en un listado de referencias")
 	public Response getReferenciasPendientes() {
 		try {
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			out = referenciaController.getReferenciasPendientes();
+			out = referenciaController.getReferenciasEstado("pendiente");
 			log.info("Get Referencias Pendientes: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
@@ -102,6 +153,8 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Crea una nueva referencia", notes = "Crea una nueva referencia")
 	public Response postReferencia(ReferenciaWithAutoID r) {
 		try {
+			String user = SecurityContextHolder.getContext().getAuthentication().getName();
+			r.setAutor(user);
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.createReferencia(r);
 			log.info("Insert Referencia: Operation successful");
@@ -145,7 +198,7 @@ public class ReferenciaService extends Service{
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			out = referenciaController.updateReferencia(r.get_id(),r);
+			out = referenciaController.updateReferencia(r);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
@@ -191,25 +244,7 @@ public class ReferenciaService extends Service{
 		
 		return Response.status(status).entity(out).build();
 	}
-	@GET
-	@Path("/asociadas/{tecnologia}")
-	@ApiOperation(value = "comprueba en todas las referencias si hay una tecnologia", notes = "si esa tecnologia esta en una referencia devuelve true")
-	public Response getReferenciaTecnologia(@PathParam("tecnologia") String tecnologia){
-		
-		try{
-			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			out = referenciaController.hayReferenciaAsociada(tecnologia);
-			log.info("Update Referencia : Operation successful");
-		}catch(Exception e){
-			status = Response.Status.BAD_REQUEST;
-			log.error("Error detected: ", e);
-			out = new Message(e.getMessage());
-		}
-		
-		return Response.status(status).entity(out).build();
 	
-	
-	}
 	
 	
 }
