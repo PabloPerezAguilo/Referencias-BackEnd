@@ -15,12 +15,13 @@
 		<!-- REFERENCIA -->
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="GET"/>
 		<intercept-url pattern="/api/referencia/pendientes/**" access="ROLE_VALIDADOR" method="GET"/>
+		<intercept-url pattern="/api/referencia/estado/**" access="ROLE_VALIDADOR" method="PUT"/>
+		<intercept-url pattern="/api/referencia/asociadas" access="ROLE_MANTENIMIENTO" method="DELETE"/>
 		<intercept-url pattern="/api/referencia/validadas/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_CONSULTOR,ROLE_VALIDADOR" method="GET"/>
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="POST"/>
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="PUT"/>
-		<intercept-url pattern="/api/referencia/estado/**" access="ROLE_VALIDADOR" method="PUT"/>
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
-		<intercept-url pattern="/api/referencia/asociadas" access="ROLE_MANTENIMIENTO" method="DELETE"/>
+		
 		<!-- USUARIOS -->
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="GET"/>
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="POST"/>

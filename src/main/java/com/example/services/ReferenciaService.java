@@ -52,27 +52,6 @@ public class ReferenciaService extends Service{
 		}
 		return Response.status(status).entity(out).build();
 	}
-
-	/**
-	 * GET Referencia
-	 * @param key
-	 * @return Referencia
-	 */
-	@GET
-	@Path("/{key}")
-	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
-	public Response getReferencia(@PathParam("key") String key) {
-		try {
-			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			out = referenciaController.getReferencia(key);
-			log.info("Get Referencia by key: Operation successful");
-		} catch (Exception e) {
-			status = Response.Status.BAD_REQUEST;
-			log.error("Error detected: ", e);
-			out = new Message(e.getMessage());
-		}
-		return Response.status(status).entity(out).build();
-	}
 	
 	/**
 	 * GET ReferenciasPendientes
@@ -114,6 +93,21 @@ public class ReferenciaService extends Service{
 	
 	}
 	@GET
+	@Path("/copia")
+	@ApiOperation(value = "Devuelve todas las referencias asociadas a una persona que no estan validadas", notes = "se manda en un listado de referencias")
+	public Response updateReferenciasAsociadas(ObjectId key) {
+		try {
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.getReferenciaCopia(key);
+			log.info("Get Referencias asociadas a una persona: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
+	@GET
 	@Path("/validadas")
 	@ApiOperation(value = "Devuelve todas las referencias pendientes de validar", notes = "se manda en un listado de referencias")
 	public Response getReferenciasValidadas() {
@@ -144,7 +138,21 @@ public class ReferenciaService extends Service{
 		}
 		return Response.status(status).entity(out).build();
 	}
-
+	@GET
+	@Path("/{key}")
+	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
+	public Response getReferencia(@PathParam("key") String key) {
+		try {
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.getReferencia(key);
+			log.info("Get Referencia by key: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
 	/**
 	 * POST Referencia
 	 * @param r

@@ -14,7 +14,19 @@ import java.util.Map;
 
 
 
+
+
+
+
+
+
 import javax.xml.bind.DatatypeConverter;
+
+
+
+
+
+
 
 
 //import org.apache.commons.codec.binary.Base64;
@@ -22,8 +34,10 @@ import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
 
 import com.example.dao.ReferenciaDAO;
+import com.example.dao.UsuarioDAO;
 import com.example.models.ReferenciaWithAutoID;
 import com.example.models.Tecnologia;
+import com.example.models.Usuario;
 import com.example.utils.Config;
 
 public class ReferenciaController {
@@ -112,6 +126,28 @@ public class ReferenciaController {
 			list.add(ref);
 		}
 		return list;
+	}
+	public ReferenciaWithAutoID getReferenciaCopia(ObjectId key) throws Exception {
+		
+		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
+		while (i.hasNext()) {
+			ReferenciaWithAutoID ref = i.next();
+			if(ref.getIdEnlaceOriginal().equals(key)){
+				byte[] imagenByte = null;
+				try{
+				imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+				}catch(Exception e){
+				imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
+				}
+				String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+				ref.setImagenProyecto(imagenBase);
+				return ref;	
+			}
+			
+		}
+		ReferenciaWithAutoID vacia = new ReferenciaWithAutoID();
+		vacia.setAutor("vacia");
+		return vacia;	
 	}
 
 	/**
@@ -204,14 +240,6 @@ public class ReferenciaController {
 		}
 		return key;
 	}
-	
-	/**
-	 * updateReferencia
-	 * @param key | Clave para identificar la referencia en la base de datos
-	 * @param r | Objeto Referencia que se modificará en la base de datos
-	 * @return Referencia
-	 * @throws Exception
-	 */
 	public ReferenciaWithAutoID updateReferencia(ReferenciaWithAutoID r) throws Exception{
 		
 		ObjectId key = r.get_id();
@@ -223,12 +251,12 @@ public class ReferenciaController {
 				
 		// hacer la comprobacion de la imagen nos supone mas coste que sobreescribirla, aunque sea la misma, por tanto lo hacemos.
 		try {
-					
+			//bug!!!!!!		
 			dao.updateReferencia(key,r);	
 			byte[] imagenByte = DatatypeConverter.parseBase64Binary(imagen);
 			//guardamos en disco la imagen usando como nombre el id de su referencia
 			File archivo = new File(Config.getInstance().getProperty(Config.PATH_IMAGENES)+key+".png");
-			if(!archivo.delete()){
+			if(  archivo.exists() && !archivo.delete() ){
 				throw new Exception("la imagen no ha podido cargarse en el servidor");
 			}
 			FileUtils.writeByteArrayToFile(archivo,imagenByte);
@@ -465,6 +493,5 @@ public class ReferenciaController {
 		return true;
 		
 	}
-
 	
 }
