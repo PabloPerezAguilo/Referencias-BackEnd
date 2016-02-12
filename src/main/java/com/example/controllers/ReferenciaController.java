@@ -93,9 +93,9 @@ public class ReferenciaController {
 		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
 		while (i.hasNext()) {
 			ReferenciaWithAutoID ref = i.next();
-			if(!ref.getEstado().equals("validada") && (ref.getAutor().equals(user) || ref.getResponsableComercial().equals(user) || ref.getResponsableTecnico().equals(user))){
+			// este if sirve para coger lar referencias cuyo estado no es validado y el usuario esta como autor o uno de los gerentes, requiere una comprobacion de nullpoiunter porque el campo de responsables puede estar vacio
+			if(!ref.getEstado().equals("validada") && (ref.getAutor().equals(user) || (ref.getResponsableComercial()!=null && ref.getResponsableComercial().equals(user)) || (ref.getResponsableTecnico() != null && ref.getResponsableTecnico().equals(user)))){
 				
-			
 				byte[] imagenByte = null;
 				try{
 					imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
