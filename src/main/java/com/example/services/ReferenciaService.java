@@ -93,9 +93,9 @@ public class ReferenciaService extends Service{
 	
 	}
 	@GET
-	@Path("/copia")
+	@Path("/copia/{key}")
 	@ApiOperation(value = "Devuelve todas las referencias asociadas a una persona que no estan validadas", notes = "se manda en un listado de referencias")
-	public Response updateReferenciasAsociadas(ObjectId key) {
+	public Response updateReferenciasAsociadas(@PathParam("key") ObjectId key) {
 		try {
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.getReferenciaCopia(key);
