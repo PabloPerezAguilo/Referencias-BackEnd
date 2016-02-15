@@ -1,5 +1,22 @@
 package com.example.controllers;
 
+
+//import org.docx4j.openpackaging.packages.SpreadsheetMLPackage;
+//import org.docx4j.openpackaging.parts.Part;
+//import org.docx4j.openpackaging.parts.PartName;
+//import org.docx4j.openpackaging.parts.Parts;
+//import org.docx4j.openpackaging.parts.SpreadsheetML.SharedStrings;
+//import org.docx4j.openpackaging.parts.SpreadsheetML.WorksheetPart;
+//import org.xlsx4j.jaxb.Context;
+//import org.xlsx4j.sml.CTRst;
+//import org.xlsx4j.sml.CTSst;
+//import org.xlsx4j.sml.CTXstringWhitespace;
+//import org.xlsx4j.sml.Cell;
+//import org.xlsx4j.sml.Row;
+//import org.xlsx4j.sml.STCellType;
+//import org.xlsx4j.sml.SheetData;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,17 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
-
-
-
-
-
-
 import javax.xml.bind.DatatypeConverter;
+
 
 
 
@@ -43,10 +51,12 @@ import com.example.utils.Config;
 public class ReferenciaController {
 
 	private static ReferenciaDAO dao;
+	private static UsuarioDAO usuarioDao;
 	private static ReferenciaController singleton;
 
 	private ReferenciaController() throws Exception {
 		dao = ReferenciaDAO.getInstance();
+		usuarioDao = UsuarioDAO.getInstance();
 	}
 
 	public static ReferenciaController getInstance() throws Exception {
@@ -91,10 +101,12 @@ public class ReferenciaController {
 		
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
 		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
+		Usuario usuarioAplicacion = usuarioDao.getUsuario(user);
 		while (i.hasNext()) {
+			
 			ReferenciaWithAutoID ref = i.next();
-			// este if sirve para coger lar referencias cuyo estado no es validado y el usuario esta como autor o uno de los gerentes, requiere una comprobacion de nullpoiunter porque el campo de responsables puede estar vacio
-			if(!ref.getEstado().equals("validada") && (ref.getAutor().equals(user) || (ref.getResponsableComercial()!=null && ref.getResponsableComercial().equals(user)) || (ref.getResponsableTecnico() != null && ref.getResponsableTecnico().equals(user)))){
+			// este if sirve para coger lar referencias cuyo estado no es validado y el usuario esta como autor o uno de los gerentes, requiere una comprobacion de nullpoiunter porque el campo de responsables puede estar vacio, si eres el administrador ves todas!!!
+			if(!ref.getEstado().equals("validada") && ((ref.getAutor().equals(user) || (ref.getResponsableComercial()!=null && ref.getResponsableComercial().equals(user)) || (ref.getResponsableTecnico() != null && ref.getResponsableTecnico().equals(user)))|| usuarioAplicacion.getRole().equals("ROLE_ADMINISTRADOR"))){
 				
 				byte[] imagenByte = null;
 				try{
@@ -157,12 +169,11 @@ public class ReferenciaController {
 	 * @return ReferenciaWithAutoID
 	 * @throws Exception
 	 */
-	public ReferenciaWithAutoID getReferencia(String key) throws Exception {
+	public ReferenciaWithAutoID getReferencia(ObjectId key) throws Exception {
 		
 		ReferenciaWithAutoID resource = null;
-		ObjectId id = new ObjectId(key);
 		try{
-			resource = dao.getReferencia(id);
+			resource = dao.getReferencia(key);
 			if (resource == null) {
 			throw new IOException("Imagen no disponible");
 			}
@@ -243,8 +254,12 @@ public class ReferenciaController {
 	public ReferenciaWithAutoID updateReferencia(ReferenciaWithAutoID r) throws Exception{
 		
 		ObjectId key = r.get_id();
-		// lanza exception si no se puede realizar el update
+		
+		if(!r.getEstado().equals("validada")){
+		// lanza exception si no se puede realizar el update sobre una referencia validada
 		comprobarCampos(Config.getInstance().getProperty(Config.CAMPOS_MODIFICAR),r);
+		}
+		
 		//al actualizar la referencia borramos el campo imagen ya que la guardamos en disco
 		String imagen = r.getImagenProyecto();
 		r.setImagenProyecto("");
@@ -283,13 +298,18 @@ public class ReferenciaController {
 		
 		ObjectId id = new ObjectId((String)recursos.get("id"));
 		ReferenciaWithAutoID referencia = dao.getReferencia(id);
+		System.out.println("si");
 		if(recursos.get("estado").equals("borrador")){
+			
 			referencia.setMotivoRechazo((String)recursos.get("motivoRechazo"));
 			
-		}else if(recursos.get("estado").equals("validado")&&(referencia.getIdEnlaceOriginal() != null || !referencia.getIdEnlaceOriginal().equals(""))){
+		}else if(recursos.get("estado").equals("validada")&&(referencia.getIdEnlaceOriginal() != null && !referencia.getIdEnlaceOriginal().equals(""))){
 				
+				System.out.println("no");
 				dao.deleteReferencia(referencia.getIdEnlaceOriginal());
+				System.out.println("no");
 				referencia.setIdEnlaceOriginal(null);
+				System.out.println("no");
 					
 		}
 		referencia.setEstado((String)recursos.get("estado"));
@@ -347,6 +367,68 @@ public class ReferenciaController {
 			
 		}
 		return false;
+	}
+	
+	public void exportar(ObjectId key) throws Exception {
+		
+//		//ReferenciaWithAutoID resource = getReferencia(key);
+//		// Create a new spreadsheet package
+//		SpreadsheetMLPackage pkg = SpreadsheetMLPackage.createPackage();
+//		 
+//		// Create a new worksheet part and retrieve the sheet data
+//		WorksheetPart sheet = pkg.createWorksheetPart(new PartName("/xl/worksheets/sheet1.xml"), "Sheet 1", 1);
+//		SheetData sheetData = sheet.getJaxbElement().getSheetData();
+//		 
+//		// Keep track of how many strings we've added
+//		long sharedStringCounter = 0;
+//		 
+//		// Create a new row
+//		Row row = Context.getsmlObjectFactory().createRow();
+//		 
+//		// Create a shared strings table instance
+//		CTSst sharedStringTable = new CTSst();
+//		CTXstringWhitespace ctx;
+//		CTRst crt;
+//		 
+//		// Create 10 cells and add them to the row
+//		for (int i = 0; i < 10; i++) {
+//			
+//			// Create a shared string
+//			crt = new CTRst();
+//			ctx = Context.getsmlObjectFactory().createCTXstringWhitespace();
+//			ctx.setValue("Shared string text " + Integer.toString(i + 1));
+//			crt.setT(ctx);
+//		    
+//			// Add it to the shared string table
+//			sharedStringTable.getSi().add(crt);
+//		 
+//			// Add a reference to the shared string to our cell using the counter
+//		    Cell cell = Context.getsmlObjectFactory().createCell();
+//		    cell.setT(STCellType.S);
+//		    cell.setV(String.valueOf(sharedStringCounter));
+//		    
+//		    // Add the cell to the row and increment the counter
+//		    row.getC().add(cell);
+//		    sharedStringCounter++;
+//		}
+//		 
+//		// Add the row to our sheet
+//		sheetData.getRow().add(row);
+//		 
+//		// Set the string and unique string counts on the shared string table
+//		sharedStringTable.setCount(sharedStringCounter);
+//		sharedStringTable.setUniqueCount(sharedStringCounter);
+//		 
+//		// Create a SharedStrings workbook part 
+//		SharedStrings sharedStrings = new SharedStrings(new PartName("/xl/sharedStrings.xml"));
+//		 
+//		// Add the shared string table to the part
+//		sharedStrings.setJaxbElement(sharedStringTable);
+//		 
+//		// Then add the part to the workbook
+//		Parts parts = pkg.getParts();
+//		Part workBook = parts.get( new PartName("/xl/workbook.xml") );
+//		workBook.addTargetPart(sharedStrings);
 	}
 	
 	/**

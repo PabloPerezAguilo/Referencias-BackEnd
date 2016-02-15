@@ -141,7 +141,7 @@ public class ReferenciaService extends Service{
 	@GET
 	@Path("/{key}")
 	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
-	public Response getReferencia(@PathParam("key") String key) {
+	public Response getReferencia(@PathParam("key") ObjectId key) {
 		try {
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.getReferencia(key);
@@ -243,6 +243,24 @@ public class ReferenciaService extends Service{
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			referenciaController.updateReferenciaTecnologia(tecnologias);
+			out = new Message("Actualizacion correcta");
+			log.info("Update Referencia : Operation successful");
+		}catch(Exception e){
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		
+		return Response.status(status).entity(out).build();
+	}
+	@GET
+	@Path("/plantillas/{key}")
+	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
+	public Response exportar(@PathParam("key") ObjectId key){
+		
+		try{
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			referenciaController.exportar(key);
 			out = new Message("Actualizacion correcta");
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
