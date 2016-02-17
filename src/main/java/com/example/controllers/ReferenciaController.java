@@ -37,9 +37,37 @@ import javax.xml.bind.DatatypeConverter;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
+import org.docx4j.openpackaging.packages.SpreadsheetMLPackage;
+import org.docx4j.openpackaging.parts.Part;
+import org.docx4j.openpackaging.parts.PartName;
+import org.docx4j.openpackaging.parts.Parts;
+import org.docx4j.openpackaging.parts.SpreadsheetML.SharedStrings;
+import org.docx4j.openpackaging.parts.SpreadsheetML.WorksheetPart;
+import org.xlsx4j.jaxb.Context;
+import org.xlsx4j.sml.CTRst;
+import org.xlsx4j.sml.CTSst;
+import org.xlsx4j.sml.CTXstringWhitespace;
+import org.xlsx4j.sml.Cell;
+import org.xlsx4j.sml.Row;
+import org.xlsx4j.sml.STCellType;
+import org.xlsx4j.sml.SheetData;
 
 import com.example.dao.ReferenciaDAO;
 import com.example.dao.UsuarioDAO;
@@ -255,7 +283,7 @@ public class ReferenciaController {
 		
 		ObjectId key = r.get_id();
 		
-		if(!r.getEstado().equals("validada")){
+		if(r.getEstado().equals("validada")){
 		// lanza exception si no se puede realizar el update sobre una referencia validada
 		comprobarCampos(Config.getInstance().getProperty(Config.CAMPOS_MODIFICAR),r);
 		}
@@ -371,64 +399,64 @@ public class ReferenciaController {
 	
 	public void exportar(ObjectId key) throws Exception {
 		
-//		//ReferenciaWithAutoID resource = getReferencia(key);
-//		// Create a new spreadsheet package
-//		SpreadsheetMLPackage pkg = SpreadsheetMLPackage.createPackage();
-//		 
-//		// Create a new worksheet part and retrieve the sheet data
-//		WorksheetPart sheet = pkg.createWorksheetPart(new PartName("/xl/worksheets/sheet1.xml"), "Sheet 1", 1);
-//		SheetData sheetData = sheet.getJaxbElement().getSheetData();
-//		 
-//		// Keep track of how many strings we've added
-//		long sharedStringCounter = 0;
-//		 
-//		// Create a new row
-//		Row row = Context.getsmlObjectFactory().createRow();
-//		 
-//		// Create a shared strings table instance
-//		CTSst sharedStringTable = new CTSst();
-//		CTXstringWhitespace ctx;
-//		CTRst crt;
-//		 
-//		// Create 10 cells and add them to the row
-//		for (int i = 0; i < 10; i++) {
-//			
-//			// Create a shared string
-//			crt = new CTRst();
-//			ctx = Context.getsmlObjectFactory().createCTXstringWhitespace();
-//			ctx.setValue("Shared string text " + Integer.toString(i + 1));
-//			crt.setT(ctx);
-//		    
-//			// Add it to the shared string table
-//			sharedStringTable.getSi().add(crt);
-//		 
-//			// Add a reference to the shared string to our cell using the counter
-//		    Cell cell = Context.getsmlObjectFactory().createCell();
-//		    cell.setT(STCellType.S);
-//		    cell.setV(String.valueOf(sharedStringCounter));
-//		    
-//		    // Add the cell to the row and increment the counter
-//		    row.getC().add(cell);
-//		    sharedStringCounter++;
-//		}
-//		 
-//		// Add the row to our sheet
-//		sheetData.getRow().add(row);
-//		 
-//		// Set the string and unique string counts on the shared string table
-//		sharedStringTable.setCount(sharedStringCounter);
-//		sharedStringTable.setUniqueCount(sharedStringCounter);
-//		 
-//		// Create a SharedStrings workbook part 
-//		SharedStrings sharedStrings = new SharedStrings(new PartName("/xl/sharedStrings.xml"));
-//		 
-//		// Add the shared string table to the part
-//		sharedStrings.setJaxbElement(sharedStringTable);
-//		 
-//		// Then add the part to the workbook
-//		Parts parts = pkg.getParts();
-//		Part workBook = parts.get( new PartName("/xl/workbook.xml") );
-//		workBook.addTargetPart(sharedStrings);
+		//ReferenciaWithAutoID resource = getReferencia(key);
+		// Create a new spreadsheet package
+		SpreadsheetMLPackage pkg = SpreadsheetMLPackage.createPackage();
+		 
+		// Create a new worksheet part and retrieve the sheet data
+		WorksheetPart sheet = pkg.createWorksheetPart(new PartName("/xl/worksheets/sheet1.xml"), "Sheet 1", 1);
+		SheetData sheetData = sheet.getJaxbElement().getSheetData();
+		 
+		// Keep track of how many strings we've added
+		long sharedStringCounter = 0;
+		 
+		// Create a new row
+		Row row = Context.getsmlObjectFactory().createRow();
+		 
+		// Create a shared strings table instance
+		CTSst sharedStringTable = new CTSst();
+		CTXstringWhitespace ctx;
+		CTRst crt;
+		 
+		// Create 10 cells and add them to the row
+		for (int i = 0; i < 10; i++) {
+			
+			// Create a shared string
+			crt = new CTRst();
+			ctx = Context.getsmlObjectFactory().createCTXstringWhitespace();
+			ctx.setValue("Shared string text " + Integer.toString(i + 1));
+			crt.setT(ctx);
+		    
+			// Add it to the shared string table
+			sharedStringTable.getSi().add(crt);
+		 
+			// Add a reference to the shared string to our cell using the counter
+		    Cell cell = Context.getsmlObjectFactory().createCell();
+		    cell.setT(STCellType.S);
+		    cell.setV(String.valueOf(sharedStringCounter));
+		    
+		    // Add the cell to the row and increment the counter
+		    row.getC().add(cell);
+		    sharedStringCounter++;
+		}
+		 
+		// Add the row to our sheet
+		sheetData.getRow().add(row);
+		 
+		// Set the string and unique string counts on the shared string table
+		sharedStringTable.setCount(sharedStringCounter);
+		sharedStringTable.setUniqueCount(sharedStringCounter);
+		 
+		// Create a SharedStrings workbook part 
+		SharedStrings sharedStrings = new SharedStrings(new PartName("/xl/sharedStrings.xml"));
+		 
+		// Add the shared string table to the part
+		sharedStrings.setJaxbElement(sharedStringTable);
+		 
+		// Then add the part to the workbook
+		Parts parts = pkg.getParts();
+		Part workBook = parts.get( new PartName("/xl/workbook.xml") );
+		workBook.addTargetPart(sharedStrings);
 	}
 	
 	/**
@@ -547,7 +575,8 @@ public class ReferenciaController {
 			}
 			else if(arrayCampos[i].equals("codigoQr")){
 				
-				if(!rOld.getCodigoQr().equals(r.getCodigoQr())){
+				//este es el unico campo no obligatoria en una referencia validada por lo que hacemos comprobacion de null pointer antes
+				if(rOld.getCodigoQr()!=null&&r.getCodigoQr()!=null&&!rOld.getCodigoQr().equals(r.getCodigoQr())){
 					throw new Exception("Se han modificado campos que no permite la edicion: Codigo Qr");
 				}
 				
