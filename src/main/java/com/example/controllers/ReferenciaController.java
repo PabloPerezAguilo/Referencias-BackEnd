@@ -15,13 +15,6 @@ import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
 
-
-
-
-
-
-
-//import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
 import org.docx4j.openpackaging.io3.Save;
@@ -39,9 +32,7 @@ import org.xlsx4j.sml.Cell;
 import org.xlsx4j.sml.Row;
 import org.xlsx4j.sml.STCellType;
 import org.xlsx4j.sml.SheetData;
-import org.xlsx4j.sml.Workbook;
 
-import com.example.dao.CatalogoClientesDAO;
 import com.example.dao.ReferenciaDAO;
 import com.example.dao.UsuarioDAO;
 import com.example.models.ReferenciaWithAutoID;
@@ -53,14 +44,12 @@ public class ReferenciaController {
 
 	private static ReferenciaDAO dao;
 	private static UsuarioDAO usuarioDao;
-	private static CatalogoClientesDAO catalogoClientesDao;
 	
 	private static ReferenciaController singleton;
 
 	private ReferenciaController() throws Exception {
 		dao = ReferenciaDAO.getInstance();
 		usuarioDao = UsuarioDAO.getInstance();
-		catalogoClientesDao = CatalogoClientesDAO.getInstance();
 	}
 
 	public static ReferenciaController getInstance() throws Exception {
@@ -377,20 +366,20 @@ public class ReferenciaController {
 		
 	
 	}
-	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, String sociedad,
-			String sector, String actividad, String proyecto, int anios) throws Exception {
+	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
+			List<String> sector, List<String> actividad, List<String> proyecto, int anios) throws Exception {
 		
-		String [] sociedadArray = sociedad.split(",");
-		List<String> listSociedad = Arrays.asList(sociedadArray);
-		String [] sectorArray = sector.split(",");
-		List<String> listSector = Arrays.asList(sectorArray);
-		String [] actividadArray = actividad.split(",");
-		List<String> listActividad = Arrays.asList(actividadArray);
-		String [] proyectoArray = proyecto.split(",");
-		List<String> listProyecto = Arrays.asList(proyectoArray);
+//		String [] sociedadArray = sociedad.split(",");
+//		List<String> listSociedad = Arrays.asList(sociedadArray);
+//		String [] sectorArray = sector.split(",");
+//		List<String> listSector = Arrays.asList(sectorArray);
+//		String [] actividadArray = actividad.split(",");
+//		List<String> listActividad = Arrays.asList(actividadArray);
+//		String [] proyectoArray = proyecto.split(",");
+//		List<String> listProyecto = Arrays.asList(proyectoArray);
 
 		 
-		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,listProyecto,listActividad,listSociedad,listSector,general );
+		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,proyecto,actividad,sociedad,sector,general );
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
 		while (iterator.hasNext()) {
 			ReferenciaWithAutoID ref = iterator.next();

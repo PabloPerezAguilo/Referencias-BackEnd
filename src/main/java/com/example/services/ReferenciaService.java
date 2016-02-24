@@ -1,6 +1,7 @@
 
 package com.example.services;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.DELETE;
@@ -277,10 +278,10 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Buscador de referencias", notes = "")
 	public Response filtrar(@QueryParam("bGeneral") String general,
             @QueryParam("bCliente") String cliente,
-            @QueryParam("bSociedad") String sociedad,
-            @QueryParam("bSector") String sector,
-            @QueryParam("bActividad") String actividad,
-            @QueryParam("bProyecto") String proyecto,
+            @QueryParam("list") final List<String> sociedad,
+            @QueryParam("list") final List<String> sector,
+            @QueryParam("list") final List<String> actividad,
+            @QueryParam("list") final List<String> proyecto,
             @QueryParam("bAnios") int anios ){
 		
 		try{

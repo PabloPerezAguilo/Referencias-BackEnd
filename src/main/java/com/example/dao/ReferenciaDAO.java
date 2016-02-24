@@ -100,8 +100,8 @@ public class ReferenciaDAO {
 		
 		Calendar fecha = Calendar.getInstance();
 		Date actual = new Date(fecha.getTimeInMillis());
-		//fecha.add(Calendar.MONTH, -2);
-		//ultimosAños = new Date(fecha.getTimeInMillis());
+		fecha.set(ultimosAños, 1, 1);
+		Date desde = new Date(fecha.getTimeInMillis());
 		List<String> clientesBusqueda = daoClientes.listaContenido(general);
 		List<String> coDeBusqueda = daoCoDe.listaContenido(general);
 		List<String> gerentesBusqueda = daoGerentes.listaContenido(general);
@@ -125,7 +125,7 @@ public class ReferenciaDAO {
 							+ "{problematicaCliente:#},"
 							+ "{solucionGFI:#},"
 							+ "{denominacion: #}]}",	
-						cliente, ultimosAños, actual, proyecto,
+						cliente, desde, actual, proyecto,
 						actividad, sociedad, sector, clientesBusqueda,
 						coDeBusqueda, coDeBusqueda, coDeBusqueda,
 						coDeBusqueda,gerentesBusqueda,gerentesBusqueda,
