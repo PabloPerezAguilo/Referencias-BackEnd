@@ -1,24 +1,10 @@
 package com.example.controllers;
 
 
-//import org.docx4j.openpackaging.packages.SpreadsheetMLPackage;
-//import org.docx4j.openpackaging.parts.Part;
-//import org.docx4j.openpackaging.parts.PartName;
-//import org.docx4j.openpackaging.parts.Parts;
-//import org.docx4j.openpackaging.parts.SpreadsheetML.SharedStrings;
-//import org.docx4j.openpackaging.parts.SpreadsheetML.WorksheetPart;
-//import org.xlsx4j.jaxb.Context;
-//import org.xlsx4j.sml.CTRst;
-//import org.xlsx4j.sml.CTSst;
-//import org.xlsx4j.sml.CTXstringWhitespace;
-//import org.xlsx4j.sml.Cell;
-//import org.xlsx4j.sml.Row;
-//import org.xlsx4j.sml.STCellType;
-//import org.xlsx4j.sml.SheetData;
-
-
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -33,27 +19,10 @@ import javax.xml.bind.DatatypeConverter;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
+import org.docx4j.openpackaging.io3.Save;
 import org.docx4j.openpackaging.packages.SpreadsheetMLPackage;
 import org.docx4j.openpackaging.parts.Part;
 import org.docx4j.openpackaging.parts.PartName;
@@ -68,7 +37,9 @@ import org.xlsx4j.sml.Cell;
 import org.xlsx4j.sml.Row;
 import org.xlsx4j.sml.STCellType;
 import org.xlsx4j.sml.SheetData;
+import org.xlsx4j.sml.Workbook;
 
+import com.example.dao.CatalogoClientesDAO;
 import com.example.dao.ReferenciaDAO;
 import com.example.dao.UsuarioDAO;
 import com.example.models.ReferenciaWithAutoID;
@@ -80,11 +51,14 @@ public class ReferenciaController {
 
 	private static ReferenciaDAO dao;
 	private static UsuarioDAO usuarioDao;
+	private static CatalogoClientesDAO catalogoClientesDao;
+	
 	private static ReferenciaController singleton;
 
 	private ReferenciaController() throws Exception {
 		dao = ReferenciaDAO.getInstance();
 		usuarioDao = UsuarioDAO.getInstance();
+		catalogoClientesDao = CatalogoClientesDAO.getInstance();
 	}
 
 	public static ReferenciaController getInstance() throws Exception {
@@ -103,9 +77,9 @@ public class ReferenciaController {
 	public List<ReferenciaWithAutoID> getReferencias() throws Exception {
 		// Transform an iterator object to a list
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
-		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
-		while (i.hasNext()) {
-			ReferenciaWithAutoID ref = i.next();
+		Iterator<ReferenciaWithAutoID> iterator = dao.getReferencias();
+		while (iterator.hasNext()) {
+			ReferenciaWithAutoID ref = iterator.next();
 			byte[] imagenByte = null;
 			try{
 			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
@@ -128,11 +102,11 @@ public class ReferenciaController {
 	public List<ReferenciaWithAutoID> getReferenciasAsociadas(String user) throws Exception {
 		
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
-		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
+		Iterator<ReferenciaWithAutoID> iiterator = dao.getReferencias();
 		Usuario usuarioAplicacion = usuarioDao.getUsuario(user);
-		while (i.hasNext()) {
+		while (iiterator.hasNext()) {
 			
-			ReferenciaWithAutoID ref = i.next();
+			ReferenciaWithAutoID ref = iiterator.next();
 			// este if sirve para coger lar referencias cuyo estado no es validado y el usuario esta como autor o uno de los gerentes, requiere una comprobacion de nullpoiunter porque el campo de responsables puede estar vacio, si eres el administrador ves todas!!!
 			if(!ref.getEstado().equals("validada") && ((ref.getAutor().equals(user) || (ref.getResponsableComercial()!=null && ref.getResponsableComercial().equals(user)) || (ref.getResponsableTecnico() != null && ref.getResponsableTecnico().equals(user)))|| usuarioAplicacion.getRole().equals("ROLE_ADMINISTRADOR"))){
 				
@@ -152,9 +126,9 @@ public class ReferenciaController {
 	public List<ReferenciaWithAutoID> getReferenciasEstado(String estado) throws Exception {
 		// Transform an iterator object to a list
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
-		Iterator<ReferenciaWithAutoID> i = dao.getReferenciasEstado(estado);
-		while (i.hasNext()) {
-			ReferenciaWithAutoID ref = i.next();
+		Iterator<ReferenciaWithAutoID> iterator = dao.getReferenciasEstado(estado);
+		while (iterator.hasNext()) {
+			ReferenciaWithAutoID ref = iterator.next();
 			byte[] imagenByte = null;
 			try{
 			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
@@ -169,9 +143,9 @@ public class ReferenciaController {
 	}
 	public ReferenciaWithAutoID getReferenciaCopia(ObjectId key) throws Exception {
 		
-		Iterator<ReferenciaWithAutoID> i = dao.getReferencias();
-		while (i.hasNext()) {
-			ReferenciaWithAutoID ref = i.next();
+		Iterator<ReferenciaWithAutoID> iterator = dao.getReferencias();
+		while (iterator.hasNext()) {
+			ReferenciaWithAutoID ref = iterator.next();
 			if(ref.getIdEnlaceOriginal()!=null && ref.getIdEnlaceOriginal().equals(key)){
 				byte[] imagenByte = null;
 				try{
@@ -399,70 +373,59 @@ public class ReferenciaController {
 	
 	public void exportar(ObjectId key) throws Exception {
 		
-		//ReferenciaWithAutoID resource = getReferencia(key);
-		// Create a new spreadsheet package
-		SpreadsheetMLPackage pkg = SpreadsheetMLPackage.createPackage();
-		 
-		// Create a new worksheet part and retrieve the sheet data
-		WorksheetPart sheet = pkg.createWorksheetPart(new PartName("/xl/worksheets/sheet1.xml"), "Sheet 1", 1);
-		SheetData sheetData = sheet.getJaxbElement().getSheetData();
-		 
-		// Keep track of how many strings we've added
-		long sharedStringCounter = 0;
-		 
-		// Create a new row
-		Row row = Context.getsmlObjectFactory().createRow();
-		 
-		// Create a shared strings table instance
-		CTSst sharedStringTable = new CTSst();
-		CTXstringWhitespace ctx;
-		CTRst crt;
-		 
-		// Create 10 cells and add them to the row
-		for (int i = 0; i < 10; i++) {
-			
-			// Create a shared string
-			crt = new CTRst();
-			ctx = Context.getsmlObjectFactory().createCTXstringWhitespace();
-			ctx.setValue("Shared string text " + Integer.toString(i + 1));
-			crt.setT(ctx);
-		    
-			// Add it to the shared string table
-			sharedStringTable.getSi().add(crt);
-		 
-			// Add a reference to the shared string to our cell using the counter
-		    Cell cell = Context.getsmlObjectFactory().createCell();
-		    cell.setT(STCellType.S);
-		    cell.setV(String.valueOf(sharedStringCounter));
-		    
-		    // Add the cell to the row and increment the counter
-		    row.getC().add(cell);
-		    sharedStringCounter++;
-		}
-		 
-		// Add the row to our sheet
-		sheetData.getRow().add(row);
-		 
-		// Set the string and unique string counts on the shared string table
-		sharedStringTable.setCount(sharedStringCounter);
-		sharedStringTable.setUniqueCount(sharedStringCounter);
-		 
-		// Create a SharedStrings workbook part 
-		SharedStrings sharedStrings = new SharedStrings(new PartName("/xl/sharedStrings.xml"));
-		 
-		// Add the shared string table to the part
-		sharedStrings.setJaxbElement(sharedStringTable);
-		 
-		// Then add the part to the workbook
-		Parts parts = pkg.getParts();
-		Part workBook = parts.get( new PartName("/xl/workbook.xml") );
-		workBook.addTargetPart(sharedStrings);
+	
 	}
 	
-	/**
-	 * dropReferencia
-	 * Borra la coleccion de Referencias.
-	 */
+//	public List<ReferenciaWithAutoID> filtrar(ObjectId key) throws Exception {
+//		
+//		List<ReferenciaWithAutoID> list = new ArrayList<>();
+//		Iterator<ReferenciaWithAutoID> iterator = dao.getReferencias();
+//		String cliente = null;
+//		String general = null;
+//		String[] sector = null;
+//		String[] sociedad = null;
+//		String algo2 = null;
+////		while (iterator.hasNext()) {
+////			
+////			ReferenciaWithAutoID ref = iterator.next();
+////			if(catalogoClientesDao.contiene(ref.getCliente(), cliente) || ref.getCliente().contains(general)){
+////				
+////				Iterator<String> iteradorSector = Arrays.asList(sector).iterator() ;
+////				String busquedaSector = "  inicio  ";
+////				while(iteradorSector.hasNext() || ref.getSectorEmpresarial().equals(busquedaSector)){
+////					busquedaSector = iteradorSector.next();
+////					if(ref.getSectorEmpresarial().equals(busquedaSector)){
+////						
+////						Iterator<String> iteradorSociedad = Arrays.asList(sociedad).iterator() ;
+////						String busquedaSociedad = "  inicio  ";
+////						while(iteradorSector.hasNext() || ref.getSociedad().equals(busquedaSociedad)){
+////							busquedaSociedad = iteradorSector.next();
+////							if(ref.getSectorEmpresarial().equals(busquedaSociedad)){
+////								
+////							
+////							
+////							
+////							}
+////						}
+////					
+////					}
+////				}
+////				
+////			}
+//			
+//			byte[] imagenByte = null;
+//			try{
+//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+//			}catch(Exception e){
+//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
+//			}
+//			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+//			ref.setImagenProyecto(imagenBase);
+//			list.add(ref);
+//		}
+//		return list;	
+//	}
+//	
 	public void dropReferencia() {
 		dao.clearStore();
 	}
@@ -604,5 +567,86 @@ public class ReferenciaController {
 		return true;
 		
 	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		ObjectId prueba = new ObjectId("56bdef22445a2c4a1e57ca80");
+		System.out.println(prueba);
+		System.out.println("dsa");
+		
+		Iterator<ReferenciaWithAutoID> referencialist = null;
+		dao = ReferenciaDAO.getInstance();
+		referencialist = dao.getReferencias();
+		ReferenciaWithAutoID referencia = referencialist.next();
+		System.out.println(referencia);
+		
+		String outputfilepath = System.getProperty("user.dir") + "/OUT_CreateSimpleSpreadsheet.xlsx";
+		// Create a new spreadsheet package
+				SpreadsheetMLPackage pkg = SpreadsheetMLPackage.createPackage();
+				 
+				// Create a new worksheet part and retrieve the sheet data
+				WorksheetPart sheet = pkg.createWorksheetPart(new PartName("/xl/worksheets/sheet1.xml"), "Sheet 1", 1);
+				SheetData sheetData = sheet.getContents().getSheetData();
+				// Keep track of how many strings we've added
+				long sharedStringCounter = 0;
+				 
+				// Create a new row
+				Row row = Context.getsmlObjectFactory().createRow();
+				 
+				// Create a shared strings table instance
+				CTSst sharedStringTable = new CTSst();
+				CTXstringWhitespace ctx;
+				CTRst crt;
+				
+				//inicializar excel
+				 
+				// Create 10 cells and add them to the row
+				for (int i = 0; i < 10; i++) {
+					
+					
+					// Create a shared string
+					crt = new CTRst();
+					ctx = Context.getsmlObjectFactory().createCTXstringWhitespace();
+					ctx.setValue(referencia.getCliente());
+					crt.setT(ctx);
+				    
+					// Add it to the shared string table
+					sharedStringTable.getSi().add(crt);
+				 
+					// Add a reference to the shared string to our cell using the counter
+				    Cell cell = Context.getsmlObjectFactory().createCell();
+				    cell.setT(STCellType.S);
+				    cell.setV(String.valueOf(sharedStringCounter));
+				    
+				    // Add the cell to the row and increment the counter
+				    row.getC().add(cell);
+				}
+				 
+				// Add the row to our sheet
+				sheetData.getRow().add(row);
+				 
+				// Set the string and unique string counts on the shared string table
+				sharedStringTable.setCount(sharedStringCounter);
+				sharedStringTable.setUniqueCount(sharedStringCounter);
+				 
+				// Create a SharedStrings workbook part 
+				SharedStrings sharedStrings = new SharedStrings(new PartName("/xl/sharedStrings.xml"));
+				 
+				// Add the shared string table to the part
+				sharedStrings.setJaxbElement(sharedStringTable);
+				 
+				// Then add the part to the workbook
+				Parts parts = pkg.getParts();
+				Part workBook = parts.get( new PartName("/xl/workbook.xml") );
+				workBook.addTargetPart(sharedStrings);
+				Save saver = new Save(pkg);
+				OutputStream realOS = new FileOutputStream(outputfilepath); ;
+				saver.save(realOS );
+						
+				System.out.println("\n\n done .. " + outputfilepath);
+	}
+
+	
+	
 	
 }

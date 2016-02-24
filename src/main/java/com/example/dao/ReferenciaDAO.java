@@ -1,6 +1,10 @@
 package com.example.dao;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
@@ -11,10 +15,16 @@ public class ReferenciaDAO {
 
 	private static ReferenciaDAO singleton;
 	private static MongoCollection dao;
+	private static CatalogoClientesDAO daoClientes;
+	private static CatalogoCoDeDAO daoCoDe;
+	private static CatalogoGerentesDAO daoGerentes;
 	private static final String COLLECTION_NAME_MONGO = "referencias";
 
 	private ReferenciaDAO() throws Exception {
 		dao = DataBase.getInstance().getCollection(COLLECTION_NAME_MONGO);
+		daoClientes = CatalogoClientesDAO.getInstance();
+		daoCoDe = CatalogoCoDeDAO.getInstance();
+		daoGerentes = CatalogoGerentesDAO.getInstance();
 	}
 
 	public static ReferenciaDAO getInstance() throws Exception {
@@ -49,6 +59,7 @@ public class ReferenciaDAO {
 	 * @throws Exception
 	 */
 	public ReferenciaWithAutoID getReferencia(ObjectId key) throws Exception{
+		System.out.println(key);
 		return dao.findOne("{'_id':#}", key).as(ReferenciaWithAutoID.class);
 	}
 
@@ -84,11 +95,66 @@ public class ReferenciaDAO {
 		deleteReferencia(key);
 		insertReferencia(r);
 	}
-
+	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, Date ultimosAños,String proyecto, String actividad,String sociedad,String sector, String general,String[] coDe,String[] clientes,String[] gerentes  ) throws Exception {
+		
+		
+		Calendar fecha = Calendar.getInstance();
+		Date actual = new Date(fecha.getTimeInMillis());
+		//fecha.add(Calendar.MONTH, -2);
+		//ultimosAños = new Date(fecha.getTimeInMillis());
+		List<String> clientesBusqueda = daoClientes.listaContenido(general);
+		List<String> coDeBusqueda = daoCoDe.listaContenido(general);
+		List<String> gerentesBusqueda = daoGerentes.listaContenido(general);
+		System.out.println(gerentesBusqueda);
+		//return dao.find("{'responsableComercial':{$in:#}}",gerentesBusqueda).as(ReferenciaWithAutoID.class).iterator();
+		return dao.find("{$and:"
+							+ " [ { cliente: #},"
+							+ " { fechaInicio:{$gte:#,$lt:#}},"
+							+ "{ tipoProyecto: #},"
+							+ "{ tipoActividad: #},"
+							+ "{ sociedad: #},"
+							+ "{ sectorEmpresarial: #}],"
+						+ "$or: [ {'cliente':{$in:#}},"
+							+ "{tipoProyecto:{$in:#}},"
+							+ "{tipoActividad:{$in:#}},"
+							+ "{sociedad:{$in:#}},"
+							+ "{sectorEmpresarial:{$in:#}},"
+							+ "{responsableComercial:{$in:#}},"
+							+ "{responsableTecnico:{$in:#}},"
+							+ "{resumenProyecto:#},"
+							+ "{problematicaCliente:#},"
+							+ "{solucionGFI:#},"
+							+ "{denominacion: #}]}",	
+						cliente, ultimosAños, actual, proyecto,
+						actividad, sociedad, sector, clientesBusqueda,
+						coDeBusqueda, coDeBusqueda, coDeBusqueda,
+						coDeBusqueda,gerentesBusqueda,gerentesBusqueda,
+						Pattern.compile(".*"+general+".*"),
+						Pattern.compile(".*"+general+".*"),
+						Pattern.compile(".*"+general+".*"),
+						Pattern.compile(".*"+general+".*")).as(ReferenciaWithAutoID.class).iterator();
+		
+	}
 	/**
 	 * clearStore
 	 */
 	public void clearStore() {
 		dao.drop();
 	}
+//	public static void main(String[] args) throws Exception {
+//		
+//		System.out.println("principio");
+//		singleton = new ReferenciaDAO();
+//		//poner a "" si viene a null NOTA
+//		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("AXA Seguros (AXA)",null,"PROY","DES","AST","BANK","",null,null,null);
+//		ReferenciaWithAutoID recorrido = null;
+//		while(aux.hasNext()){
+//			
+//			recorrido =  aux.next();
+//			System.out.println(recorrido);
+//			
+//		}
+//		
+//	}
+	
 }

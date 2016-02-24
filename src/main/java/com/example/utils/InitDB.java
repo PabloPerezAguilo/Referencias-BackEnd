@@ -111,12 +111,6 @@ public class InitDB {
 		controller.createCoDe(new CatalogoCoDe("OUT", "Outsourcing","proyecto"));
 		controller.createCoDe(new CatalogoCoDe("PS", "Prestacion de servicios","proyecto"));
 
-		/*Tecnologias*/
-		controller.createCoDe(new CatalogoCoDe("JAVA", "JAVA","tecnologia"));
-		controller.createCoDe(new CatalogoCoDe("PHP", "PHP","tecnologia"));
-		controller.createCoDe(new CatalogoCoDe("JS", "Javascript","tecnologia"));
-		controller.createCoDe(new CatalogoCoDe("AngularJS", "AngularJS Framework Javascript","tecnologia"));
-		
 		/*Sociedades*/
 		controller.createCoDe(new CatalogoCoDe("AST", "AST","sociedades"));
 		controller.createCoDe(new CatalogoCoDe("ARCITEL", "Arcitel","sociedades"));

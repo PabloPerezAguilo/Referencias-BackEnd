@@ -45,7 +45,6 @@ public class CatalogoController {
 		List<CatalogoCoDe> listaCoDeSectorEmpresarial = daoCoDe.getCoDePorTipo("sectorempresarial");
 		List<CatalogoCoDe> listaCoDeActividad = daoCoDe.getCoDePorTipo("actividad");
 		List<CatalogoCoDe> listaCoDeProyecto = daoCoDe.getCoDePorTipo("proyecto");
-		List<CatalogoCoDe> listaCoDeTecnologia = daoCoDe.getCoDePorTipo("tecnologia");
 		List<CatalogoCoDe> listaCoDeSociedades = daoCoDe.getCoDePorTipo("sociedades");
 		List<CatalogoGerentes> listaGerentesComercial = daoGerentes.getGerentesPorTipo("comercial");
 		List<CatalogoGerentes> listaGerentesTecnico = daoGerentes.getGerentesPorTipo("tecnico");
@@ -53,7 +52,6 @@ public class CatalogoController {
 		m.put("sectorempresarial", listaCoDeSectorEmpresarial);
 		m.put("actividad", listaCoDeActividad);
 		m.put("proyecto", listaCoDeProyecto);
-		m.put("tecnologia", listaCoDeTecnologia);
 		m.put("sociedades", listaCoDeSociedades);
 		m.put("comercial", listaGerentesComercial);
 		m.put("tecnico", listaGerentesTecnico);

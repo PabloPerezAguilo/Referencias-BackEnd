@@ -32,6 +32,7 @@ public class CatalogoClientes {
 		this.imagen = cliente.getImagen();
 		
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -61,5 +62,9 @@ public class CatalogoClientes {
 	}
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
+	}
+	@Override
+	public String toString() {
+		return "CatalogoClientes [nombre=" + nombre + ", siglas=" + siglas	+ ", publico=" + publico + ", alias=" + alias + "]";
 	}
 }

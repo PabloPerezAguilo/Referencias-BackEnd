@@ -3,6 +3,7 @@ package com.example.dao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.jongo.MongoCollection;
 
@@ -91,13 +92,39 @@ public class CatalogoCoDeDAO {
 	public void updateCoDe(String codigo, CatalogoCoDe code) throws Exception {
 		dao.update("{'_id':#}", codigo).with(codigo);
 	}
-
+	
+	public List<String> listaContenido(String general ) throws Exception {
+		
+		Iterator<CatalogoCoDe> iteradorCoDe = dao.find("{$or: [ { _id: #}, { descripcion: #}]}", Pattern.compile(".*"+general+".*"),Pattern.compile(".*"+general+".*")).as(CatalogoCoDe.class).iterator();
+		List<String> listCoDe = new ArrayList<String>();
+		while (iteradorCoDe.hasNext()) {
+			
+			listCoDe.add(iteradorCoDe.next().getCodigo());
+		}
+		return listCoDe;
+		
+		
+	}
 	/**
 	 * clearStore
 	 */
 	public void clearStore() {
 		dao.drop();
 	}
+//	public static void main(String[] args) throws Exception {
+//		
+//		System.out.println("principio");
+//		singleton = new CatalogoCoDeDAO();
+//		Iterator<String> aux = singleton.listaContenido("").iterator();
+//		String recorrido = null;
+//		while(aux.hasNext()){
+//			
+//			recorrido =  aux.next();
+//			System.out.println(recorrido);
+//			
+//		}
+//		
+//	}
 }
 
 

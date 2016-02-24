@@ -3,6 +3,7 @@ package com.example.dao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.jongo.MongoCollection;
 
@@ -12,7 +13,7 @@ public class CatalogoGerentesDAO {
 
 	private static CatalogoGerentesDAO singleton;
 	private static MongoCollection dao;
-	private static final String COLLECTION_NAME_MONGO = "catalogogerentes";
+	private static final String COLLECTION_NAME_MONGO = "CatalogoGerentes";
 
 	private CatalogoGerentesDAO() throws Exception {
 		dao = DataBase.getInstance().getCollection(COLLECTION_NAME_MONGO);
@@ -95,7 +96,33 @@ public class CatalogoGerentesDAO {
 	/**
 	 * clearStore
 	 */
+	
+	public List<String> listaContenido(String general ) throws Exception {
+		
+		Iterator<CatalogoGerentes> iteradorGerentes = dao.find("{$or: [ { _id: #}, { nombre: #}, { apellidos: #}, { tipoGerente: #}  ]}", Pattern.compile(".*"+general+".*"),Pattern.compile(".*"+general+".*"),Pattern.compile(".*"+general+".*"),Pattern.compile(".*"+general+".*")).as(CatalogoGerentes.class).iterator();
+		List<String> listGerentes = new ArrayList<String>();
+		while (iteradorGerentes.hasNext()) {
+			
+			listGerentes.add(iteradorGerentes.next().getLogin());
+		}
+		return listGerentes;
+		
+	}
 	public void clearStore() {
 		dao.drop();
 	}
+//	public static void main(String[] args) throws Exception {
+//		
+//		System.out.println("principio");
+//		singleton = new CatalogoGerentesDAO();
+//		Iterator<String> aux = singleton.listaContenido("J").iterator();
+//		String recorrido = null;
+//		while(aux.hasNext()){
+//			
+//			recorrido =  aux.next();
+//			System.out.println(recorrido);
+//			
+//		}
+//		
+//	}
 }

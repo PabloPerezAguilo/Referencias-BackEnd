@@ -44,5 +44,11 @@ public class CatalogoCoDe {
 	public void setEntidad(String entidad) {
 		this.entidad = entidad;
 	}
+	@Override
+	public String toString() {
+		return "CatalogoCoDe [codigo=" + codigo + ", descripcion="
+				+ descripcion + ", entidad=" + entidad + "]";
+	}
+	
 
 }

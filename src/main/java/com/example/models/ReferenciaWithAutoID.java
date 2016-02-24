@@ -35,7 +35,6 @@ public class ReferenciaWithAutoID implements Serializable {
 	private String[] regPedidoAsociadoReferencia;
 	private String responsableComercial;
 	private String responsableTecnico;
-	private String creadorReferencia;
 	private String codigoQr;
 	private String estado;
 	private String motivoRechazo;
@@ -76,7 +75,6 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.regPedidoAsociadoReferencia = regPedidoAsociadoReferencia;
 		this.responsableComercial = responsableComercial;
 		this.responsableTecnico = responsableTecnico;
-		this.creadorReferencia = creadorReferencia;
 		this.codigoQr = codigoQr;
 		this.estado = estado;
 		this.motivoRechazo = motivoRechazo;
@@ -238,14 +236,6 @@ public class ReferenciaWithAutoID implements Serializable {
 		this.responsableTecnico = responsableTecnico;
 	}
 
-	public String getCreadorReferencia() {
-		return creadorReferencia;
-	}
-
-	public void setCreadorReferencia(String creadorReferencia) {
-		this.creadorReferencia = creadorReferencia;
-	}
-
 	public String getCodigoQr() {
 		return codigoQr;
 	}
@@ -303,7 +293,7 @@ public class ReferenciaWithAutoID implements Serializable {
 				+ Arrays.toString(regPedidoAsociadoReferencia)
 				+ ", responsableComercial=" + responsableComercial
 				+ ", responsableTecnico=" + responsableTecnico
-				+ ", creadorReferencia=" + creadorReferencia + ", codigoQr="
+				+ ", codigoQr="
 				+ codigoQr + ", estado=" + estado + ", motivoRechazo="
 				+ motivoRechazo + ", idEnlaceOriginal=" + idEnlaceOriginal
 				+ ", autor=" + autor + "]";

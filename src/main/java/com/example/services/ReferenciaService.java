@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -262,6 +263,31 @@ public class ReferenciaService extends Service{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			referenciaController.exportar(key);
 			out = new Message("Actualizacion correcta");
+			log.info("Update Referencia : Operation successful");
+		}catch(Exception e){
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		
+		return Response.status(status).entity(out).build();
+	}
+	@GET
+	@Path("/filtro/{key}")
+	@ApiOperation(value = "Buscador de referencias", notes = "")
+	public Response filtrar(@QueryParam("bGeneral") String general,
+            @QueryParam("bCliente") String cliente,
+            @QueryParam("bSociedad") String sociedad,
+            @QueryParam("bSector") String sector,
+            @QueryParam("bActividad") String actividad,
+            @QueryParam("bProyecto") String proyecto,
+            @QueryParam("bAnios") int anios ){
+		
+		try{
+			//ReferenciaController referenciaController = ReferenciaController.getInstance();
+			//referenciaController.filtrar(key);
+			out = new Message("Busqueda correcta");
+			System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
