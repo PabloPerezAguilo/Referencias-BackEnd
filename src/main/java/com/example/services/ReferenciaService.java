@@ -273,7 +273,7 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	@GET
-	@Path("/filtro/{key}")
+	@Path("/filtro")
 	@ApiOperation(value = "Buscador de referencias", notes = "")
 	public Response filtrar(@QueryParam("bGeneral") String general,
             @QueryParam("bCliente") String cliente,
@@ -284,9 +284,8 @@ public class ReferenciaService extends Service{
             @QueryParam("bAnios") int anios ){
 		
 		try{
-			//ReferenciaController referenciaController = ReferenciaController.getInstance();
-			//referenciaController.filtrar(key);
-			out = new Message("Busqueda correcta");
+			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			out = referenciaController.filtrar(general,cliente,sociedad,sector,actividad,proyecto,anios);
 			System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
 			log.info("Update Referencia : Operation successful");
 		}catch(Exception e){

@@ -19,6 +19,8 @@ import javax.xml.bind.DatatypeConverter;
 
 
 
+
+
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
@@ -375,6 +377,35 @@ public class ReferenciaController {
 		
 	
 	}
+	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, String sociedad,
+			String sector, String actividad, String proyecto, int anios) throws Exception {
+		
+		String [] sociedadArray = sociedad.split(",");
+		List<String> listSociedad = Arrays.asList(sociedadArray);
+		String [] sectorArray = sector.split(",");
+		List<String> listSector = Arrays.asList(sectorArray);
+		String [] actividadArray = actividad.split(",");
+		List<String> listActividad = Arrays.asList(actividadArray);
+		String [] proyectoArray = proyecto.split(",");
+		List<String> listProyecto = Arrays.asList(proyectoArray);
+
+		 
+		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,listProyecto,listActividad,listSociedad,listSector,general );
+		List<ReferenciaWithAutoID> list = new ArrayList<>();
+		while (iterator.hasNext()) {
+			ReferenciaWithAutoID ref = iterator.next();
+			byte[] imagenByte = null;
+			try{
+			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
+			}catch(Exception e){
+			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
+			}
+			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
+			ref.setImagenProyecto(imagenBase);
+			list.add(ref);
+		}
+		return list;
+	}
 	
 //	public List<ReferenciaWithAutoID> filtrar(ObjectId key) throws Exception {
 //		
@@ -646,7 +677,4 @@ public class ReferenciaController {
 				System.out.println("\n\n done .. " + outputfilepath);
 	}
 
-	
-	
-	
 }

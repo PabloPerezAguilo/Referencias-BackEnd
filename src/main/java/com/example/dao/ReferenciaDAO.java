@@ -95,8 +95,8 @@ public class ReferenciaDAO {
 		deleteReferencia(key);
 		insertReferencia(r);
 	}
-	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, Date ultimosAños,String proyecto, String actividad,String sociedad,String sector, String general,String[] coDe,String[] clientes,String[] gerentes  ) throws Exception {
-		
+	
+	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,List<String> proyecto, List<String> actividad,List<String> sociedad,List<String> sector, String general) throws Exception {
 		
 		Calendar fecha = Calendar.getInstance();
 		Date actual = new Date(fecha.getTimeInMillis());
@@ -110,11 +110,11 @@ public class ReferenciaDAO {
 		return dao.find("{$and:"
 							+ " [ { cliente: #},"
 							+ " { fechaInicio:{$gte:#,$lt:#}},"
-							+ "{ tipoProyecto: #},"
-							+ "{ tipoActividad: #},"
-							+ "{ sociedad: #},"
-							+ "{ sectorEmpresarial: #}],"
-						+ "$or: [ {'cliente':{$in:#}},"
+							+ "{ tipoProyecto: {$in:#}},"
+							+ "{ tipoActividad: {$in:#}},"
+							+ "{ sociedad: {$in:#}},"
+							+ "{ sectorEmpresarial: {$in:#}}],"
+						+ "$or: [ {cliente:{$in:#}},"
 							+ "{tipoProyecto:{$in:#}},"
 							+ "{tipoActividad:{$in:#}},"
 							+ "{sociedad:{$in:#}},"
