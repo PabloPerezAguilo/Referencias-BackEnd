@@ -378,6 +378,25 @@ public class ReferenciaController {
 //		String [] proyectoArray = proyecto.split(",");
 //		List<String> listProyecto = Arrays.asList(proyectoArray);
 
+		
+		if(actividad.size()==0){
+			actividad.add("");
+		}
+		if(proyecto.size()==0){
+			proyecto.add("");
+		}
+		if(sector.size()==0){
+			sector.add("");
+		}
+		if(sociedad.size()==0){
+			sociedad.add("");
+		}
+		if(general==null){
+			general="";
+		}
+		System.out.println(actividad);
+		System.out.println("antes");
+		System.out.println(general);
 		 
 		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,proyecto,actividad,sociedad,sector,general );
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
