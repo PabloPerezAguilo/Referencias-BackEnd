@@ -278,17 +278,17 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Buscador de referencias", notes = "")
 	public Response filtrar(@QueryParam("bGeneral") String general,
             @QueryParam("bCliente") String cliente,
-            @QueryParam("list") final List<String> sociedad,
-            @QueryParam("list") final List<String> sector,
-            @QueryParam("list") final List<String> actividad,
-            @QueryParam("list") final List<String> proyecto,
+            @QueryParam("bSociedad") final List<String> sociedad,
+            @QueryParam("bSector") final List<String> sector,
+            @QueryParam("bActividad") final List<String> actividad,
+            @QueryParam("bProyecto") final List<String> proyecto,
             @QueryParam("bAnios") int anios ){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.filtrar(general,cliente,sociedad,sector,actividad,proyecto,anios);
 			System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
-			log.info("Update Referencia : Operation successful");
+			log.info("Buscador Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
