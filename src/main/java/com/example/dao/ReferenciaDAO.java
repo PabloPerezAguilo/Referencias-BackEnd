@@ -97,7 +97,7 @@ public class ReferenciaDAO {
 		insertReferencia(r);
 	}
 	
-	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,List<String> proyecto, List<String> actividad,List<String> sociedad,List<String> sector, String general) throws Exception {
+	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,Object proyecto, Object actividad,Object sociedad,Object sector, String general) throws Exception {
 		
 		Calendar fecha = Calendar.getInstance();
 		Date actual = new Date(fecha.getTimeInMillis());
@@ -115,6 +115,7 @@ public class ReferenciaDAO {
 							+ " { fechaInicio:{$gte:#,$lt:#}},"
 							+ "{ tipoProyecto: {$in:#}},"
 							+ "{ tipoActividad: {$in:#}},"
+							+ "{ estado:'validada'},"
 							+ "{ sociedad: {$in:#}},"
 							+ "{ sectorEmpresarial: {$in:#}}],"
 						+ "$or: [ {cliente:{$in:#}},"
@@ -128,14 +129,14 @@ public class ReferenciaDAO {
 							+ "{problematicaCliente:#},"
 							+ "{solucionGFI:#},"
 							+ "{denominacion: #}]}",	
-						cliente, desde, actual, proyecto,
+						Pattern.compile(cliente), desde, actual, proyecto,
 						actividad, sociedad, sector, clientesBusqueda,
 						coDeBusqueda, coDeBusqueda, coDeBusqueda,
 						coDeBusqueda,gerentesBusqueda,gerentesBusqueda,
-						Pattern.compile(".*"+general+".*"),
-						Pattern.compile(".*"+general+".*"),
-						Pattern.compile(".*"+general+".*"),
-						Pattern.compile(".*"+general+".*")).as(ReferenciaWithAutoID.class).iterator();
+						Pattern.compile(general),
+						Pattern.compile(general),
+						Pattern.compile(general),
+						Pattern.compile(general)).as(ReferenciaWithAutoID.class).iterator();
 		
 	}
 	/**
@@ -157,7 +158,7 @@ public class ReferenciaDAO {
 		sociedad.add("AST");
 		List<String> sector = new ArrayList();
 		sector.add("BANK");
-		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("AXA Seguros (AXA)",2016,proyecto,actividad,sociedad,sector,"");
+		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("",2016,proyecto,actividad,sociedad,sector,"asddsa");
 		ReferenciaWithAutoID recorrido = null;
 		while(aux.hasNext()){
 			

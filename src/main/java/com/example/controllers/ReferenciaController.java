@@ -380,15 +380,20 @@ public class ReferenciaController {
 
 		
 		if(actividad.size()==0){
-			actividad.add("");
+			System.out.println("actividad vacia");
+			actividad.add(".*");
+			//actividad.add("");
 		}
 		if(proyecto.size()==0){
+			System.out.println("proyecto vacio");
 			proyecto.add("");
 		}
 		if(sector.size()==0){
+			System.out.println("sector vacio");
 			sector.add("");
 		}
 		if(sociedad.size()==0){
+			System.out.println("sociedad vacia");
 			sociedad.add("");
 		}
 		if(general==null){

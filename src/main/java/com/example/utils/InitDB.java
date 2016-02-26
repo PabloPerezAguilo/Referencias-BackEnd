@@ -41,7 +41,7 @@ public class InitDB {
 			lista.add(t);
 			t = new Tecnologia("hojaInvalida3",null,false,null,"hojaInvalida");
 			lista.add(t);
-			Tecnologia raiz = new Tecnologia("Tecnologias",lista,false,null,"raiz");
+			Tecnologia raiz = new Tecnologia("Tecnologías",lista,false,null,"raiz");
 			tecnologiaDAO.insertTecnologia(raiz);	
 		}	
 	}
@@ -82,24 +82,25 @@ public class InitDB {
 		/*Sector Empresarial*/
 		CatalogoCoDeDAO codeDAO = CatalogoCoDeDAO.getInstance();
 		codeDAO.clearStore();
+		controller.createCoDe(new CatalogoCoDe("PUBLI", "Administraciones Públicas","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("BANK", "Banca","sectorempresarial"));
-		controller.createCoDe(new CatalogoCoDe("CHEMI", "Química","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("DISTR", "Distribución","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("ENERG", "Energía","sectorempresarial"));
-		controller.createCoDe(new CatalogoCoDe("HEALT", "Sanidad","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("INDUS", "Industria","sectorempresarial"));
-		controller.createCoDe(new CatalogoCoDe("INSUR", "Seguros","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("MEDIA", "Medios de comunicacion","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("OTROS", "Otros","sectorempresarial"));
-		controller.createCoDe(new CatalogoCoDe("PUBLI", "Administraciones Públicas","sectorempresarial"));
+		controller.createCoDe(new CatalogoCoDe("CHEMI", "Química","sectorempresarial"));	
+		controller.createCoDe(new CatalogoCoDe("HEALT", "Sanidad","sectorempresarial"));
+		controller.createCoDe(new CatalogoCoDe("INSUR", "Seguros","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("SERVI", "Servicios","sectorempresarial"));
+		controller.createCoDe(new CatalogoCoDe("UTILI", "Suministros","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("TELEC", "Telecomunicaciones","sectorempresarial"));
 		controller.createCoDe(new CatalogoCoDe("TRANS", "Transporte","sectorempresarial"));
-		controller.createCoDe(new CatalogoCoDe("UTILI", "Suministros","sectorempresarial"));
+		
 		
 		/*Tipo Actividad*/
 		controller.createCoDe(new CatalogoCoDe("DES", "Desarrollo","actividad"));
-		controller.createCoDe(new CatalogoCoDe("INT", "Integracion","actividad"));
+		controller.createCoDe(new CatalogoCoDe("INT", "Integración","actividad"));
 		controller.createCoDe(new CatalogoCoDe("SQA", "Calidad","actividad"));
 		controller.createCoDe(new CatalogoCoDe("SOP", "Soporte y Explotación","actividad"));
 		controller.createCoDe(new CatalogoCoDe("PRO", "Producto","actividad"));
@@ -109,14 +110,15 @@ public class InitDB {
 		controller.createCoDe(new CatalogoCoDe("LIC", "Licencias","proyecto"));
 		controller.createCoDe(new CatalogoCoDe("MANT", "Mantenimiento","proyecto"));
 		controller.createCoDe(new CatalogoCoDe("OUT", "Outsourcing","proyecto"));
-		controller.createCoDe(new CatalogoCoDe("PS", "Prestacion de servicios","proyecto"));
+		controller.createCoDe(new CatalogoCoDe("PS", "Prestación de servicios","proyecto"));
 
 		/*Sociedades*/
 		controller.createCoDe(new CatalogoCoDe("AST", "AST","sociedades"));
 		controller.createCoDe(new CatalogoCoDe("ARCITEL", "Arcitel","sociedades"));
-		controller.createCoDe(new CatalogoCoDe("GFI-L", "GFI-Levante","sociedades"));
-		controller.createCoDe(new CatalogoCoDe("GFI-N", "GFI-Norte","sociedades"));
-		controller.createCoDe(new CatalogoCoDe("GFI-S", "GFI-Sur","sociedades"));
+		controller.createCoDe(new CatalogoCoDe("Gfi-C", "Gfi-Centro","sociedades"));
+		controller.createCoDe(new CatalogoCoDe("Gfi-L", "Gfi-Levante","sociedades"));
+		controller.createCoDe(new CatalogoCoDe("Gfi-N", "Gfi-Norte","sociedades"));
+		controller.createCoDe(new CatalogoCoDe("Gfi-S", "Gfi-Sur","sociedades"));
 		controller.createCoDe(new CatalogoCoDe("SAVAC", "SAVAC","sociedades"));
 		controller.createCoDe(new CatalogoCoDe("IORGA", "IORGA","sociedades"));
 		

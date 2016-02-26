@@ -99,7 +99,7 @@ public class CatalogoClientesDAO {
 //		
 //		System.out.println("principio");
 //		singleton = new CatalogoClientesDAO();
-//		Iterator<String> aux = singleton.listaContenido("A").iterator();
+//		Iterator<String> aux = singleton.listaContenido("").iterator();
 //		String recorrido = null;
 //		while(aux.hasNext()){
 //			
