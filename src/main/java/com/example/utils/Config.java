@@ -14,6 +14,7 @@ public class Config {
 	private static Properties prop = new Properties();
 	private static InputStream input = null;
 	public static final String MOCK = "mock";
+	public static final String LDAP_MOCK = "ldapMock";
 	public static final String IP_MONGO = "ip_mongo";
 	public static final String PUERTO_MONGO = "puerto_mongo";
 	public static final String BD_MONGO = "bd_mongo";

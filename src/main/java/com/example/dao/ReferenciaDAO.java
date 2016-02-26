@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -100,12 +101,14 @@ public class ReferenciaDAO {
 		
 		Calendar fecha = Calendar.getInstance();
 		Date actual = new Date(fecha.getTimeInMillis());
+		if(ultimosAños == fecha.get(Calendar.YEAR)){
+			ultimosAños = 1980;
+		}
 		fecha.set(ultimosAños, 1, 1);
 		Date desde = new Date(fecha.getTimeInMillis());
 		List<String> clientesBusqueda = daoClientes.listaContenido(general);
 		List<String> coDeBusqueda = daoCoDe.listaContenido(general);
 		List<String> gerentesBusqueda = daoGerentes.listaContenido(general);
-		System.out.println(gerentesBusqueda);
 		//return dao.find("{'responsableComercial':{$in:#}}",gerentesBusqueda).as(ReferenciaWithAutoID.class).iterator();
 		return dao.find("{$and:"
 							+ " [ { cliente: #},"
@@ -141,20 +144,28 @@ public class ReferenciaDAO {
 	public void clearStore() {
 		dao.drop();
 	}
-//	public static void main(String[] args) throws Exception {
-//		
-//		System.out.println("principio");
-//		singleton = new ReferenciaDAO();
-//		//poner a "" si viene a null NOTA
-//		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("AXA Seguros (AXA)",null,"PROY","DES","AST","BANK","",null,null,null);
-//		ReferenciaWithAutoID recorrido = null;
-//		while(aux.hasNext()){
-//			
-//			recorrido =  aux.next();
-//			System.out.println(recorrido);
-//			
-//		}
-//		
-//	}
+	public static void main(String[] args) throws Exception {
+		
+		System.out.println("principio");
+		singleton = new ReferenciaDAO();
+		//poner a "" si viene a null NOTA
+		List<String> proyecto = new ArrayList();
+		proyecto.add("PROY");
+		List<String> actividad = new ArrayList();
+		actividad.add("DES");
+		List<String> sociedad = new ArrayList();
+		sociedad.add("AST");
+		List<String> sector = new ArrayList();
+		sector.add("BANK");
+		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("AXA Seguros (AXA)",2016,proyecto,actividad,sociedad,sector,"");
+		ReferenciaWithAutoID recorrido = null;
+		while(aux.hasNext()){
+			
+			recorrido =  aux.next();
+			System.out.println(recorrido);
+			
+		}
+		
+	}
 	
 }

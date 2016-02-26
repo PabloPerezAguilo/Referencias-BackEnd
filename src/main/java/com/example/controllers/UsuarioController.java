@@ -154,15 +154,13 @@ public class UsuarioController {
 		}
 		
 		// conectar ldap y comprobar si esta con su pass 
-		UsuarioLdapDAO usuarioLdap = new UsuarioLdapDAO(nick,pass);
-		Authentication authentication = usuarioLdap.loginLdap();
-		
-		if (authentication == null) {
-			throw new Exception("User not found in LDAP");
-		}else{
-			log.info("User en LDAP");
+		if(!Config.getInstance().getProperty(Config.LDAP_MOCK).equals("true")){
+			UsuarioLdapDAO usuarioLdap = new UsuarioLdapDAO(nick,pass);
+			Authentication authentication = usuarioLdap.loginLdap();
+			if (authentication == null) {
+				throw new Exception("User not found in LDAP");	
+			}
 		}
-		
 		// Si todo es correcto devuelve el Rol
 		return usu;
 	}

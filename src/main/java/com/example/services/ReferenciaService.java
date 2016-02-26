@@ -286,9 +286,9 @@ public class ReferenciaService extends Service{
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
+			System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
 			out = referenciaController.filtrar(general,cliente,sociedad,sector,actividad,proyecto,anios);
 			System.out.println(out);
-			System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
 			log.info("Buscador Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

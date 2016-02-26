@@ -394,9 +394,10 @@ public class ReferenciaController {
 		if(general==null){
 			general="";
 		}
-		System.out.println(actividad);
-		System.out.println("antes");
-		System.out.println(general);
+		if(cliente==null){
+			cliente="";
+		}
+		System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
 		 
 		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,proyecto,actividad,sociedad,sector,general );
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
