@@ -2,8 +2,10 @@ package com.example.controllers;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,6 +18,19 @@ import java.util.Map;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
 import org.bson.types.ObjectId;
 import org.docx4j.openpackaging.io3.Save;
 import org.docx4j.openpackaging.packages.SpreadsheetMLPackage;
@@ -163,7 +178,7 @@ public class ReferenciaController {
 	 * @throws Exception
 	 */
 	public ReferenciaWithAutoID getReferencia(ObjectId key) throws Exception {
-		
+		//ACTUALIZAR
 		ReferenciaWithAutoID resource = null;
 		try{
 			resource = dao.getReferencia(key);
@@ -364,44 +379,96 @@ public class ReferenciaController {
 	
 	public void exportar(ObjectId key) throws Exception {
 		
+		int MAX_COLUMNS = 3;
+		// Prueba Apache POI
+
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet();
+		HSSFRow row = sheet.createRow((short) 0);
+		HSSFCell cell;
+		HSSFCellStyle style = wb.createCellStyle();
+		HSSFCellStyle styleCabecera = wb.createCellStyle();
+		HSSFFont font = wb.createFont();
+		style.setFillForegroundColor(HSSFColor.ORANGE.index);
+		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		font.setColor(HSSFColor.BLACK.index);
+		font.setBold(true);
+		style.setFont(font);
+		ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+		Iterator<Usuario> it;
+		Boolean cabecera = true;
+
+		listaUsuarios.add(new Usuario("prueba1 nick", "prueba1 name ",
+				"prueba1 role"));
+		listaUsuarios.add(new Usuario("prueba2 nick con redimension",
+				"prueba2 name ", "prueba2 role"));
+
+		int i = 0;
+		if(cabecera){
+		row = sheet.createRow(i++);
+		cell = row.createCell(0);
+		cell.setCellValue("Name");
+		cell = row.createCell(1);
+		cell.setCellValue("Nick");
+		cell = row.createCell(2);
+		cell.setCellValue("Role");
+		cabecera= false;
+		}
+
+		for (Usuario u : listaUsuarios) {
+			int k = 0;
+			row = sheet.createRow(i++);
+			cell = row.createCell(k++);
+			cell.setCellValue(u.getName());
+			cell.setCellStyle(style);
+			cell = row.createCell(k++);
+			cell.setCellValue(u.getNick());
+			cell.setCellStyle(style);
+			cell = row.createCell(k++);
+			cell.setCellValue(u.getRole());
+			cell.setCellStyle(style);
+		}
+
+		for( int j = 0 ; j < MAX_COLUMNS ; j++ ) {
+			sheet.autoSizeColumn(j);
+		}
+		
+		// Apache POI IMAGE
+
+				// add picture data to this workbook.
+				InputStream is = new FileInputStream(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png");
+				byte[] bytes = IOUtils.toByteArray(is);
+				int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+				is.close();
+
+				CreationHelper helper = wb.getCreationHelper();
+
+				// Create the drawing patriarch. This is the top level container for all
+				// shapes.
+				Drawing drawing = sheet.createDrawingPatriarch();
+
+				// add a picture shape
+				ClientAnchor anchor = helper.createClientAnchor();
+				// set top-left corner of the picture,
+				// subsequent call of Picture#resize() will operate relative to it
+				anchor.setCol1(5);
+				anchor.setRow1(5);
+				Picture pict = drawing.createPicture(anchor, pictureIdx);
+
+				// auto-size picture relative to its top-left corner
+				pict.resize();
+				sheet.autoSizeColumn(6);
+
+				// save with the default palette
+				FileOutputStream out = new FileOutputStream("pruebaPOI.xls");
+				wb.write(out);
+				out.close();
+		
 	
 	}
 	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
 			List<String> sector, List<String> actividad, List<String> proyecto, int anios) throws Exception {
-		
-//		String [] sociedadArray = sociedad.split(",");
-//		List<String> listSociedad = Arrays.asList(sociedadArray);
-//		String [] sectorArray = sector.split(",");
-//		List<String> listSector = Arrays.asList(sectorArray);
-//		String [] actividadArray = actividad.split(",");
-//		List<String> listActividad = Arrays.asList(actividadArray);
-//		String [] proyectoArray = proyecto.split(",");
-//		List<String> listProyecto = Arrays.asList(proyectoArray);
-
-		
-		if(actividad.size()==0){
-			System.out.println("actividad vacia");
-			actividad.add(".*");
-			//actividad.add("");
-		}
-		if(proyecto.size()==0){
-			System.out.println("proyecto vacio");
-			proyecto.add("");
-		}
-		if(sector.size()==0){
-			System.out.println("sector vacio");
-			sector.add("");
-		}
-		if(sociedad.size()==0){
-			System.out.println("sociedad vacia");
-			sociedad.add("");
-		}
-		if(general==null){
-			general="";
-		}
-		if(cliente==null){
-			cliente="";
-		}
+			
 		System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
 		 
 		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,proyecto,actividad,sociedad,sector,general );
@@ -420,57 +487,6 @@ public class ReferenciaController {
 		}
 		return list;
 	}
-	
-//	public List<ReferenciaWithAutoID> filtrar(ObjectId key) throws Exception {
-//		
-//		List<ReferenciaWithAutoID> list = new ArrayList<>();
-//		Iterator<ReferenciaWithAutoID> iterator = dao.getReferencias();
-//		String cliente = null;
-//		String general = null;
-//		String[] sector = null;
-//		String[] sociedad = null;
-//		String algo2 = null;
-////		while (iterator.hasNext()) {
-////			
-////			ReferenciaWithAutoID ref = iterator.next();
-////			if(catalogoClientesDao.contiene(ref.getCliente(), cliente) || ref.getCliente().contains(general)){
-////				
-////				Iterator<String> iteradorSector = Arrays.asList(sector).iterator() ;
-////				String busquedaSector = "  inicio  ";
-////				while(iteradorSector.hasNext() || ref.getSectorEmpresarial().equals(busquedaSector)){
-////					busquedaSector = iteradorSector.next();
-////					if(ref.getSectorEmpresarial().equals(busquedaSector)){
-////						
-////						Iterator<String> iteradorSociedad = Arrays.asList(sociedad).iterator() ;
-////						String busquedaSociedad = "  inicio  ";
-////						while(iteradorSector.hasNext() || ref.getSociedad().equals(busquedaSociedad)){
-////							busquedaSociedad = iteradorSector.next();
-////							if(ref.getSectorEmpresarial().equals(busquedaSociedad)){
-////								
-////							
-////							
-////							
-////							}
-////						}
-////					
-////					}
-////				}
-////				
-////			}
-//			
-//			byte[] imagenByte = null;
-//			try{
-//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+ref.get_id()+".png"));
-//			}catch(Exception e){
-//			imagenByte = Files.readAllBytes(Paths.get(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png"));	
-//			}
-//			String imagenBase = DatatypeConverter.printBase64Binary(imagenByte);
-//			ref.setImagenProyecto(imagenBase);
-//			list.add(ref);
-//		}
-//		return list;	
-//	}
-//	
 	public void dropReferencia() {
 		dao.clearStore();
 	}
@@ -615,80 +631,10 @@ public class ReferenciaController {
 	
 	public static void main(String[] args) throws Exception {
 		
-		ObjectId prueba = new ObjectId("56bdef22445a2c4a1e57ca80");
-		System.out.println(prueba);
-		System.out.println("dsa");
+		ObjectId key = new ObjectId();
+		singleton = new ReferenciaController();
+		singleton.exportar(key);
 		
-		Iterator<ReferenciaWithAutoID> referencialist = null;
-		dao = ReferenciaDAO.getInstance();
-		referencialist = dao.getReferencias();
-		ReferenciaWithAutoID referencia = referencialist.next();
-		System.out.println(referencia);
-		
-		String outputfilepath = System.getProperty("user.dir") + "/OUT_CreateSimpleSpreadsheet.xlsx";
-		// Create a new spreadsheet package
-				SpreadsheetMLPackage pkg = SpreadsheetMLPackage.createPackage();
-				 
-				// Create a new worksheet part and retrieve the sheet data
-				WorksheetPart sheet = pkg.createWorksheetPart(new PartName("/xl/worksheets/sheet1.xml"), "Sheet 1", 1);
-				SheetData sheetData = sheet.getContents().getSheetData();
-				// Keep track of how many strings we've added
-				long sharedStringCounter = 0;
-				 
-				// Create a new row
-				Row row = Context.getsmlObjectFactory().createRow();
-				 
-				// Create a shared strings table instance
-				CTSst sharedStringTable = new CTSst();
-				CTXstringWhitespace ctx;
-				CTRst crt;
-				
-				//inicializar excel
-				 
-				// Create 10 cells and add them to the row
-				for (int i = 0; i < 10; i++) {
-					
-					
-					// Create a shared string
-					crt = new CTRst();
-					ctx = Context.getsmlObjectFactory().createCTXstringWhitespace();
-					ctx.setValue(referencia.getCliente());
-					crt.setT(ctx);
-				    
-					// Add it to the shared string table
-					sharedStringTable.getSi().add(crt);
-				 
-					// Add a reference to the shared string to our cell using the counter
-				    Cell cell = Context.getsmlObjectFactory().createCell();
-				    cell.setT(STCellType.S);
-				    cell.setV(String.valueOf(sharedStringCounter));
-				    
-				    // Add the cell to the row and increment the counter
-				    row.getC().add(cell);
-				}
-				 
-				// Add the row to our sheet
-				sheetData.getRow().add(row);
-				 
-				// Set the string and unique string counts on the shared string table
-				sharedStringTable.setCount(sharedStringCounter);
-				sharedStringTable.setUniqueCount(sharedStringCounter);
-				 
-				// Create a SharedStrings workbook part 
-				SharedStrings sharedStrings = new SharedStrings(new PartName("/xl/sharedStrings.xml"));
-				 
-				// Add the shared string table to the part
-				sharedStrings.setJaxbElement(sharedStringTable);
-				 
-				// Then add the part to the workbook
-				Parts parts = pkg.getParts();
-				Part workBook = parts.get( new PartName("/xl/workbook.xml") );
-				workBook.addTargetPart(sharedStrings);
-				Save saver = new Save(pkg);
-				OutputStream realOS = new FileOutputStream(outputfilepath); ;
-				saver.save(realOS );
-						
-				System.out.println("\n\n done .. " + outputfilepath);
 	}
 
 }

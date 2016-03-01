@@ -263,8 +263,8 @@ public class ReferenciaService extends Service{
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			referenciaController.exportar(key);
-			out = new Message("Actualizacion correcta");
-			log.info("Update Referencia : Operation successful");
+			out = new Message("Exportacion correcta");
+			log.info("Exportar Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -286,9 +286,9 @@ public class ReferenciaService extends Service{
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
+			//System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
 			out = referenciaController.filtrar(general,cliente,sociedad,sector,actividad,proyecto,anios);
-			System.out.println(out);
+			//System.out.println(out);
 			log.info("Buscador Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

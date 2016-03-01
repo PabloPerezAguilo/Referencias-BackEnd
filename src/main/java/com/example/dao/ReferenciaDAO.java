@@ -97,8 +97,88 @@ public class ReferenciaDAO {
 		insertReferencia(r);
 	}
 	
-	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,Object proyecto, Object actividad,Object sociedad,Object sector, String general) throws Exception {
+	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,List<String> proyecto, List<String> actividad,List<String> sociedad,List<String> sector, String general) throws Exception {
 		
+		String aux ;
+		String consultaActividad ="[";
+		String consultaProyecto ="[";
+		String consultaSector ="[";
+		String consultaSociedad ="[";
+		
+		if(actividad.size()!=0){
+			Iterator<String> iteradorActividad = actividad.iterator();
+			while(iteradorActividad.hasNext()){
+				aux = iteradorActividad.next();
+				if(iteradorActividad.hasNext()){
+				consultaActividad = consultaActividad + "\"" + aux +"\",";
+				}else{
+				consultaActividad = consultaActividad + "\"" + aux +"\"]";
+				}
+			}
+			consultaActividad =  "{ tipoActividad: {$in:"+consultaActividad+"}},";
+			System.out.println(consultaActividad);
+			
+		}else{
+			System.out.println("actividad vacia");
+			consultaActividad = "";
+		}
+		
+		if(proyecto.size()!=0){
+			Iterator<String> iteradorProyecto = proyecto.iterator();
+			while(iteradorProyecto.hasNext()){
+				aux = iteradorProyecto.next();
+				if(iteradorProyecto.hasNext()){
+				consultaProyecto = consultaProyecto + "\"" + aux +"\",";
+				}else{
+				consultaProyecto = consultaProyecto + "\"" + aux +"\"]";
+				}
+			}
+			consultaProyecto =  "{ tipoProyecto: {$in:"+consultaProyecto+"}},";
+			System.out.println(consultaProyecto);
+		}else{
+			System.out.println("proyecto vacio");
+			consultaProyecto = "";
+		}
+		
+		if(sector.size()!=0){
+			Iterator<String> iteradorSector = sector.iterator();
+			while(iteradorSector.hasNext()){
+				aux = iteradorSector.next();
+				if(iteradorSector.hasNext()){
+				consultaSector = consultaSector + "\"" + aux +"\",";
+				}else{
+				consultaSector = consultaSector + "\"" + aux +"\"]";
+				}
+			}
+			consultaSector =  "{ sectorEmpresarial: {$in:"+consultaSector+"}},";
+			System.out.println(consultaSector);
+		}else{
+			System.out.println("sector vacio");
+			consultaSector = "";
+		}
+		
+		if(sociedad.size()!=0){
+			Iterator<String> iteradorSociedad = sociedad.iterator();
+			while(iteradorSociedad.hasNext()){
+				aux = iteradorSociedad.next();
+				if(iteradorSociedad.hasNext()){
+				consultaSociedad = consultaSociedad + "\"" + aux +"\",";
+				}else{
+				consultaSociedad = consultaSociedad + "\"" + aux +"\"]";
+				}
+			}
+			consultaSociedad =  "{ sociedad: {$in:"+consultaSociedad+"}},";
+			System.out.println(consultaSociedad);
+		}else{
+			System.out.println("sociedad vacia");
+			consultaSociedad = "";
+		}
+		if(general==null){
+			general="";
+		}
+		if(cliente==null){
+			cliente="";
+		}
 		Calendar fecha = Calendar.getInstance();
 		Date actual = new Date(fecha.getTimeInMillis());
 		if(ultimosAños == fecha.get(Calendar.YEAR)){
@@ -110,14 +190,15 @@ public class ReferenciaDAO {
 		List<String> coDeBusqueda = daoCoDe.listaContenido(general);
 		List<String> gerentesBusqueda = daoGerentes.listaContenido(general);
 		//return dao.find("{'responsableComercial':{$in:#}}",gerentesBusqueda).as(ReferenciaWithAutoID.class).iterator();
+		System.out.println("inicio consulta");
 		return dao.find("{$and:"
 							+ " [ { cliente: #},"
 							+ " { fechaInicio:{$gte:#,$lt:#}},"
-							+ "{ tipoProyecto: {$in:#}},"
-							+ "{ tipoActividad: {$in:#}},"
-							+ "{ estado:'validada'},"
-							+ "{ sociedad: {$in:#}},"
-							+ "{ sectorEmpresarial: {$in:#}}],"
+							+ consultaProyecto
+							+ consultaActividad
+							+ consultaSector
+							+ consultaSociedad
+							+ "{ estado:'validada'}],"
 						+ "$or: [ {cliente:{$in:#}},"
 							+ "{tipoProyecto:{$in:#}},"
 							+ "{tipoActividad:{$in:#}},"
@@ -129,9 +210,8 @@ public class ReferenciaDAO {
 							+ "{problematicaCliente:#},"
 							+ "{solucionGFI:#},"
 							+ "{denominacion: #}]}",	
-						Pattern.compile(cliente), desde, actual, proyecto,
-						actividad, sociedad, sector, clientesBusqueda,
-						coDeBusqueda, coDeBusqueda, coDeBusqueda,
+						Pattern.compile(".*"+Pattern.quote(cliente)+".*"), desde, actual,
+						clientesBusqueda,coDeBusqueda, coDeBusqueda, coDeBusqueda,
 						coDeBusqueda,gerentesBusqueda,gerentesBusqueda,
 						Pattern.compile(general),
 						Pattern.compile(general),
@@ -154,11 +234,15 @@ public class ReferenciaDAO {
 		proyecto.add("PROY");
 		List<String> actividad = new ArrayList();
 		actividad.add("DES");
+		actividad.add("sa");
+		actividad.add("pru");
+		actividad.add("125");
+		actividad.add("nanynyny");
 		List<String> sociedad = new ArrayList();
-		sociedad.add("AST");
+		sociedad.add("");
 		List<String> sector = new ArrayList();
 		sector.add("BANK");
-		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("",2016,proyecto,actividad,sociedad,sector,"asddsa");
+		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("AXA Seguros (AXA)",2016,proyecto,actividad,sociedad,sector,"");
 		ReferenciaWithAutoID recorrido = null;
 		while(aux.hasNext()){
 			
