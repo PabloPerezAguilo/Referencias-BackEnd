@@ -467,11 +467,10 @@ public class ReferenciaController {
 	
 	}
 	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
-			List<String> sector, List<String> actividad, List<String> proyecto, int anios) throws Exception {
+			List<String> sector, List<String> actividad, List<String> proyecto,List<String> tecnologias,List<String> tipoTecnologias,String producto, int anios) throws Exception {
 			
-		System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
-		 
-		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,proyecto,actividad,sociedad,sector,general );
+		//System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+tecnologias+"-"+tipoTecnologias+"-"+producto+"-"+proyecto+"-"+anios);
+		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,proyecto,actividad,sociedad,sector,tecnologias,tipoTecnologias,producto,general );
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
 		while (iterator.hasNext()) {
 			ReferenciaWithAutoID ref = iterator.next();

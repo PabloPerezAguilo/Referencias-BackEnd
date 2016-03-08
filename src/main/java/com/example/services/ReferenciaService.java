@@ -282,13 +282,14 @@ public class ReferenciaService extends Service{
             @QueryParam("bSector") final List<String> sector,
             @QueryParam("bActividad") final List<String> actividad,
             @QueryParam("bProyecto") final List<String> proyecto,
+            @QueryParam("bTecnologias") final List<String> tecnologias,
+            @QueryParam("bTipoTecnologia") final List<String> tipoTecnologias,
+            @QueryParam("bEsProducto") String producto,
             @QueryParam("bAnios") int anios ){
 		
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			//System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+proyecto+"-"+anios);
-			out = referenciaController.filtrar(general,cliente,sociedad,sector,actividad,proyecto,anios);
-			//System.out.println(out);
+			out = referenciaController.filtrar(general,cliente,sociedad,sector,actividad,proyecto,tecnologias,tipoTecnologias,producto,anios);
 			log.info("Buscador Referencia : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

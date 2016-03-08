@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
+import com.example.controllers.TecnologiaController;
 import com.example.models.ReferenciaWithAutoID;
 
 public class ReferenciaDAO {
@@ -19,6 +20,7 @@ public class ReferenciaDAO {
 	private static CatalogoClientesDAO daoClientes;
 	private static CatalogoCoDeDAO daoCoDe;
 	private static CatalogoGerentesDAO daoGerentes;
+	private static TecnologiaController tecnologiaController;
 	private static final String COLLECTION_NAME_MONGO = "referencias";
 
 	private ReferenciaDAO() throws Exception {
@@ -26,6 +28,7 @@ public class ReferenciaDAO {
 		daoClientes = CatalogoClientesDAO.getInstance();
 		daoCoDe = CatalogoCoDeDAO.getInstance();
 		daoGerentes = CatalogoGerentesDAO.getInstance();
+		tecnologiaController = TecnologiaController.getInstance();
 	}
 
 	public static ReferenciaDAO getInstance() throws Exception {
@@ -97,13 +100,16 @@ public class ReferenciaDAO {
 		insertReferencia(r);
 	}
 	
-	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,List<String> proyecto, List<String> actividad,List<String> sociedad,List<String> sector, String general) throws Exception {
+	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,List<String> proyecto, List<String> actividad,List<String> sociedad,List<String> sector,List<String> tecnologias,List<String> tipoTecnologias,String producto, String general) throws Exception {
 		
+		//System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+tecnologias+"-"+tipoTecnologias+"-"+producto+"-"+proyecto+"-"+ultimosAños);
 		String aux ;
 		String consultaActividad ="[";
 		String consultaProyecto ="[";
 		String consultaSector ="[";
 		String consultaSociedad ="[";
+		String consultaTecnologias ="[";
+		String consultaTipoTecnologias ="[";
 		
 		if(actividad.size()!=0){
 			Iterator<String> iteradorActividad = actividad.iterator();
@@ -173,6 +179,53 @@ public class ReferenciaDAO {
 			System.out.println("sociedad vacia");
 			consultaSociedad = "";
 		}
+		if(tecnologias.size()!=0){
+			Iterator<String> iteradorTecnologias = tecnologias.iterator();
+			while(iteradorTecnologias.hasNext()){
+				aux = iteradorTecnologias.next();
+				if(iteradorTecnologias.hasNext()){
+				consultaTecnologias = consultaTecnologias + "\"" + aux +"\",";
+				}else{
+				consultaTecnologias = consultaTecnologias + "\"" + aux +"\"]";
+				}
+			}
+			consultaTecnologias =  "{ tecnologias: {$in:"+consultaTecnologias+"}},";
+			System.out.println(consultaTecnologias);
+		}else{
+			System.out.println("tecnologias vacia");
+			consultaTecnologias = "";
+		}
+		if(producto==null){
+			producto="";
+		}
+		List<String> tecnologiasTipoBusqueda = tecnologiaController.busquedaTecnologias(producto, tipoTecnologias);
+		if(tecnologiasTipoBusqueda.size()!=0){
+			Iterator<String> iteradorTipoTecnologias = tecnologiasTipoBusqueda.iterator();
+			while(iteradorTipoTecnologias.hasNext()){
+				aux = iteradorTipoTecnologias.next();
+				if(iteradorTipoTecnologias.hasNext()){
+				consultaTipoTecnologias = consultaTipoTecnologias + "\"" + aux +"\",";
+				}else{
+				consultaTipoTecnologias = consultaTipoTecnologias + "\"" + aux +"\"]";
+				}
+			}
+			consultaTipoTecnologias =  "{ tecnologias: {$in:"+consultaTipoTecnologias+"}},";
+			System.out.println(consultaTipoTecnologias);
+		}else{
+			System.out.println("sin tipo tecnologias");
+			System.out.println(tipoTecnologias.size());
+			if(tipoTecnologias.size()==0){
+				consultaTipoTecnologias = "";
+				System.out.println("pasocorrecto");
+			}
+			else{
+				System.out.println("ÑAAAA");
+				consultaTipoTecnologias="{tecnologias:{$in:[]}},"; 
+			}
+		}
+		if(producto==null){
+			producto="";
+		}
 		if(general==null){
 			general="";
 		}
@@ -190,7 +243,8 @@ public class ReferenciaDAO {
 		List<String> coDeBusqueda = daoCoDe.listaContenido(general);
 		List<String> gerentesBusqueda = daoGerentes.listaContenido(general);
 		//return dao.find("{'responsableComercial':{$in:#}}",gerentesBusqueda).as(ReferenciaWithAutoID.class).iterator();
-		System.out.println("inicio consulta");
+		//System.out.println("general:"+general+"cliente:"+cliente+"sociedad:"+sociedad+"sector:"+sector+"actividad:"+actividad+"tecnologias:"+tecnologias+"tipo tecnologias:"+tipoTecnologias+"producto:"+producto+"proyecto:"+proyecto+"ultimos años:"+ultimosAños);
+		//System.out.println("inicio consulta");
 		return dao.find("{$and:"
 							+ " [ { cliente: #},"
 							+ " { fechaInicio:{$gte:#,$lt:#}},"
@@ -198,6 +252,8 @@ public class ReferenciaDAO {
 							+ consultaActividad
 							+ consultaSector
 							+ consultaSociedad
+							+ consultaTecnologias
+							+ consultaTipoTecnologias
 							+ "{ estado:'validada'}],"
 						+ "$or: [ {cliente:{$in:#}},"
 							+ "{tipoProyecto:{$in:#}},"
@@ -231,18 +287,15 @@ public class ReferenciaDAO {
 		singleton = new ReferenciaDAO();
 		//poner a "" si viene a null NOTA
 		List<String> proyecto = new ArrayList();
-		proyecto.add("PROY");
+		//proyecto.add("PROY");
 		List<String> actividad = new ArrayList();
-		actividad.add("DES");
-		actividad.add("sa");
-		actividad.add("pru");
-		actividad.add("125");
-		actividad.add("nanynyny");
+		//actividad.add("DES");
 		List<String> sociedad = new ArrayList();
-		sociedad.add("");
+		//sociedad.add("AST");
 		List<String> sector = new ArrayList();
-		sector.add("BANK");
-		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("AXA Seguros (AXA)",2016,proyecto,actividad,sociedad,sector,"");
+		//sector.add("BANK");
+		System.out.println(sector.size());
+		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("",2016,proyecto,actividad,sociedad,sector,new ArrayList(),new ArrayList(),"","");
 		ReferenciaWithAutoID recorrido = null;
 		while(aux.hasNext()){
 			

@@ -264,5 +264,50 @@ public class TecnologiaController {
 		return hojas;
 		
 	}
+	public List<String> busquedaTecnologias(String producto,List<String> tipoTecnologias) throws Exception {
+		
+		Tecnologia arbol = dao.getTecnologias();
+		List<String> lista = busquedaTecnologiaRecursiva(producto,tipoTecnologias,arbol);
+		return lista;
+		
+	}
+	
+	public List<String> busquedaTecnologiaRecursiva(String producto,List<String> tipoTecnologias, Tecnologia busqueda){
+		
+		List<String> resultado = new ArrayList<String>();
+		Iterator<Tecnologia> iteradorHijos = busqueda.getNodosHijos().iterator();
+		Tecnologia actual;
+		while(iteradorHijos.hasNext()){
+			
+			actual = iteradorHijos.next();
+			if(actual.getClase().equals("hoja")||actual.getClase().equals("hojaInvalida")){
+				
+				if(producto.equals("")){
+				
+				resultado.add(actual.getNombre());
+				
+				}else if(producto.equals("no")&& !actual.isProducto()){
+				
+				resultado.add(actual.getNombre());
+				
+				}else if((producto.equals("si")&& actual.isProducto())
+						&&(tipoTecnologias==null||tipoTecnologias.size()==0)){
+				resultado.add(actual.getNombre());
+				}else if(producto.equals("si")&& actual.isProducto()
+						&&tipoTecnologias!=null&&tipoTecnologias.contains(actual.getTipo())){
+				resultado.add(actual.getNombre());
+				}
+			}	
+			else if(actual.getNodosHijos()!= null){
+				
+				resultado.addAll(busquedaTecnologiaRecursiva(producto,tipoTecnologias, actual));
+				
+			}
+			
+			
+		}
+		return resultado;
+		
+	}
 	
 }

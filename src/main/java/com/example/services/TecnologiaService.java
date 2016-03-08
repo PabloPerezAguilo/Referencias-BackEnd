@@ -51,7 +51,7 @@ public class TecnologiaService extends Service{
 	@GET
 	@Path("/{nombre}")
 	@ApiOperation(value = "Devuelve una tecnologia por su nombre", notes = "Devuelve una tecnologia por su nombre")
-	public Response getReferencia(@PathParam("nombre") String nombre) {
+	public Response getTecnologia(@PathParam("nombre") String nombre) {
 		try {
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.getTecnologia(nombre);
@@ -114,7 +114,7 @@ public class TecnologiaService extends Service{
 	@DELETE
 	@Path("/{nombre}")
 	@ApiOperation(value = "Borra una tecnologia", notes = "Borra una Referencia")
-	public Response deleteReferencia(@PathParam("nombre") String nombre){
+	public Response deleteTecnologia(@PathParam("nombre") String nombre){
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 			out = tecnologiaController.deleteTecnologia(nombre);
@@ -134,7 +134,7 @@ public class TecnologiaService extends Service{
 	 */
 	@PUT
 	@ApiOperation(value = "Modifica una tecnologia", notes = "Modifica una tecnologia")
-	public Response updateReferencia(Map<String,Object> recursos){
+	public Response updateTecnologia(Map<String,Object> recursos){
 		
 		try{
 			TecnologiaController tecnologiaController = TecnologiaController.getInstance();
