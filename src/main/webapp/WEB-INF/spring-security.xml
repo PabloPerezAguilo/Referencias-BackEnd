@@ -14,6 +14,7 @@
 		<!-- this services requires login -->
 		<!-- REFERENCIA -->
 		<intercept-url pattern="/api/referencia/validadas/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_CONSULTOR,ROLE_VALIDADOR" method="GET"/>
+		<intercept-url pattern="/api/referencia/plantillas/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_CONSULTOR,ROLE_VALIDADOR" method="GET"/>
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="GET"/>
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="PUT"/>
 		<intercept-url pattern="/api/referencia/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="POST"/>

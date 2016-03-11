@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -377,94 +378,249 @@ public class ReferenciaController {
 		return false;
 	}
 	
-	public void exportar(ObjectId key) throws Exception {
+	public void exportar(List<ObjectId> key) throws Exception {
 		
-		int MAX_COLUMNS = 3;
+		Iterator<ObjectId> iteradorReferencias = key.iterator();
+		List<ReferenciaWithAutoID> resultado = new ArrayList<ReferenciaWithAutoID>();
+		ObjectId actual = null;
+		while(iteradorReferencias.hasNext()){
+			
+			actual= iteradorReferencias.next();
+			resultado.add(dao.getReferencia(actual));
+		}
+		
+		int MAX_COLUMNS = 17;
+		int OFFSET_FILA_INICIO = 5;
 		// Prueba Apache POI
 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet();
 		HSSFRow row = sheet.createRow((short) 0);
 		HSSFCell cell;
-		HSSFCellStyle style = wb.createCellStyle();
+		HSSFCellStyle stylePar = wb.createCellStyle();
+		HSSFCellStyle styleImpar = wb.createCellStyle();
 		HSSFCellStyle styleCabecera = wb.createCellStyle();
 		HSSFFont font = wb.createFont();
-		style.setFillForegroundColor(HSSFColor.ORANGE.index);
-		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		font.setColor(HSSFColor.BLACK.index);
+		HSSFPalette palette = wb.getCustomPalette();
+		palette.setColorAtIndex(HSSFColor.ORANGE.index, (byte) 253, (byte) 126,(byte) 42);
+		styleCabecera.setFillForegroundColor(HSSFColor.ORANGE.index);
+		styleCabecera.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		font.setColor(HSSFColor.WHITE.index);
 		font.setBold(true);
-		style.setFont(font);
+		styleCabecera.setFont(font);
 		ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
-		Iterator<Usuario> it;
-		Boolean cabecera = true;
 
-		listaUsuarios.add(new Usuario("prueba1 nick", "prueba1 name ",
-				"prueba1 role"));
-		listaUsuarios.add(new Usuario("prueba2 nick con redimension",
-				"prueba2 name ", "prueba2 role"));
+		int fila = 0;
 
-		int i = 0;
-		if(cabecera){
-		row = sheet.createRow(i++);
-		cell = row.createCell(0);
-		cell.setCellValue("Name");
+		row = sheet.createRow(OFFSET_FILA_INICIO + fila);
 		cell = row.createCell(1);
-		cell.setCellValue("Nick");
+		cell.setCellValue("Cliente");
+		cell.setCellStyle(styleCabecera);
 		cell = row.createCell(2);
-		cell.setCellValue("Role");
-		cabecera= false;
+		cell.setCellValue("Sociedad");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(3);
+		cell.setCellValue("Sector Empresarial");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(4);
+		cell.setCellValue("Tipo de actividad");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(5);
+		cell.setCellValue("Tipo de proyecto");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(6);
+		cell.setCellValue("Fecha");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(7);
+		cell.setCellValue("Duracion en meses");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(8);
+		cell.setCellValue("Denominacion");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(9);
+		cell.setCellValue("Resumen del proyecto");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(10);
+		cell.setCellValue("Problematica del Cliente");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(11);
+		cell.setCellValue("Solucion de Gfi");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(12);
+		cell.setCellValue("Fte totales");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(13);
+		cell.setCellValue("¿Tiene certificado?");
+		cell.setCellStyle(styleCabecera);
+//		cell.setCellValue("Registros de pedidos asociados a la referencia");
+//		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(14);
+		cell.setCellValue("Responsable comercial");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(15);
+		cell.setCellValue("Responsable tecnico");
+		cell.setCellStyle(styleCabecera);
+		cell = row.createCell(16);
+		cell.setCellValue("Tecnologias");
+		cell.setCellStyle(styleCabecera);
+		fila++;
+
+		for (ReferenciaWithAutoID recurso : resultado) {
+			int k = 1;
+			row = sheet.createRow(OFFSET_FILA_INICIO + fila);
+			fila++;
+			if ((row.getRowNum() % 2) == 0) {
+				stylePar.setFillForegroundColor(HSSFColor.WHITE.index);
+				stylePar.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getCliente());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getSociedad());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getSectorEmpresarial());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getTipoActividad());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getTipoProyecto());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getFechaInicio());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getDuracionMeses());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getDenominacion());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getResumenProyecto());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getProblematicaCliente());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getSolucionGfi());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getFteTotales());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getCertificado());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getResponsableComercial());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getResponsableTecnico());
+				cell.setCellStyle(stylePar);
+				cell = row.createCell(k++);
+				String tec = Arrays.asList(recurso.getTecnologias()).toString();
+				tec = tec.replace("[","");
+				tec = tec.replace("]","");
+				cell.setCellValue(tec);
+				cell.setCellStyle(stylePar);
+			} else {
+				palette.setColorAtIndex(HSSFColor.RED.index, (byte) 255,(byte) 245, (byte) 224);
+				styleImpar.setFillForegroundColor(HSSFColor.RED.index);
+				styleImpar.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getCliente());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getSociedad());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getSectorEmpresarial());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getTipoActividad());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getTipoProyecto());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getFechaInicio());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getDuracionMeses());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getDenominacion());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getResumenProyecto());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getProblematicaCliente());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getSolucionGfi());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getFteTotales());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getCertificado());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getResponsableComercial());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				cell.setCellValue(recurso.getResponsableTecnico());
+				cell.setCellStyle(styleImpar);
+				cell = row.createCell(k++);
+				String tec = Arrays.asList(recurso.getTecnologias()).toString();
+				tec = tec.replace("[","");
+				tec = tec.replace("]","");
+				cell.setCellValue(tec);
+				cell.setCellStyle(styleImpar);
+
+			}
+
 		}
 
-		for (Usuario u : listaUsuarios) {
-			int k = 0;
-			row = sheet.createRow(i++);
-			cell = row.createCell(k++);
-			cell.setCellValue(u.getName());
-			cell.setCellStyle(style);
-			cell = row.createCell(k++);
-			cell.setCellValue(u.getNick());
-			cell.setCellStyle(style);
-			cell = row.createCell(k++);
-			cell.setCellValue(u.getRole());
-			cell.setCellStyle(style);
-		}
-
-		for( int j = 0 ; j < MAX_COLUMNS ; j++ ) {
+		for (int j = 1; j < MAX_COLUMNS; j++) {
 			sheet.autoSizeColumn(j);
 		}
-		
+
 		// Apache POI IMAGE
 
-				// add picture data to this workbook.
-				InputStream is = new FileInputStream(Config.getInstance().getProperty(Config.PATH_IMAGENES)+"error.png");
-				byte[] bytes = IOUtils.toByteArray(is);
-				int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
-				is.close();
+		// add picture data to this workbook.
+		InputStream is = new FileInputStream(
+				"C:/Users/usuario/Documents/Referencias-BackEnd/imagenes/error.png");
+		byte[] bytes = IOUtils.toByteArray(is);
+		int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+		is.close();
 
-				CreationHelper helper = wb.getCreationHelper();
+		CreationHelper helper = wb.getCreationHelper();
 
-				// Create the drawing patriarch. This is the top level container for all
-				// shapes.
-				Drawing drawing = sheet.createDrawingPatriarch();
+		// Create the drawing patriarch. This is the top level container for all
+		// shapes.
+		Drawing drawing = sheet.createDrawingPatriarch();
 
-				// add a picture shape
-				ClientAnchor anchor = helper.createClientAnchor();
-				// set top-left corner of the picture,
-				// subsequent call of Picture#resize() will operate relative to it
-				anchor.setCol1(5);
-				anchor.setRow1(5);
-				Picture pict = drawing.createPicture(anchor, pictureIdx);
+		// add a picture shape
+		ClientAnchor anchor = helper.createClientAnchor();
+		// set top-left corner of the picture,
+		// subsequent call of Picture#resize() will operate relative to it
+		anchor.setCol1(1);
+		anchor.setRow1(0);
+		Picture pict = drawing.createPicture(anchor, pictureIdx);
 
-				// auto-size picture relative to its top-left corner
-				pict.resize();
-				sheet.autoSizeColumn(6);
 
-				// save with the default palette
-				FileOutputStream out = new FileOutputStream("pruebaPOI.xls");
-				wb.write(out);
-				out.close();
-		
-	
+		// auto-size picture relative to its top-left corner
+		pict.resize();
+		sheet.autoSizeColumn(0);
+
+
+		// save with the default palette
+		FileOutputStream out = new FileOutputStream("C:/Users/usuario/Documents/Referencias-BackEnd/pruebaPOI.xls");
+		wb.write(out);
+		out.close();
+		System.out.println("exito321");
 	}
 	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
 			List<String> sector, List<String> actividad, List<String> proyecto,List<String> tecnologias,List<String> tipoTecnologias,String producto, int anios) throws Exception {
@@ -629,10 +785,10 @@ public class ReferenciaController {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		
-		ObjectId key = new ObjectId();
 		singleton = new ReferenciaController();
-		singleton.exportar(key);
+		List<ObjectId> aux = new ArrayList<ObjectId>();
+		System.out.println("dsadsadsa");
+		singleton.exportar(aux);
 		
 	}
 

@@ -1,6 +1,7 @@
 
 package com.example.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -256,13 +257,15 @@ public class ReferenciaService extends Service{
 		return Response.status(status).entity(out).build();
 	}
 	@GET
-	@Path("/plantillas/{key}")
+	@Path("/plantillas")
 	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
-	public Response exportar(@PathParam("key") ObjectId key){
+	public Response exportar(@QueryParam("listaId") final  List<ObjectId> listaId,@QueryParam("tipoDocumento") String tipoDocumento){
 		
+		System.out.println(listaId);
+		System.out.println(tipoDocumento);
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			referenciaController.exportar(key);
+			referenciaController.exportar(listaId);
 			out = new Message("Exportacion correcta");
 			log.info("Exportar Referencia : Operation successful");
 		}catch(Exception e){
@@ -299,7 +302,12 @@ public class ReferenciaService extends Service{
 		
 		return Response.status(status).entity(out).build();
 	}
-	
-	
+	public static void main(String[] args) throws Exception {
+		ReferenciaController referenciaController = ReferenciaController.getInstance();
+		List<ObjectId> aux = new ArrayList<ObjectId>();
+		System.out.println("dsadsadsa");
+		referenciaController.exportar(aux);
+		
+	}
 	
 }
