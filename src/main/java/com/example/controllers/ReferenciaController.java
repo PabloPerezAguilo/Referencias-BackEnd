@@ -40,6 +40,7 @@ import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.Parts;
 import org.docx4j.openpackaging.parts.SpreadsheetML.SharedStrings;
 import org.docx4j.openpackaging.parts.SpreadsheetML.WorksheetPart;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.xlsx4j.jaxb.Context;
 import org.xlsx4j.sml.CTRst;
 import org.xlsx4j.sml.CTSst;
@@ -617,7 +618,7 @@ public class ReferenciaController {
 
 
 		// save with the default palette
-		FileOutputStream out = new FileOutputStream("C:/Users/usuario/Documents/Referencias-BackEnd/pruebaPOI.xls");
+		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_IMAGENES)+SecurityContextHolder.getContext().getAuthentication().getName()+".xls");
 		wb.write(out);
 		out.close();
 		System.out.println("exito321");
