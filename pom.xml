@@ -161,7 +161,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>Xonger</finalName>
+		<finalName>Sharon</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<pluginManagement>
     		<plugins>

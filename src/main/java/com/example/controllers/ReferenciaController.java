@@ -9,8 +9,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -489,7 +491,8 @@ public class ReferenciaController {
 				cell.setCellValue(recurso.getTipoProyecto());
 				cell.setCellStyle(stylePar);
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getFechaInicio());
+				SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+				cell.setCellValue(format1.format(recurso.getFechaInicio().getTime()));
 				cell.setCellStyle(stylePar);
 				cell = row.createCell(k++);
 				cell.setCellValue(recurso.getDuracionMeses());
@@ -544,7 +547,8 @@ public class ReferenciaController {
 				cell.setCellValue(recurso.getTipoProyecto());
 				cell.setCellStyle(styleImpar);
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getFechaInicio());
+				SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+				cell.setCellValue(format1.format(recurso.getFechaInicio().getTime()));
 				cell.setCellStyle(styleImpar);
 				cell = row.createCell(k++);
 				cell.setCellValue(recurso.getDuracionMeses());
@@ -592,7 +596,7 @@ public class ReferenciaController {
 
 		// add picture data to this workbook.
 		InputStream is = new FileInputStream(
-				"C:/Users/usuario/Documents/Referencias-BackEnd/imagenes/error.png");
+				"C:/Users/usuario/Documents/Referencias-BackEnd/imagenes/logoExportar.JPG");
 		byte[] bytes = IOUtils.toByteArray(is);
 		int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
 		is.close();
@@ -618,7 +622,8 @@ public class ReferenciaController {
 
 
 		// save with the default palette
-		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_IMAGENES)+SecurityContextHolder.getContext().getAuthentication().getName()+".xls");
+		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xls");
+		System.out.println(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xls");
 		wb.write(out);
 		out.close();
 		System.out.println("exito321");
@@ -786,10 +791,14 @@ public class ReferenciaController {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		singleton = new ReferenciaController();
-		List<ObjectId> aux = new ArrayList<ObjectId>();
-		System.out.println("dsadsadsa");
-		singleton.exportar(aux);
+//		singleton = new ReferenciaController();
+//		List<ObjectId> aux = new ArrayList<ObjectId>();
+//		System.out.println("dsadsadsa");
+//		singleton.exportar(aux);
+		Calendar aux = Calendar.getInstance();
+		SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+		String formatted = format1.format(aux.getTime());
+		System.out.println(formatted);
 		
 	}
 
