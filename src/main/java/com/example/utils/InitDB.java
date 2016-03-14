@@ -64,6 +64,7 @@ public class InitDB {
 		controller.createUsuario("abarrero","Almudena Barrero", "mantenimiento");
 		controller.createUsuario("dmonco","David Monco Jimenez", "administrador");
 		controller.createUsuario("peafernandez","Pedro Antonio Fernandez Sáez", "administrador");
+		controller.createUsuario("jldiaz","Jaime Lopez Diaz", "administrador");
 		controller.createUsuario("agonzalez","Alejandro Gonzalez Garcia", "consultor");
 		controller.createUsuario("fgmontoro","Francisco Garcia Montoro", "mantenimiento");
 		LOG.info("Users inserted in DB");
