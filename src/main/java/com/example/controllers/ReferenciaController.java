@@ -381,7 +381,7 @@ public class ReferenciaController {
 		return false;
 	}
 	
-	public void exportar(List<ObjectId> key) throws Exception {
+	public String exportar(List<ObjectId> key) throws Exception {
 		
 		Iterator<ObjectId> iteradorReferencias = key.iterator();
 		List<ReferenciaWithAutoID> resultado = new ArrayList<ReferenciaWithAutoID>();
@@ -622,11 +622,12 @@ public class ReferenciaController {
 
 
 		// save with the default palette
-		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xls");
-		System.out.println(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xls");
+		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
+		System.out.println(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
 		wb.write(out);
 		out.close();
 		System.out.println("exito321");
+		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx";
 	}
 	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
 			List<String> sector, List<String> actividad, List<String> proyecto,List<String> tecnologias,List<String> tipoTecnologias,String producto, int anios) throws Exception {

@@ -233,7 +233,8 @@ public class ReferenciaDAO {
 			cliente="";
 		}
 		Calendar fecha = Calendar.getInstance();
-		Date actual = new Date(fecha.getTimeInMillis());
+		// *2 es para aumentr el rango de la fecha actual por si crean referencia sfuturas que salgan el el buscador
+		Date actual = new Date(fecha.getTimeInMillis()*2);
 		if(ultimosAños == fecha.get(Calendar.YEAR)){
 			ultimosAños = 1980;
 		}

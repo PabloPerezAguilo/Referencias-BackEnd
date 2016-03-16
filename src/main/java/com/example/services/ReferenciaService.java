@@ -1,6 +1,8 @@
 
 package com.example.services;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -22,7 +25,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.controllers.ReferenciaController;
 import com.example.models.ReferenciaWithAutoID;
+import com.example.utils.Config;
 import com.example.utils.Message;
+import com.google.common.net.HttpHeaders;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -32,7 +37,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
 public class ReferenciaService extends Service{
 
 	private static final Logger log = Logger.getLogger(ReferenciaService.class.getName());
-
 	public ReferenciaService() {
 		super();
 	}
@@ -175,6 +179,7 @@ public class ReferenciaService extends Service{
 			log.error("Error detected: ", e);
 			out = new Message(e.getMessage());
 		}
+		
 		return Response.status(status).entity(out).build();
 	}
 	
@@ -258,24 +263,45 @@ public class ReferenciaService extends Service{
 	}
 	@GET
 	@Path("/plantillas")
+	@Produces("application/vnd.ms-excel")
 	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
 	public Response exportar(@QueryParam("listaId") final  List<ObjectId> listaId,@QueryParam("tipoDocumento") String tipoDocumento){
 		
 		System.out.println(listaId);
 		System.out.println(tipoDocumento);
+		String filePath = "";
+		ResponseBuilder response = null ;
+		File file = null;
 		try{
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			referenciaController.exportar(listaId);
-			out = new Message("Exportacion correcta");
+			filePath = referenciaController.exportar(listaId);
 			log.info("Exportar Referencia : Operation successful");
+			file = new File(filePath);
+			response = Response.ok((Object) file);
+			response.header("Content-Disposition",
+				"attachment; filename=new-excel-file.xlsx");
 		}catch(Exception e){
-			status = Response.Status.BAD_REQUEST;
-			log.error("Error detected: ", e);
-			out = new Message(e.getMessage());
+			log.error("Error detected: ", e);	
 		}
-		
-		return Response.status(status).entity(out).build();
+			return response.build();				
 	}
+	@DELETE
+	@Path("/plantillas")
+	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
+	public void exportar(@QueryParam("tipoDocumento") String tipoDocumento){
+		
+		
+		File file = null;
+		try{
+			file = new File(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
+			file.delete();
+			log.info("borrar recurso descargado : Operation successful");
+		}catch(Exception e){
+			log.error("Error de borrado: ", e);	
+		}
+				
+	}
+	
 	@GET
 	@Path("/filtro")
 	@ApiOperation(value = "Buscador de referencias", notes = "")
