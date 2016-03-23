@@ -154,7 +154,7 @@ public class InitDB {
 		controller.createCliente(new CatalogoClientes("SUMINISTROS IMPORTACIONES Y MANTENIMIENTOS ELECTRONICOS SERMICRO","SERMICRO",true,"",""));
 		controller.createCliente(new CatalogoClientes("TINSA TASACIONES INMOBILIARIAS, S.A.U.","TINSA",true,"",""));
 		controller.createCliente(new CatalogoClientes("AXA Seguros", "AXA", true, "CompSeguros AX", "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/AXA_Logo.svg/150px-AXA_Logo.svg.png"));
-		controller.createCliente(new CatalogoClientes("Banco Bankia", "Bankia", true, "BancoVerde", "http://www.bankia.es/Ficheros/CMA/ficheros/CMP_IMG_h1_logo.PNG"));
+		//controller.createCliente(new CatalogoClientes("Banco Bankia", "Bankia", false, "BancoVerde", "http://www.bankia.es/Ficheros/CMA/ficheros/CMP_IMG_h1_logo.PNG"));
 		controller.createCliente(new CatalogoClientes("Banco BBVA", "BBVA", false, "BancoAzul", "http://www.bankia.es/Ficheros/CMA/ficheros/CMP_IMG_h1_logo.PNG"));
 		controller.createCliente(new CatalogoClientes("Compañia Telefonica", "Telefonica", false, "Telefono", "http://www.bankia.es/Ficheros/CMA/ficheros/CMP_IMG_h1_logo.PNG"));
 		

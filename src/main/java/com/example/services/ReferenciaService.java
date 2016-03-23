@@ -4,6 +4,7 @@ package com.example.services;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -265,21 +266,45 @@ public class ReferenciaService extends Service{
 	@Path("/plantillas")
 	@Produces("application/vnd.ms-excel")
 	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
-	public Response exportar(@QueryParam("listaId") final  List<ObjectId> listaId,@QueryParam("tipoDocumento") String tipoDocumento){
+	public Response exportar(@QueryParam("listaId") String listaId,@QueryParam("tipoDocumento") String tipoDocumento){
 		
 		System.out.println(listaId);
 		System.out.println(tipoDocumento);
+		String[] arrayStringListId = listaId.split(",");
+		List<ObjectId> listReferenciasId = new ArrayList<ObjectId>() ;
+		for(int i=0;i<arrayStringListId.length;i++){
+			listReferenciasId.add(new ObjectId(arrayStringListId[i]));
+		}
+		System.out.println(listReferenciasId);
+		//List<ObjectId> listaReferencias = Arrays.asList(arrayReferenciasId);
 		String filePath = "";
 		ResponseBuilder response = null ;
 		File file = null;
 		try{
-			ReferenciaController referenciaController = ReferenciaController.getInstance();
-			filePath = referenciaController.exportar(listaId);
-			log.info("Exportar Referencia : Operation successful");
-			file = new File(filePath);
-			response = Response.ok((Object) file);
-			response.header("Content-Disposition",
-				"attachment; filename=new-excel-file.xlsx");
+		ReferenciaController referenciaController = ReferenciaController.getInstance();
+			switch(tipoDocumento){
+				case "Word": 
+					filePath = referenciaController.exportarWord(listReferenciasId);
+					log.info("Exportar Referencia : Operation successful");
+					file = new File(filePath);
+					response = Response.ok((Object) file);
+					response.header("Content-Disposition",
+							"attachment; filename=new-word-file.docx");
+					break;
+				
+				case "Excel":
+				
+					filePath = referenciaController.exportarExcel(listReferenciasId);
+					log.info("Exportar Referencia : Operation successful");
+					file = new File(filePath);
+					response = Response.ok((Object) file);
+					response.header("Content-Disposition",
+							"attachment; filename=new-excel-file.xlsx");
+					break;
+				
+				default : 
+					throw new Exception("Tipo de fichero no soportado");
+			}		
 		}catch(Exception e){
 			log.error("Error detected: ", e);	
 		}
@@ -293,13 +318,22 @@ public class ReferenciaService extends Service{
 		
 		File file = null;
 		try{
-			file = new File(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
+			String tipo;
+			switch(tipoDocumento){
+				case "Word": tipo = ".docx";
+					break;
+				case "Excel": tipo = ".xlsx";
+					break;
+				default :tipo = "";
+			}
+			Thread.sleep(10000);
+			file = new File(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+tipo);
 			file.delete();
-			log.info("borrar recurso descargado : Operation successful");
+	
 		}catch(Exception e){
 			log.error("Error de borrado: ", e);	
-		}
-				
+			new Message(e.getMessage());
+		}	
 	}
 	
 	@GET
@@ -327,13 +361,6 @@ public class ReferenciaService extends Service{
 		}
 		
 		return Response.status(status).entity(out).build();
-	}
-	public static void main(String[] args) throws Exception {
-		ReferenciaController referenciaController = ReferenciaController.getInstance();
-		List<ObjectId> aux = new ArrayList<ObjectId>();
-		System.out.println("dsadsadsa");
-		referenciaController.exportar(aux);
-		
 	}
 	
 }

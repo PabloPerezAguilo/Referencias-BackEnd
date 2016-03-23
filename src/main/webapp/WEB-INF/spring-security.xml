@@ -22,18 +22,30 @@
 		<intercept-url pattern="/api/referencia/pendientes/**" access="ROLE_VALIDADOR" method="GET"/>
 		<intercept-url pattern="/api/referencia/estado/**" access="ROLE_VALIDADOR" method="PUT"/>
 		<intercept-url pattern="/api/referencia/asociadas" access="ROLE_MANTENIMIENTO" method="DELETE"/>
-				
-		<!-- USUARIOS -->
+			
+		<!-- CATALOGO -->
+		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_VALIDADOR,ROLE_CONSULTOR" method="GET"/>
+		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
+		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
+		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR" method="POST"/>
+			
+		<!-- ADMINISTRACION -->
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="GET"/>
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="POST"/>
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
 		<intercept-url pattern="/api/usuarios/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
+		<intercept-url pattern="/api/catalogo/clientes/**" access="ROLE_ADMINISTRADOR" method="GET"/>
+		<intercept-url pattern="/api/catalogo/clientes/**" access="ROLE_ADMINISTRADOR" method="POST"/>
+		<intercept-url pattern="/api/catalogo/clientes/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
+		<intercept-url pattern="/api/catalogo/clientes/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
+		<intercept-url pattern="/api/catalogo/gerentes/**" access="ROLE_ADMINISTRADOR" method="GET"/>
+		<intercept-url pattern="/api/catalogo/gerentes/**" access="ROLE_ADMINISTRADOR" method="POST"/>
+		<intercept-url pattern="/api/catalogo/gerentes/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
+		<intercept-url pattern="/api/catalogo/gerentes/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
+		
         <!-- USUARIOSLDAP -->		
         <intercept-url pattern="/api/usuariosldap/**" access="ROLE_ADMINISTRADOR" method="GET"/>
 		
-		<!-- CATALOGO -->
-		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO,ROLE_VALIDADOR,ROLE_CONSULTOR" method="GET"/>
-		<intercept-url pattern="/api/catalogo/**" access="ROLE_ADMINISTRADOR" method="PUT"/>
 		<!-- TECNOLOGIAS -->
 		<intercept-url pattern="/api/tecnologias/**" access="ROLE_ADMINISTRADOR" method="DELETE"/>
 		<intercept-url pattern="/api/tecnologias/**" access="ROLE_ADMINISTRADOR,ROLE_MANTENIMIENTO" method="POST"/>

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -34,26 +33,20 @@ import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.bson.types.ObjectId;
-import org.docx4j.openpackaging.io3.Save;
-import org.docx4j.openpackaging.packages.SpreadsheetMLPackage;
-import org.docx4j.openpackaging.parts.Part;
-import org.docx4j.openpackaging.parts.PartName;
-import org.docx4j.openpackaging.parts.Parts;
-import org.docx4j.openpackaging.parts.SpreadsheetML.SharedStrings;
-import org.docx4j.openpackaging.parts.SpreadsheetML.WorksheetPart;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.xlsx4j.jaxb.Context;
-import org.xlsx4j.sml.CTRst;
-import org.xlsx4j.sml.CTSst;
-import org.xlsx4j.sml.CTXstringWhitespace;
-import org.xlsx4j.sml.Cell;
-import org.xlsx4j.sml.Row;
-import org.xlsx4j.sml.STCellType;
-import org.xlsx4j.sml.SheetData;
 
 import com.example.dao.ReferenciaDAO;
 import com.example.dao.UsuarioDAO;
+import com.example.models.CatalogoClientes;
+import com.example.models.CatalogoGerentes;
 import com.example.models.ReferenciaWithAutoID;
 import com.example.models.Tecnologia;
 import com.example.models.Usuario;
@@ -381,7 +374,7 @@ public class ReferenciaController {
 		return false;
 	}
 	
-	public String exportar(List<ObjectId> key) throws Exception {
+	public String exportarExcel(List<ObjectId> key) throws Exception {
 		
 		Iterator<ObjectId> iteradorReferencias = key.iterator();
 		List<ReferenciaWithAutoID> resultado = new ArrayList<ReferenciaWithAutoID>();
@@ -400,18 +393,22 @@ public class ReferenciaController {
 		HSSFSheet sheet = wb.createSheet();
 		HSSFRow row = sheet.createRow((short) 0);
 		HSSFCell cell;
+		HSSFPalette paletteOrange = wb.getCustomPalette();
 		HSSFCellStyle stylePar = wb.createCellStyle();
 		HSSFCellStyle styleImpar = wb.createCellStyle();
 		HSSFCellStyle styleCabecera = wb.createCellStyle();
+		HSSFCellStyle error = wb.createCellStyle();
+		HSSFFont fontError = wb.createFont();
+		paletteOrange.setColorAtIndex(HSSFColor.ORANGE.index, (byte) 253, (byte) 126,(byte) 42);
+		fontError.setColor(HSSFColor.DARK_RED.index);
+		error.setFont(fontError);
 		HSSFFont font = wb.createFont();
-		HSSFPalette palette = wb.getCustomPalette();
-		palette.setColorAtIndex(HSSFColor.ORANGE.index, (byte) 253, (byte) 126,(byte) 42);
 		styleCabecera.setFillForegroundColor(HSSFColor.ORANGE.index);
 		styleCabecera.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		font.setColor(HSSFColor.WHITE.index);
 		font.setBold(true);
 		styleCabecera.setFont(font);
-		ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+		//ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
 
 		int fila = 0;
 
@@ -476,8 +473,18 @@ public class ReferenciaController {
 				stylePar.setFillForegroundColor(HSSFColor.WHITE.index);
 				stylePar.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getCliente());
-				cell.setCellStyle(stylePar);
+				String busquedaCliente = recurso.getCliente().split(" \\(")[0];
+			    CatalogoClientes clienteExportar = dao.clienteExportar(busquedaCliente);
+			    if(clienteExportar==null||clienteExportar.getNombre().equals("")){
+			    	cell.setCellValue("Cliente("+recurso.getCliente()+") dado de baja de la bdd");
+					cell.setCellStyle(error);
+			    }else if(clienteExportar.isPublico()){
+			    	cell.setCellValue(recurso.getCliente());
+					cell.setCellStyle(stylePar);
+			    }else{
+			    	cell.setCellValue(clienteExportar.getAlias());
+					cell.setCellStyle(stylePar);
+			    }
 				cell = row.createCell(k++);
 				cell.setCellValue(recurso.getSociedad());
 				cell.setCellStyle(stylePar);
@@ -516,11 +523,24 @@ public class ReferenciaController {
 				cell.setCellValue(recurso.getCertificado());
 				cell.setCellStyle(stylePar);
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getResponsableComercial());
-				cell.setCellStyle(stylePar);
+				
+				CatalogoGerentes gerenteExportar = dao.nombreGerentesExportar(recurso.getResponsableComercial());
+			    if(gerenteExportar==null||gerenteExportar.getNombre().equals("")){
+			    	cell.setCellValue("Gerente Comercial("+recurso.getResponsableComercial()+") dado de baja");
+					cell.setCellStyle(error);
+			    }else{
+			    	cell.setCellValue(recurso.getResponsableComercial());
+					cell.setCellStyle(stylePar);
+			    }
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getResponsableTecnico());
-				cell.setCellStyle(stylePar);
+				gerenteExportar = dao.nombreGerentesExportar(recurso.getResponsableTecnico());
+			    if(gerenteExportar==null||gerenteExportar.getNombre().equals("")){
+			    	cell.setCellValue("Gerente Tecnico("+recurso.getResponsableTecnico()+") dado de baja");
+					cell.setCellStyle(error);
+			    }else{
+			    	cell.setCellValue(recurso.getResponsableTecnico());
+					cell.setCellStyle(stylePar);
+			    }
 				cell = row.createCell(k++);
 				String tec = Arrays.asList(recurso.getTecnologias()).toString();
 				tec = tec.replace("[","");
@@ -528,11 +548,22 @@ public class ReferenciaController {
 				cell.setCellValue(tec);
 				cell.setCellStyle(stylePar);
 			} else {
-				palette.setColorAtIndex(HSSFColor.RED.index, (byte) 255,(byte) 245, (byte) 224);
+				paletteOrange.setColorAtIndex(HSSFColor.RED.index, (byte) 255,(byte) 245, (byte) 224);
 				styleImpar.setFillForegroundColor(HSSFColor.RED.index);
 				styleImpar.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getCliente());
+				String busquedaCliente = recurso.getCliente().split(" \\(")[0];
+			    CatalogoClientes clienteExportar = dao.clienteExportar(busquedaCliente);
+			    if(clienteExportar==null||clienteExportar.getNombre().equals("")){
+			    	cell.setCellValue("Cliente("+recurso.getCliente()+") dado de baja de la bdd");
+					cell.setCellStyle(error);
+			    }else if(clienteExportar.isPublico()){
+			    	cell.setCellValue(recurso.getCliente());
+					cell.setCellStyle(stylePar);
+			    }else{
+			    	cell.setCellValue(clienteExportar.getAlias());
+					cell.setCellStyle(stylePar);
+			    }
 				cell.setCellStyle(styleImpar);
 				cell = row.createCell(k++);
 				cell.setCellValue(recurso.getSociedad());
@@ -572,11 +603,23 @@ public class ReferenciaController {
 				cell.setCellValue(recurso.getCertificado());
 				cell.setCellStyle(styleImpar);
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getResponsableComercial());
-				cell.setCellStyle(styleImpar);
+				CatalogoGerentes gerenteExportar = dao.nombreGerentesExportar(recurso.getResponsableComercial());
+			    if(gerenteExportar==null||gerenteExportar.getNombre().equals("")){
+			    	cell.setCellValue("Gerente Comercial("+recurso.getResponsableComercial()+") dado de baja");
+					cell.setCellStyle(error);
+			    }else{
+			    	cell.setCellValue(recurso.getResponsableComercial());
+					cell.setCellStyle(stylePar);
+			    }
 				cell = row.createCell(k++);
-				cell.setCellValue(recurso.getResponsableTecnico());
-				cell.setCellStyle(styleImpar);
+				gerenteExportar = dao.nombreGerentesExportar(recurso.getResponsableTecnico());
+			    if(gerenteExportar==null||gerenteExportar.getNombre().equals("")){
+			    	cell.setCellValue("Gerente Tecnic("+recurso.getResponsableTecnico()+")o dado de baja");
+					cell.setCellStyle(error);
+			    }else{
+			    	cell.setCellValue(recurso.getResponsableTecnico());
+					cell.setCellStyle(stylePar);
+			    }
 				cell = row.createCell(k++);
 				String tec = Arrays.asList(recurso.getTecnologias()).toString();
 				tec = tec.replace("[","");
@@ -596,7 +639,7 @@ public class ReferenciaController {
 
 		// add picture data to this workbook.
 		InputStream is = new FileInputStream(
-				"C:/Users/usuario/Documents/Referencias-BackEnd/imagenes/logoExportar.JPG");
+				Config.getInstance().getProperty(Config.PATH_IMAGENES)+"/logoExportar.JPG");
 		byte[] bytes = IOUtils.toByteArray(is);
 		int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
 		is.close();
@@ -629,6 +672,300 @@ public class ReferenciaController {
 		System.out.println("exito321");
 		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx";
 	}
+	public String exportarWord(List<ObjectId> key) throws Exception {
+		
+		Iterator<ObjectId> iteradorReferencias = key.iterator();
+		List<ReferenciaWithAutoID> resultado = new ArrayList<ReferenciaWithAutoID>();
+		ObjectId actual = null;
+		while(iteradorReferencias.hasNext()){
+			
+			actual= iteradorReferencias.next();
+			resultado.add(dao.getReferencia(actual));
+		}
+		Iterator<ReferenciaWithAutoID> iteradorResultado = resultado.iterator();
+		ReferenciaWithAutoID referenciaActual = null;
+		
+		XWPFDocument doc = new XWPFDocument();
+		
+		if(resultado.size()>1){
+			
+			Iterator<ReferenciaWithAutoID> iteradorTablaResumen = resultado.iterator();
+			ReferenciaWithAutoID referenciaActualTabla = null;
+			
+		    XWPFTable table = doc.createTable();
+	
+		    //create first row
+		    int fila = 0;
+		    XWPFTableRow tableRowOne = table.getRow(fila);
+		    tableRowOne.getCell(0).setText("Cliente");
+		    tableRowOne.getCell(0).setColor("FA9200");
+		    tableRowOne.addNewTableCell().setText("Proyecto");
+		    tableRowOne.getCell(1).setColor("fa9200");
+		    tableRowOne.addNewTableCell().setText("Tecnologias");
+		    tableRowOne.getCell(2).setColor("fa9200");
+		    tableRowOne.addNewTableCell().setText("FTE");
+		    tableRowOne.getCell(3).setColor("fa9200");
+		    fila++;
+		    
+			while(iteradorTablaResumen.hasNext()){
+				
+				referenciaActualTabla = iteradorTablaResumen.next();
+
+				XWPFTableRow tableRowTwo = table.createRow();
+				System.out.println(table.getNumberOfRows());
+				int k = 0;
+				System.out.println(referenciaActualTabla);
+				String busquedaCliente = referenciaActualTabla.getCliente().split(" \\(")[0];
+				CatalogoClientes clienteExportar = dao.clienteExportar(busquedaCliente);
+				if(clienteExportar==null||clienteExportar.getNombre().equals("")){
+					tableRowTwo.getCell(k).setColor("FF3D3D");
+					tableRowTwo.getCell(k).setText("Cliente ("+referenciaActualTabla.getCliente()+") dado de baja de la bdd");
+				}else if(clienteExportar.isPublico()){
+					tableRowTwo.getCell(k).setText(referenciaActualTabla.getCliente());
+				}else{
+					tableRowTwo.getCell(k).setText(clienteExportar.getAlias());
+				}
+				
+				tableRowTwo.getCell(k+1).setText("Denominacion: "+referenciaActualTabla.getDenominacion());
+				XWPFParagraph proyecto = tableRowTwo.getCell(k+1).addParagraph();
+				XWPFRun run = proyecto.createRun();
+				run.addBreak();
+				run.setText(referenciaActualTabla.getProblematicaCliente());
+				tableRowTwo.getCell(k+2).setText(Arrays.toString(referenciaActualTabla.getTecnologias()));
+				tableRowTwo.getCell(k+3).setText(referenciaActualTabla.getFteTotales()+"");
+	
+				if((fila % 2) == 0){
+					if(clienteExportar==null||clienteExportar.getNombre().equals("")){
+						tableRowTwo.getCell(k++).setColor("FF3D3D");
+						
+					}else{
+						tableRowTwo.getCell(k++).setColor("fff5e0");	
+					}
+					
+					tableRowTwo.getCell(k++).setColor("fff5e0");
+					tableRowTwo.getCell(k++).setColor("fff5e0");
+					fila++;
+				}else{
+					if(clienteExportar==null||clienteExportar.getNombre().equals("")){
+						tableRowTwo.getCell(k++).setColor("FF3D3D");
+						
+					}else{
+						tableRowTwo.getCell(k++).setColor("ffffff");	
+					}
+					
+					tableRowTwo.getCell(k++).setColor("ffffff");
+					tableRowTwo.getCell(k++).setColor("ffffff");
+					fila++;
+				}
+					
+			}
+		}
+		while(iteradorResultado.hasNext()){
+			
+			referenciaActual = iteradorResultado.next();
+			System.out.println(resultado);
+
+			XWPFParagraph title = doc.createParagraph();
+			XWPFRun run = title.createRun();
+			run.addBreak();
+	    	run.addBreak();
+			run.setText("Referencia creada por "+referenciaActual.getAutor());
+			run.setFontFamily("Bliss 2");
+			run.setBold(true);
+			run.setColor("303F48");
+			title.setAlignment(ParagraphAlignment.CENTER);
+			run.addBreak(); 
+	    
+			XWPFParagraph cliente = doc.createParagraph();
+			run = cliente.createRun();
+			run.setFontFamily("Bliss 2");
+			run.setColor("303F48");
+			String busquedaCliente = referenciaActual.getCliente().split(" \\(")[0];
+			CatalogoClientes clienteExportar = dao.clienteExportar(busquedaCliente);
+			if(clienteExportar==null||clienteExportar.getNombre().equals("")){
+				clienteExportar = new CatalogoClientes();
+				clienteExportar.setPublico(false);
+				run.setColor("FF3D3D");
+				clienteExportar.setAlias("Cliente("+referenciaActual.getCliente()+") dado de baja de la bdd");
+			}
+			if(clienteExportar.isPublico()){
+				run.setText("Cliente:  ");
+				run.addBreak(); 
+				run.setText(referenciaActual.getCliente());
+			}else{
+				run.setText("Cliente:  ");
+				run.addBreak();
+				run.setText(clienteExportar.getAlias());
+			}
+			run.addBreak(); 
+	    
+	    
+			XWPFParagraph denominacion = doc.createParagraph();
+			run = denominacion.createRun();
+			run.setFontFamily("Bliss 2");
+			run.setColor("303F48");
+			run.setText("Denominación:  ");
+			run.addBreak();
+			run.setText(referenciaActual.getDenominacion());
+			run.addBreak();
+	    
+			XWPFParagraph sociedad = doc.createParagraph();
+			run = sociedad.createRun();
+			run.setFontFamily("Bliss 2");
+			run.setColor("303F48");
+			run.setText("Sociedad: ");
+			run.addBreak();
+			run.setText(referenciaActual.getSociedad());
+			run.addBreak();
+	    
+			XWPFParagraph sectorEmpresarial = doc.createParagraph();
+			run = sectorEmpresarial.createRun();
+			run.setFontFamily("Bliss 2");
+			run.setColor("303F48");
+			run.setText("Sector Empresarial:  ");
+			run.addBreak();
+			run.setText(referenciaActual.getSectorEmpresarial());
+			run.addBreak();
+	    
+			XWPFParagraph tipoActividad = doc.createParagraph();
+			run = tipoActividad.createRun();
+			run.setFontFamily("Bliss 2");
+			run.setColor("303F48");
+			run.setText("Tipo de Actividad:  ");
+	    	run.addBreak();
+	    	run.setText(referenciaActual.getTipoActividad());
+	    	run.addBreak();
+	    
+	    	XWPFParagraph tipoProyecto = doc.createParagraph();
+	    	run = tipoProyecto.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	run.setText("Tipo de proyecto: ");
+	    	run.addBreak();
+	    	run.setText(referenciaActual.getTipoProyecto());
+	    	run.addBreak();
+	    
+	    	XWPFParagraph fecha = doc.createParagraph();
+	    	run = fecha.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+	    	run.setText("Fecha de inicio:  ");
+	    	run.addBreak();
+	    	run.setText(format1.format(referenciaActual.getFechaInicio().getTime()));
+	    	run.addBreak();
+	    
+	    	XWPFParagraph duracion = doc.createParagraph();
+	    	run = duracion.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	run.setText("Duracion:  ");
+	    	run.addBreak();
+	    	if(referenciaActual.getDuracionMeses()==1){
+	    		run.setText(referenciaActual.getDuracionMeses()+" mes");
+	    	}else{
+	    		run.setText(referenciaActual.getDuracionMeses()+" meses");
+	    	}
+	    	run.addBreak();
+	    
+	    	XWPFParagraph resumen = doc.createParagraph();
+	    	run = resumen.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	run.setText("Resumen:  "+referenciaActual.getResumenProyecto());
+	    	run.addBreak();
+	    
+	    	XWPFParagraph problematica = doc.createParagraph();
+	    	run = problematica.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	run.setText("Problemática del cliente:  "+referenciaActual.getProblematicaCliente());
+	    	run.addBreak();
+	    
+	    	XWPFParagraph solucion = doc.createParagraph();
+	    	run = solucion.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	run.setText("Solución de Gfi:  "+referenciaActual.getSolucionGfi());
+	    	run.addBreak();
+	    
+	    	XWPFParagraph FTETotales = doc.createParagraph();
+	    	run = FTETotales.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	run.setText("FTE totales: ");
+	    	run.addBreak();
+	    	run.setText(referenciaActual.getFteTotales()+"");
+	    	run.addBreak();
+	    
+	    	XWPFParagraph certificado = doc.createParagraph();
+	    	run = certificado.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	run.setText("Existe certificado del cliente:  ");
+	    	run.addBreak();
+	    	run.setText(referenciaActual.getCertificado());
+	    	run.addBreak();
+	    
+//	  		XWPFParagraph registro = doc.createParagraph();
+//	  		run = registro.createRun();
+//	    	run.setFontFamily("Bliss 2");
+//	    	run.setColor("303F48");
+//	    	run.setText("Registros de pedido asociados a la referencia:  ");
+//	    	run.addBreak();
+//	    	run.setText(referenciaActual.getRegPedidoAsociadoReferencia()+"");
+//	    	run.addBreak();
+	    
+	    	XWPFParagraph comercial = doc.createParagraph();
+	    	run = comercial.createRun();
+	    	run.setFontFamily("Bliss 2");
+	    	run.setColor("303F48");
+	    	CatalogoGerentes gerenteExportar = dao.nombreGerentesExportar(referenciaActual.getResponsableComercial());
+	    	if(gerenteExportar==null||gerenteExportar.getNombre().equals("")){
+	    		gerenteExportar = new CatalogoGerentes();
+	    		run.setColor("FF3D3D");
+	    		gerenteExportar.setNombre("Gerente Comercial("+referenciaActual.getResponsableComercial()+") dado de baja");
+	    		gerenteExportar.setApellidos("");
+	    	}
+	    	run.setText("Responsable comercial: ");
+	    	run.addBreak();
+	    	run.setText(gerenteExportar.getNombre()+" "+gerenteExportar.getApellidos());
+	    	run.addBreak();
+	    	
+	    	XWPFParagraph tecnico = doc.createParagraph();
+	    	run = tecnico.createRun();
+	    	gerenteExportar = dao.nombreGerentesExportar(referenciaActual.getResponsableTecnico());
+	    	if(gerenteExportar==null||gerenteExportar.getNombre().equals("")){
+	    		gerenteExportar = new CatalogoGerentes();
+	    		run.setColor("FF3D3D");
+	    		gerenteExportar.setNombre("Gerente tecnico("+referenciaActual.getResponsableTecnico()+") dado de baja");
+	    		gerenteExportar.setApellidos("");
+	    	}
+	    	run.setText("Responsable tecnico:  ");
+	    	run.addBreak();
+	    	run.setText(gerenteExportar.getNombre()+" "+gerenteExportar.getApellidos());
+	    	run.addBreak();
+
+	    	XWPFParagraph imagen = doc.createParagraph();
+	    	run = imagen.createRun();
+	    	imagen.setAlignment(ParagraphAlignment.CENTER);
+	    	String imgFile = Config.getInstance().getProperty(Config.PATH_IMAGENES)+"/"+referenciaActual.get_id()+".png";
+	    	FileInputStream is = new FileInputStream(imgFile);
+	    	run.addBreak();
+	    	run.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(240), Units.toEMU(200)); // 200x200 pixels
+	    	is.close();
+	    	
+	    	run.addBreak();
+	    	run.addBreak();
+	    	
+		}
+
+	    FileOutputStream out12 = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".docx");
+		doc.write(out12);
+		out12.close();
+		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".docx";
+	}
+	
 	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
 			List<String> sector, List<String> actividad, List<String> proyecto,List<String> tecnologias,List<String> tipoTecnologias,String producto, int anios) throws Exception {
 			
@@ -657,7 +994,7 @@ public class ReferenciaController {
 		ReferenciaWithAutoID rOld = dao.getReferencia(r.get_id());
 		String[] arrayCampos = campos.split(",");
 		for(int i=0; i<arrayCampos.length;i++){
-			
+			// cambiar a switch(arrayCampos[i]){} para mejorar rendimiento y legibilidad
 			if(arrayCampos[i].equals("cliente")){
 				
 				if(!rOld.getCliente().equals(r.getCliente())){
@@ -792,15 +1129,19 @@ public class ReferenciaController {
 	}
 	
 	public static void main(String[] args) throws Exception {
+		
+		String aux = "suppp(pru)";
+		String[] son = aux.split("\\(");
+		aux = son[0];
+		System.out.println(aux);
 //		singleton = new ReferenciaController();
 //		List<ObjectId> aux = new ArrayList<ObjectId>();
+//		ObjectId pru = new ObjectId("56bdd82d445ac20fc213c30b");
+//		aux.add(pru);
 //		System.out.println("dsadsadsa");
-//		singleton.exportar(aux);
-		Calendar aux = Calendar.getInstance();
-		SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
-		String formatted = format1.format(aux.getTime());
-		System.out.println(formatted);
-		
+//		singleton.exportarWord(aux);
+//		;
+//		
 	}
 
 }

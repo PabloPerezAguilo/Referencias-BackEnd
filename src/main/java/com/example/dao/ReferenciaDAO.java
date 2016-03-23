@@ -11,6 +11,8 @@ import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
 import com.example.controllers.TecnologiaController;
+import com.example.models.CatalogoClientes;
+import com.example.models.CatalogoGerentes;
 import com.example.models.ReferenciaWithAutoID;
 
 public class ReferenciaDAO {
@@ -99,6 +101,13 @@ public class ReferenciaDAO {
 		deleteReferencia(key);
 		insertReferencia(r);
 	}
+	public CatalogoGerentes nombreGerentesExportar(String nick) throws Exception {
+		return daoGerentes.getGerente(nick);
+	}
+	
+	public CatalogoClientes clienteExportar(String nombre) throws Exception {
+		return daoClientes.getCliente(nombre);
+	}	
 	
 	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,List<String> proyecto, List<String> actividad,List<String> sociedad,List<String> sector,List<String> tecnologias,List<String> tipoTecnologias,String producto, String general) throws Exception {
 		
