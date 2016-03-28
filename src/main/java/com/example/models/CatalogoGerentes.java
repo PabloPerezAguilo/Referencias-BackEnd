@@ -23,6 +23,13 @@ public class CatalogoGerentes {
 		this.apellidos = apellidos;
 		this.tipoGerente = tipoGerente;
 	}
+	
+	public CatalogoGerentes(String login, String nombre, String apellidos) {
+		super();
+		this.login = login;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+	}
 
 	public String getLogin() {
 		return login;

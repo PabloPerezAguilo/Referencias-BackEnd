@@ -79,7 +79,7 @@ public class CatalogoGerentesDAO {
 	 * @param nick
 	 * @throws Exception
 	 */
-	public void deleteUsuario(String nick) throws Exception {
+	public void deleteGerente(String nick) throws Exception {
 		dao.remove("{'_id':#}", nick);
 	}
 	
@@ -113,14 +113,12 @@ public class CatalogoGerentesDAO {
 	}
 //	public static void main(String[] args) throws Exception {
 //		
-//		System.out.println("principio");
 //		singleton = new CatalogoGerentesDAO();
 //		Iterator<String> aux = singleton.listaContenido("J").iterator();
 //		String recorrido = null;
 //		while(aux.hasNext()){
 //			
 //			recorrido =  aux.next();
-//			System.out.println(recorrido);
 //			
 //		}
 //		

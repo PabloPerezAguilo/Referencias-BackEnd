@@ -3,8 +3,10 @@ package com.example.dao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 
 import com.example.models.CatalogoClientes;
@@ -75,9 +77,16 @@ public class CatalogoClientesDAO {
 	 * @param cliente
 	 * @throws Exception
 	 */
-	public void updateCliente(String nombre, CatalogoClientes cliente) throws Exception {
-		dao.update("{'_id':#}", nombre).with(cliente);
-	}
+	public void updateCliente(String nombre,CatalogoClientes cliente) throws Exception {
+
+		if(cliente.getNombre() == nombre ){
+			dao.update("{'_id':#}", nombre).with(cliente);
+		}else{
+			deleteCliente(nombre);
+			insertCliente(cliente);
+		}
+		
+	}	
 	
 	public List<String> listaContenido(String general ) throws Exception {
 		
@@ -97,14 +106,12 @@ public class CatalogoClientesDAO {
 	}
 //	public static void main(String[] args) throws Exception {
 //		
-//		System.out.println("principio");
 //		singleton = new CatalogoClientesDAO();
 //		Iterator<String> aux = singleton.listaContenido("").iterator();
 //		String recorrido = null;
 //		while(aux.hasNext()){
 //			
 //			recorrido =  aux.next();
-//			System.out.println(recorrido);
 //			
 //		}
 //	}

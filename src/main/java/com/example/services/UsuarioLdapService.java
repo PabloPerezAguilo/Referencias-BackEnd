@@ -38,4 +38,19 @@ public class UsuarioLdapService extends Service{
 		}
 		return Response.status(status).entity(out).build();
 	} 
+	@GET
+	@Path("/gerentes")
+	@ApiOperation(value = "Devuelve todos los usuarios del Ldap", notes = "Devuelve todos los usuarios del Ldap")
+	public Response getUsersLdapGerentes() {
+		try {
+			UsuarioController usuarioController = UsuarioController.getInstance();
+			out = usuarioController.getUserLdapGerentes();
+			log.info("Get Ldap Gerentes: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	} 
 }

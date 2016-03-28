@@ -131,7 +131,7 @@ public class UsuarioService extends Service{
 		try{
 			UsuarioController usuarioController = UsuarioController.getInstance();
 			out = usuarioController.updateUsuario(r.getNick(), r);
-			log.info("Update Referencia : Operation successful");
+			log.info("Update Usuario : Operation successful");
 			status = Response.Status.ACCEPTED;
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;

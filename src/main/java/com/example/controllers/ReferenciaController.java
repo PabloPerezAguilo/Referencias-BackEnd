@@ -303,18 +303,15 @@ public class ReferenciaController {
 		
 		ObjectId id = new ObjectId((String)recursos.get("id"));
 		ReferenciaWithAutoID referencia = dao.getReferencia(id);
-		System.out.println("si");
 		if(recursos.get("estado").equals("borrador")){
 			
 			referencia.setMotivoRechazo((String)recursos.get("motivoRechazo"));
 			
 		}else if(recursos.get("estado").equals("validada")&&(referencia.getIdEnlaceOriginal() != null && !referencia.getIdEnlaceOriginal().equals(""))){
 				
-				System.out.println("no");
+				
 				dao.deleteReferencia(referencia.getIdEnlaceOriginal());
-				System.out.println("no");
 				referencia.setIdEnlaceOriginal(null);
-				System.out.println("no");
 					
 		}
 		referencia.setEstado((String)recursos.get("estado"));
@@ -666,10 +663,9 @@ public class ReferenciaController {
 
 		// save with the default palette
 		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
-		System.out.println(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
+		
 		wb.write(out);
 		out.close();
-		System.out.println("exito321");
 		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx";
 	}
 	public String exportarWord(List<ObjectId> key) throws Exception {
@@ -712,9 +708,7 @@ public class ReferenciaController {
 				referenciaActualTabla = iteradorTablaResumen.next();
 
 				XWPFTableRow tableRowTwo = table.createRow();
-				System.out.println(table.getNumberOfRows());
 				int k = 0;
-				System.out.println(referenciaActualTabla);
 				String busquedaCliente = referenciaActualTabla.getCliente().split(" \\(")[0];
 				CatalogoClientes clienteExportar = dao.clienteExportar(busquedaCliente);
 				if(clienteExportar==null||clienteExportar.getNombre().equals("")){
@@ -763,7 +757,6 @@ public class ReferenciaController {
 		while(iteradorResultado.hasNext()){
 			
 			referenciaActual = iteradorResultado.next();
-			System.out.println(resultado);
 
 			XWPFParagraph title = doc.createParagraph();
 			XWPFRun run = title.createRun();
@@ -969,7 +962,6 @@ public class ReferenciaController {
 	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
 			List<String> sector, List<String> actividad, List<String> proyecto,List<String> tecnologias,List<String> tipoTecnologias,String producto, int anios) throws Exception {
 			
-		//System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+tecnologias+"-"+tipoTecnologias+"-"+producto+"-"+proyecto+"-"+anios);
 		Iterator<ReferenciaWithAutoID> iterator = dao.listaContenido(cliente,anios,proyecto,actividad,sociedad,sector,tecnologias,tipoTecnologias,producto,general );
 		List<ReferenciaWithAutoID> list = new ArrayList<>();
 		while (iterator.hasNext()) {
@@ -1133,12 +1125,10 @@ public class ReferenciaController {
 		String aux = "suppp(pru)";
 		String[] son = aux.split("\\(");
 		aux = son[0];
-		System.out.println(aux);
 //		singleton = new ReferenciaController();
 //		List<ObjectId> aux = new ArrayList<ObjectId>();
 //		ObjectId pru = new ObjectId("56bdd82d445ac20fc213c30b");
 //		aux.add(pru);
-//		System.out.println("dsadsadsa");
 //		singleton.exportarWord(aux);
 //		;
 //		

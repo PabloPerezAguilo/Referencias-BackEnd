@@ -65,7 +65,6 @@ public class ReferenciaDAO {
 	 * @throws Exception
 	 */
 	public ReferenciaWithAutoID getReferencia(ObjectId key) throws Exception{
-		System.out.println(key);
 		return dao.findOne("{'_id':#}", key).as(ReferenciaWithAutoID.class);
 	}
 
@@ -111,7 +110,6 @@ public class ReferenciaDAO {
 	
 	public Iterator<ReferenciaWithAutoID> listaContenido(String cliente, int ultimosAños,List<String> proyecto, List<String> actividad,List<String> sociedad,List<String> sector,List<String> tecnologias,List<String> tipoTecnologias,String producto, String general) throws Exception {
 		
-		//System.out.println(general+"-"+cliente+"-"+sociedad+"-"+sector+"-"+actividad+"-"+tecnologias+"-"+tipoTecnologias+"-"+producto+"-"+proyecto+"-"+ultimosAños);
 		String aux ;
 		String consultaActividad ="[";
 		String consultaProyecto ="[";
@@ -131,10 +129,8 @@ public class ReferenciaDAO {
 				}
 			}
 			consultaActividad =  "{ tipoActividad: {$in:"+consultaActividad+"}},";
-			System.out.println(consultaActividad);
 			
 		}else{
-			System.out.println("actividad vacia");
 			consultaActividad = "";
 		}
 		
@@ -149,9 +145,7 @@ public class ReferenciaDAO {
 				}
 			}
 			consultaProyecto =  "{ tipoProyecto: {$in:"+consultaProyecto+"}},";
-			System.out.println(consultaProyecto);
 		}else{
-			System.out.println("proyecto vacio");
 			consultaProyecto = "";
 		}
 		
@@ -166,9 +160,7 @@ public class ReferenciaDAO {
 				}
 			}
 			consultaSector =  "{ sectorEmpresarial: {$in:"+consultaSector+"}},";
-			System.out.println(consultaSector);
 		}else{
-			System.out.println("sector vacio");
 			consultaSector = "";
 		}
 		
@@ -183,9 +175,7 @@ public class ReferenciaDAO {
 				}
 			}
 			consultaSociedad =  "{ sociedad: {$in:"+consultaSociedad+"}},";
-			System.out.println(consultaSociedad);
 		}else{
-			System.out.println("sociedad vacia");
 			consultaSociedad = "";
 		}
 		if(tecnologias.size()!=0){
@@ -199,9 +189,7 @@ public class ReferenciaDAO {
 				}
 			}
 			consultaTecnologias =  "{ tecnologias: {$in:"+consultaTecnologias+"}},";
-			System.out.println(consultaTecnologias);
 		}else{
-			System.out.println("tecnologias vacia");
 			consultaTecnologias = "";
 		}
 		if(producto==null){
@@ -219,16 +207,11 @@ public class ReferenciaDAO {
 				}
 			}
 			consultaTipoTecnologias =  "{ tecnologias: {$in:"+consultaTipoTecnologias+"}},";
-			System.out.println(consultaTipoTecnologias);
 		}else{
-			System.out.println("sin tipo tecnologias");
-			System.out.println(tipoTecnologias.size());
 			if(tipoTecnologias.size()==0){
 				consultaTipoTecnologias = "";
-				System.out.println("pasocorrecto");
 			}
 			else{
-				System.out.println("ÑAAAA");
 				consultaTipoTecnologias="{tecnologias:{$in:[]}},"; 
 			}
 		}
@@ -253,8 +236,7 @@ public class ReferenciaDAO {
 		List<String> coDeBusqueda = daoCoDe.listaContenido(general);
 		List<String> gerentesBusqueda = daoGerentes.listaContenido(general);
 		//return dao.find("{'responsableComercial':{$in:#}}",gerentesBusqueda).as(ReferenciaWithAutoID.class).iterator();
-		//System.out.println("general:"+general+"cliente:"+cliente+"sociedad:"+sociedad+"sector:"+sector+"actividad:"+actividad+"tecnologias:"+tecnologias+"tipo tecnologias:"+tipoTecnologias+"producto:"+producto+"proyecto:"+proyecto+"ultimos años:"+ultimosAños);
-		//System.out.println("inicio consulta");
+        
 		return dao.find("{$and:"
 							+ " [ { cliente: #},"
 							+ " { fechaInicio:{$gte:#,$lt:#}},"
@@ -293,7 +275,6 @@ public class ReferenciaDAO {
 	}
 	public static void main(String[] args) throws Exception {
 		
-		System.out.println("principio");
 		singleton = new ReferenciaDAO();
 		//poner a "" si viene a null NOTA
 		List<String> proyecto = new ArrayList();
@@ -304,13 +285,11 @@ public class ReferenciaDAO {
 		//sociedad.add("AST");
 		List<String> sector = new ArrayList();
 		//sector.add("BANK");
-		System.out.println(sector.size());
 		Iterator<ReferenciaWithAutoID> aux = singleton.listaContenido("",2016,proyecto,actividad,sociedad,sector,new ArrayList(),new ArrayList(),"","");
 		ReferenciaWithAutoID recorrido = null;
 		while(aux.hasNext()){
 			
 			recorrido =  aux.next();
-			System.out.println(recorrido);
 			
 		}
 		

@@ -113,14 +113,12 @@ public class CatalogoCoDeDAO {
 	}
 //	public static void main(String[] args) throws Exception {
 //		
-//		System.out.println("principio");
 //		singleton = new CatalogoCoDeDAO();
 //		Iterator<String> aux = singleton.listaContenido("").iterator();
 //		String recorrido = null;
 //		while(aux.hasNext()){
 //			
 //			recorrido =  aux.next();
-//			System.out.println(recorrido);
 //			
 //		}
 //		

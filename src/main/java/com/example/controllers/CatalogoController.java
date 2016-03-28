@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import com.example.dao.CatalogoClientesDAO;
 import com.example.dao.CatalogoCoDeDAO;
 import com.example.dao.CatalogoGerentesDAO;
 import com.example.models.CatalogoClientes;
 import com.example.models.CatalogoCoDe;
 import com.example.models.CatalogoGerentes;
+import com.example.models.ReferenciaWithAutoID;
+import com.example.models.Usuario;
 
 public class CatalogoController {
 
@@ -64,6 +68,16 @@ public class CatalogoController {
 		return r;
 	}
 	
+	public List<CatalogoClientes> getClientes() throws Exception {
+		
+		return daoClientes.getCatalogoClientes();
+	}
+	
+	public List<CatalogoGerentes> getGerentes() throws Exception {
+		
+		return daoGerentes.getGerentes();
+	}
+	
 	public CatalogoCoDe createCoDe(CatalogoCoDe r) throws Exception {
 		daoCoDe.insertCoDe(r);
 		return r;
@@ -73,6 +87,46 @@ public class CatalogoController {
 		daoGerentes.insertGerente(r);
 		return r;
 	}
+
+	public CatalogoClientes updateCliente(Map<String,Object>  resource) throws Exception {
+		
+		String id = (String) resource.get("value");
+		Map<String,Object> clienteMap = (Map<String,Object>) resource.get("cliente");
+		CatalogoClientes cliente = new CatalogoClientes(clienteMap);
+		//solucionado
+		daoClientes.updateCliente(id, cliente);		
+		return cliente;
+		
+	}
+	
+	/**
+	 * updateGerente
+	 * Modifica un gerente de la base de datos indicado por parametro
+	 * @param id | Identificador de gerente que será el nick del LDAP
+	 * @param r
+	 * @return Gerente
+	 * @throws Exception
+	 */
+	public CatalogoGerentes updateGerente(String id, CatalogoGerentes r) throws Exception{
+		String tipo = r.getTipoGerente();		
+		r.setTipoGerente(tipo);
+		daoGerentes.updateGerente(id,r);
+		return r;
+	}
+
+	public String deleteCliente(String nombre) throws Exception {
+		daoClientes.deleteCliente(nombre);
+		return nombre;
+		
+	}
+	
+	public String deleteGerente(String nombre) throws Exception {
+		daoGerentes.deleteGerente(nombre);
+		return nombre;
+		
+	}
+	
+	
 	
 	
 

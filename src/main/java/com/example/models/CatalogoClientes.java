@@ -1,5 +1,7 @@
 package com.example.models;
 
+import java.util.Map;
+
 import org.jongo.marshall.jackson.oid.Id;
 
 public class CatalogoClientes {
@@ -30,6 +32,15 @@ public class CatalogoClientes {
 		this.publico = cliente.isPublico();
 		this.alias = cliente.getAlias();
 		this.imagen = cliente.getImagen();
+		
+	}
+	public CatalogoClientes(Map<String,Object> cliente) {
+		
+		this.nombre = (String) cliente.get("nombre");
+		this.siglas = (String) cliente.get("siglas");
+		this.publico = (boolean) cliente.get("publico");
+		this.alias = (String) cliente.get("alias");
+		this.imagen = (String) cliente.get("imagen");
 		
 	}
 	

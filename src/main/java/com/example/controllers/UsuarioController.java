@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import com.example.dao.UsuarioDAO;
 import com.example.dao.UsuarioLdapDAO;
 import com.example.filters.CustomAuthentication;
+import com.example.models.CatalogoGerentes;
 import com.example.models.InformacionUsuarioLdap;
 import com.example.models.Usuario;
 import com.example.utils.Config;
@@ -199,4 +201,54 @@ public class UsuarioController {
 	        return (usuarios);
 	        
 	}
+	public List<CatalogoGerentes> getUserLdapGerentes() throws Exception {
+		
+		Hashtable<String, String> env = new Hashtable<String, String>();
+        env.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL,Config.getInstance().getProperty(Config.LDAP_URL));
+
+        DirContext ctx = new InitialDirContext(env);
+        String base = "ou=People, o=gfi-info.com";
+
+        SearchControls sc = new SearchControls();
+        String[] attributeFilter = {"uid","givenname","sn"};
+        sc.setReturningAttributes(attributeFilter);
+        sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        String filter = "(&(uid=*))";
+        NamingEnumeration<?> results = ctx.search(base, filter, sc);  
+        ArrayList<CatalogoGerentes> gerentes = new ArrayList<CatalogoGerentes>();
+        
+       List<CatalogoGerentes> listaGerentes = new ArrayList<CatalogoGerentes>();
+       while (results.hasMore()) {
+        	SearchResult sr = (SearchResult) results.next();
+        	Attributes attrs = sr.getAttributes();
+        	String nick;
+        	String nombre;
+        	String apellidos;
+        	
+        	if(attrs.get("uid")!=null){
+        		nick = attrs.get("uid").toString().split(": ")[1];
+        	}else{
+        		nick="";
+        	}
+        	
+        	if(attrs.get("givenname")!=null){
+        		nombre = attrs.get("givenname").toString().split(": ")[1];
+        	}else{
+        		nombre="";
+        	}
+        	
+        	if(attrs.get("sn")!=null){
+        		apellidos = attrs.get("sn").toString().split(": ")[1];
+        	}else{
+        		apellidos="";
+        	}
+        	listaGerentes.add(new CatalogoGerentes(nick,nombre,apellidos));    
+            //usuarios.add(usuario);
+        }
+        ctx.close();
+        
+        return listaGerentes;
+        
+}
 }

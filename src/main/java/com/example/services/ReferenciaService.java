@@ -120,7 +120,6 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Devuelve todas las referencias pendientes de validar", notes = "se manda en un listado de referencias")
 	public Response getReferenciasValidadas() {
 		try {
-			System.out.println("servicio correcto");
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.getReferenciasEstado("validada");
 			log.info("Get Referencias validadass: Operation successful");
@@ -232,7 +231,6 @@ public class ReferenciaService extends Service{
 	public Response updateReferenciaEstado(Map<String,Object>  recursos){
 		
 		try{
-			System.out.println(recursos);
 			ReferenciaController referenciaController = ReferenciaController.getInstance();
 			out = referenciaController.updateReferenciaEstado(recursos);
 			log.info("Update Referencia : Operation successful");
@@ -268,14 +266,12 @@ public class ReferenciaService extends Service{
 	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
 	public Response exportar(@QueryParam("listaId") String listaId,@QueryParam("tipoDocumento") String tipoDocumento){
 		
-		System.out.println(listaId);
-		System.out.println(tipoDocumento);
 		String[] arrayStringListId = listaId.split(",");
 		List<ObjectId> listReferenciasId = new ArrayList<ObjectId>() ;
 		for(int i=0;i<arrayStringListId.length;i++){
 			listReferenciasId.add(new ObjectId(arrayStringListId[i]));
 		}
-		System.out.println(listReferenciasId);
+
 		//List<ObjectId> listaReferencias = Arrays.asList(arrayReferenciasId);
 		String filePath = "";
 		ResponseBuilder response = null ;
