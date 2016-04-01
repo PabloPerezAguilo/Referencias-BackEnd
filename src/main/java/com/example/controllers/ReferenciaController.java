@@ -34,6 +34,8 @@ import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -1122,9 +1124,9 @@ public class ReferenciaController {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String aux = "suppp(pru)";
-		String[] son = aux.split("\\(");
-		aux = son[0];
+//		String aux = "suppp(pru)";
+//		String[] son = aux.split("\\(");
+//		aux = son[0];
 //		singleton = new ReferenciaController();
 //		List<ObjectId> aux = new ArrayList<ObjectId>();
 //		ObjectId pru = new ObjectId("56bdd82d445ac20fc213c30b");
@@ -1132,6 +1134,89 @@ public class ReferenciaController {
 //		singleton.exportarWord(aux);
 //		;
 //		
+//		XWPFDocument docx = new XWPFDocument(new FileInputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"/plantilla.docx"));
+//				 //using XWPFWordExtractor Class
+//		Iterator<IBodyElement> aux = docx.getBodyElementsIterator();
+//		while(aux.hasNext()){
+//			
+//			IBodyElement sup = aux.next();
+//			System.out.println(sup.getPart().);
+//		}
+//		XWPFWordExtractor texto = new XWPFWordExtractor(docx);
+//		//System.out.println(texto.getText().replace("$·$LOGOCLIENTE", "holita"));
+//		//System.out.println(docx.getPartById("$·$LOGOCLIENTE"));	
+//		FileOutputStream out12 = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"prueba.docx");
+//		docx.write(out12);
+//		out12.close();
+		
+		XWPFDocument doc = new XWPFDocument(new FileInputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"/plantilla.docx"));
+        for (XWPFParagraph p : doc.getParagraphs()) {
+            for (XWPFRun r : p.getRuns()) {
+                String text = r.toString();
+                //System.out.println("-");
+                //System.out.println(text);
+                //System.out.println("-");
+                if (text.contains("$·$")) {
+                	//System.out.println("si");
+                	System.out.println(text);
+                	String[] textArray = text.split("\\$·\\$");
+                	//System.out.println(Arrays.asList(textArray).toString());
+                	System.out.println(textArray[0]);
+                	System.out.println(textArray.length);
+                	r.setText(textArray[0], 0);
+                	for(int i= 1;i<textArray.length;i=i+2){
+                		switch(textArray[i]){
+
+                			case "denominacion" : 
+                				System.out.println("den");
+                				text = "Denominacion prueba ";
+                				r.setText(text);
+                				break;
+                			case "resumen" : 
+                				System.out.println("res");
+                				text = "Resumen prueba bla bla bla bla bla ";
+                				r.setText(text);
+                				break;
+                			case "tecnologias" :
+                				System.out.println("tecno");
+                				text = "tec1";
+                				r.setText(text);
+                				r.addCarriageReturn();
+                				r.setText("tec2");
+                				r.addCarriageReturn();
+                				r.setText("tec3");
+                				r.addCarriageReturn();
+                				r.setText("tec4");
+                				break;
+                			case "fte" : 
+                				System.out.println("fte");
+                				text = "FTE prueba ";
+                				r.setText(text);
+                				break;
+                			case "duracionmeses" : 
+                				System.out.println("mes");
+                				text = "Meses prueba ";
+                				r.setText(text);
+                			break;
+                			case "imagen" : 
+                				System.out.println("ima");
+                				String imgFile = Config.getInstance().getProperty(Config.PATH_IMAGENES)+"/logoExportar.jpg";
+                				FileInputStream is = new FileInputStream(imgFile);
+                		    	r.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(240), Units.toEMU(200)); // 200x200 pixels
+                			break;
+                		}
+                		if(i+1<textArray.length){
+                		r.setText(textArray[i+1]);
+                		}
+                	}
+                    
+                }
+            }
+        }
+        FileOutputStream out12 = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"prueba.docx");
+        doc.write(out12);
+		out12.close();
+		System.out.println("sda");
 	}
 
 }
