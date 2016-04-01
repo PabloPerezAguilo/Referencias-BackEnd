@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import com.example.dao.PlantillaDAO;
 import com.example.models.Plantilla;
@@ -50,8 +51,11 @@ public class PlantillaController {
 		dao.deletePlantilla(key);
 	}
 	
-	public Plantilla updatePlantilla(String key,Plantilla p) throws Exception {
-		dao.updateReferencia(key, p);;
+	public Plantilla updatePlantilla(Map<String,Object> recursos) throws Exception {
+		
+		String key = (String) recursos.get("idPlantillaOriginal");
+		Plantilla p = (Plantilla) recursos.get("plantilla");
+		dao.updateReferencia(key, p);
 		return p;
 	}
 		
