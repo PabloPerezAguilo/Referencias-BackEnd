@@ -14,12 +14,14 @@ import com.example.controllers.UsuarioController;
 import com.example.dao.CatalogoClientesDAO;
 import com.example.dao.CatalogoCoDeDAO;
 import com.example.dao.CatalogoGerentesDAO;
+import com.example.dao.PlantillaDAO;
 import com.example.dao.ReferenciaDAO;
 import com.example.dao.TecnologiaDAO;
 import com.example.dao.UsuarioDAO;
 import com.example.models.CatalogoClientes;
 import com.example.models.CatalogoCoDe;
 import com.example.models.CatalogoGerentes;
+import com.example.models.Plantilla;
 import com.example.models.ReferenciaWithAutoID;
 import com.example.models.Tecnologia;
 
@@ -44,6 +46,14 @@ public class InitDB {
 			Tecnologia raiz = new Tecnologia("Tecnologias",lista,false,null,"raiz");
 			tecnologiaDAO.insertTecnologia(raiz);	
 		}	
+	}
+	public static void loadPlantillas() throws Exception {
+		PlantillaDAO plantillaDAO = PlantillaDAO.getInstance();
+		plantillaDAO.clearStore();
+		plantillaDAO.insertPlantilla(new Plantilla("Gfi estandar1 word plantilla_admin", "Gfi estandar1 word plantilla","admin",true,"Word"));
+		plantillaDAO.insertPlantilla(new Plantilla("Gfi estandar2 word plantilla_admin", "Gfi estandar2 word plantilla","admin",true,"Word"));
+		LOG.info("Plantillas inserted in DB");
+		
 	}
 	public static void loadResources() throws Exception {
 		ReferenciaDAO resourceDAO = ReferenciaDAO.getInstance();
@@ -243,10 +253,10 @@ public class InitDB {
 		controller.createGerente(new CatalogoGerentes("svicente", "Santos", "Vicente Bermejo","tecnico"));
 		controller.createGerente(new CatalogoGerentes("xcfernandez", "Xan Carlos", "Fernández Echezuria","tecnico"));
 		
-//		controller.createGerente(new CatalogoGerentes("pperez", "Pablo", "Perez","tecnico"));
-//		controller.createGerente(new CatalogoGerentes("agarcia", "Angel", "Garcia","tecnico"));
-//		controller.createGerente(new CatalogoGerentes("agallardo", "Alberto", "Gallardo","comercial"));
-//		controller.createGerente(new CatalogoGerentes("jsanchez", "Jose", "Sanchez","comercial"));
+		controller.createGerente(new CatalogoGerentes("pperez", "Pablo", "Perez","tecnico"));
+		controller.createGerente(new CatalogoGerentes("agarcia", "Angel", "Garcia","tecnico"));
+		controller.createGerente(new CatalogoGerentes("agallardo", "Alberto", "Gallardo","comercial"));
+		controller.createGerente(new CatalogoGerentes("jsanchez", "Jose", "Sanchez","comercial"));
 		
 		
 		LOG.info("Catalogos inserted in DB");
@@ -254,6 +264,7 @@ public class InitDB {
 
 	public static void main(String[] args) throws Exception {
 		InitDB.loadTecnologias();
+		loadPlantillas();
 		InitDB.loadUsers();
 		InitDB.loadResources();
 		InitDB.loadCatalogos();

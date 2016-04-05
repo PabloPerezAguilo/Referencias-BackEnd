@@ -43,6 +43,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.bson.types.ObjectId;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.dao.ReferenciaDAO;
@@ -664,14 +665,121 @@ public class ReferenciaController {
 
 
 		// save with the default palette
-		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
+		FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"temporal/"+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx");
 		
 		wb.write(out);
 		out.close();
-		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx";
+		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"temporal/"+SecurityContextHolder.getContext().getAuthentication().getName()+".xlsx";
 	}
-	public String exportarWord(List<ObjectId> key) throws Exception {
+	public String exportarWord(List<ObjectId> key,String idDocumento) throws Exception {
 		
+		XWPFDocument doc1 = new XWPFDocument(new FileInputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+idDocumento+".docx"));
+		XWPFDocument doc = new XWPFDocument();
+        int contador = 0;
+//        int contador = 0;
+//        Iterator<XWPFParagraph> pru = doc.getParagraphsIterator();
+//        int aux = doc1.getParagraphs().size();
+//        for(int i=0;i<3*aux;i++){
+//        	doc.createParagraph();
+//        	System.out.println(i);
+//        }
+//		for(int i = 0 ; i<3;i++){
+//        	for (int j=0;i<3+aux;i++) {
+//        		XWPFParagraph nodo = pru.next();
+//        		doc.setParagraph(nodo,contador );
+//        		contador++;
+//        		System.out.println(contador);
+//        	}
+//        	pru = doc.getParagraphsIterator();
+//        }
+		for(int i = 0 ; i<3;i++){
+        	for (XWPFParagraph p : doc1.getParagraphs()) {
+        		
+        		//doc.setParagraph(p,contador );
+        		
+        		XWPFParagraph prueba = doc.createParagraph();
+        		for (XWPFRun r : p.getRuns()) {
+        			XWPFRun runPrueba = prueba.createRun();
+        			CTRPr rPr = runPrueba.getCTR().isSetRPr() ? runPrueba.getCTR().getRPr() : runPrueba.getCTR().addNewRPr();
+        		    rPr.set(r.getCTR().getRPr());
+        		    runPrueba.setText(r.getText(0));
+        			System.out.println("-----");
+        			System.out.println(r.toString());
+        			System.out.println("-----");
+        		}
+        		contador++;
+        	}
+        }
+		
+		for (XWPFParagraph p : doc.getParagraphs()) {
+            for (XWPFRun r : p.getRuns()) {
+                String text = r.toString();
+                //System.out.println("-");
+                //System.out.println(text);
+                //System.out.println("-");
+                if (text.contains("$·$")) {
+                	//System.out.println("si");
+                	System.out.println(text);
+                	String[] textArray = text.split("\\$·\\$");
+                	//System.out.println(Arrays.asList(textArray).toString());
+                	System.out.println(textArray[0]);
+                	System.out.println(textArray.length);
+                	r.setText(textArray[0], 0);
+                	for(int i= 1;i<textArray.length;i=i+2){
+                		switch(textArray[i]){
+
+                			case "denominacion" : 
+                				System.out.println("den");
+                				text = "Denominacion prueba ";
+                				r.setText(text);
+                				break;
+                			case "resumen" : 
+                				System.out.println("res");
+                				text = "Resumen prueba bla bla bla bla bla ";
+                				r.setText(text);
+                				break;
+                			case "tecnologias" :
+                				System.out.println("tecno");
+                				text = "tec1";
+                				r.setText(text);
+                				r.addCarriageReturn();
+                				r.setText("tec2");
+                				r.addCarriageReturn();
+                				r.setText("tec3");
+                				r.addCarriageReturn();
+                				r.setText("tec4");
+                				break;
+                			case "fte" : 
+                				System.out.println("fte");
+                				text = "FTE prueba ";
+                				r.setText(text);
+                				break;
+                			case "duracionmeses" : 
+                				System.out.println("mes");
+                				text = "Meses prueba ";
+                				r.setText(text);
+                			break;
+                			case "imagen" : 
+                				System.out.println("ima");
+                				String imgFile = Config.getInstance().getProperty(Config.PATH_IMAGENES)+"/logoExportar.jpg";
+                				FileInputStream is = new FileInputStream(imgFile);
+                		    	r.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(240), Units.toEMU(200)); // 200x200 pixels
+                			break;
+                		}
+                		if(i+1<textArray.length){
+                		r.setText(textArray[i+1]);
+                		}
+                	}
+                    
+                }
+            }
+        }
+        FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"temporal/"+SecurityContextHolder.getContext().getAuthentication().getName()+".docx");
+        doc.write(out);
+		out.close();
+		System.out.println("sda");
+		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"/temporal/"+SecurityContextHolder.getContext().getAuthentication().getName()+".docx";
+		/*
 		Iterator<ObjectId> iteradorReferencias = key.iterator();
 		List<ReferenciaWithAutoID> resultado = new ArrayList<ReferenciaWithAutoID>();
 		ObjectId actual = null;
@@ -959,6 +1067,7 @@ public class ReferenciaController {
 		doc.write(out12);
 		out12.close();
 		return Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+".docx";
+	*/
 	}
 	
 	public List<ReferenciaWithAutoID> filtrar(String general, String cliente, List<String> sociedad,
@@ -1148,75 +1257,75 @@ public class ReferenciaController {
 //		FileOutputStream out12 = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"prueba.docx");
 //		docx.write(out12);
 //		out12.close();
-		
-		XWPFDocument doc = new XWPFDocument(new FileInputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"/plantilla.docx"));
-        for (XWPFParagraph p : doc.getParagraphs()) {
-            for (XWPFRun r : p.getRuns()) {
-                String text = r.toString();
-                //System.out.println("-");
-                //System.out.println(text);
-                //System.out.println("-");
-                if (text.contains("$·$")) {
-                	//System.out.println("si");
-                	System.out.println(text);
-                	String[] textArray = text.split("\\$·\\$");
-                	//System.out.println(Arrays.asList(textArray).toString());
-                	System.out.println(textArray[0]);
-                	System.out.println(textArray.length);
-                	r.setText(textArray[0], 0);
-                	for(int i= 1;i<textArray.length;i=i+2){
-                		switch(textArray[i]){
-
-                			case "denominacion" : 
-                				System.out.println("den");
-                				text = "Denominacion prueba ";
-                				r.setText(text);
-                				break;
-                			case "resumen" : 
-                				System.out.println("res");
-                				text = "Resumen prueba bla bla bla bla bla ";
-                				r.setText(text);
-                				break;
-                			case "tecnologias" :
-                				System.out.println("tecno");
-                				text = "tec1";
-                				r.setText(text);
-                				r.addCarriageReturn();
-                				r.setText("tec2");
-                				r.addCarriageReturn();
-                				r.setText("tec3");
-                				r.addCarriageReturn();
-                				r.setText("tec4");
-                				break;
-                			case "fte" : 
-                				System.out.println("fte");
-                				text = "FTE prueba ";
-                				r.setText(text);
-                				break;
-                			case "duracionmeses" : 
-                				System.out.println("mes");
-                				text = "Meses prueba ";
-                				r.setText(text);
-                			break;
-                			case "imagen" : 
-                				System.out.println("ima");
-                				String imgFile = Config.getInstance().getProperty(Config.PATH_IMAGENES)+"/logoExportar.jpg";
-                				FileInputStream is = new FileInputStream(imgFile);
-                		    	r.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(240), Units.toEMU(200)); // 200x200 pixels
-                			break;
-                		}
-                		if(i+1<textArray.length){
-                		r.setText(textArray[i+1]);
-                		}
-                	}
-                    
-                }
-            }
-        }
-        FileOutputStream out12 = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"prueba.docx");
-        doc.write(out12);
-		out12.close();
-		System.out.println("sda");
+//		
+//		XWPFDocument doc = new XWPFDocument(new FileInputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"/plantilla.docx"));
+//        for (XWPFParagraph p : doc.getParagraphs()) {
+//            for (XWPFRun r : p.getRuns()) {
+//                String text = r.toString();
+//                //System.out.println("-");
+//                //System.out.println(text);
+//                //System.out.println("-");
+//                if (text.contains("$·$")) {
+//                	//System.out.println("si");
+//                	System.out.println(text);
+//                	String[] textArray = text.split("\\$·\\$");
+//                	//System.out.println(Arrays.asList(textArray).toString());
+//                	System.out.println(textArray[0]);
+//                	System.out.println(textArray.length);
+//                	r.setText(textArray[0], 0);
+//                	for(int i= 1;i<textArray.length;i=i+2){
+//                		switch(textArray[i]){
+//
+//                			case "denominacion" : 
+//                				System.out.println("den");
+//                				text = "Denominacion prueba ";
+//                				r.setText(text);
+//                				break;
+//                			case "resumen" : 
+//                				System.out.println("res");
+//                				text = "Resumen prueba bla bla bla bla bla ";
+//                				r.setText(text);
+//                				break;
+//                			case "tecnologias" :
+//                				System.out.println("tecno");
+//                				text = "tec1";
+//                				r.setText(text);
+//                				r.addCarriageReturn();
+//                				r.setText("tec2");
+//                				r.addCarriageReturn();
+//                				r.setText("tec3");
+//                				r.addCarriageReturn();
+//                				r.setText("tec4");
+//                				break;
+//                			case "fte" : 
+//                				System.out.println("fte");
+//                				text = "FTE prueba ";
+//                				r.setText(text);
+//                				break;
+//                			case "duracionmeses" : 
+//                				System.out.println("mes");
+//                				text = "Meses prueba ";
+//                				r.setText(text);
+//                			break;
+//                			case "imagen" : 
+//                				System.out.println("ima");
+//                				String imgFile = Config.getInstance().getProperty(Config.PATH_IMAGENES)+"/logoExportar.jpg";
+//                				FileInputStream is = new FileInputStream(imgFile);
+//                		    	r.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(240), Units.toEMU(200)); // 200x200 pixels
+//                			break;
+//                		}
+//                		if(i+1<textArray.length){
+//                		r.setText(textArray[i+1]);
+//                		}
+//                	}
+//                    
+//                }
+//            }
+//        }
+//        FileOutputStream out = new FileOutputStream(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"prueba.docx");
+//        doc.write(out);
+//		out.close();
+//		System.out.println("sda");
 	}
 
 }

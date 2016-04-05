@@ -58,5 +58,10 @@ public class PlantillaController {
 		dao.updateReferencia(key, p);
 		return p;
 	}
+
+	public Iterator<Plantilla> getPlantillasPublicas() throws Exception {
+				
+		return dao.getPlantillasPublicas();
+	}
 		
 }

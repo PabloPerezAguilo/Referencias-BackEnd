@@ -21,7 +21,7 @@ import com.example.utils.Message;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-@Path("/plantilla/")
+@Path("/plantillas/")
 @Api(value = "/plantilla", description = "Plantilla operations")
 @Produces(MediaType.APPLICATION_JSON)
 public class PlantillaService extends Service{
@@ -32,12 +32,27 @@ public class PlantillaService extends Service{
 	}
 	
 	@GET
-	@ApiOperation(value = "Devuelve todas las referencias", notes = "Devuelve todas las referencias")
+	@Path("/publicas")
+	@ApiOperation(value = "Devuelve todas las Plantillas publicas", notes = "Devuelve todas las Plantillas publicas")
 	public Response getPlantillas() {
 		try {
 			PlantillaController plantillaController = PlantillaController.getInstance();
+			out = plantillaController.getPlantillasPublicas();
+			log.info("Get All Plantillas Publicas: Operation successful");
+		} catch (Exception e) {
+			status = Response.Status.BAD_REQUEST;
+			log.error("Error detected: ", e);
+			out = new Message(e.getMessage());
+		}
+		return Response.status(status).entity(out).build();
+	}
+	@GET
+	@ApiOperation(value = "Devuelve todas las Plantillas", notes = "Devuelve todas las Plantillas")
+	public Response getPlantillasPublicas() {
+		try {
+			PlantillaController plantillaController = PlantillaController.getInstance();
 			out = plantillaController.getPlantillas();
-			log.info("Get All Referencias: Operation successful");
+			log.info("Get All Plantillas : Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -47,12 +62,12 @@ public class PlantillaService extends Service{
 	}
 	@GET
 	@Path("/{key}")
-	@ApiOperation(value = "Devuelve una referencia mediante parametro", notes = "Devuelve una referencia mediante parametro")
+	@ApiOperation(value = "Devuelve una Plantilla mediante parametro", notes = "Devuelve una Plantilla mediante parametro")
 	public Response getReferencia(@PathParam("key") String key) {
 		try {
 			PlantillaController plantillaController = PlantillaController.getInstance();
 			out = plantillaController.getPlantilla(key);
-			log.info("Get Referencia by key: Operation successful");
+			log.info("Get Plantillas  by key: Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -62,14 +77,14 @@ public class PlantillaService extends Service{
 	}
 	
 	@POST
-	@ApiOperation(value = "Crea una nueva referencia", notes = "Crea una nueva referencia")
+	@ApiOperation(value = "Crea una nueva Plantilla", notes = "Crea una nueva Plantilla")
 	public Response postReferencia(Plantilla p) {
 		try {
 			String user = SecurityContextHolder.getContext().getAuthentication().getName();
 			p.setCreador(user);
 			PlantillaController plantillaController = PlantillaController.getInstance();
 			out = plantillaController.createPlantilla(p);
-			log.info("Insert Referencia: Operation successful");
+			log.info("Insert Plantillas : Operation successful");
 		} catch (Exception e) {
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -82,13 +97,13 @@ public class PlantillaService extends Service{
 	
 	@DELETE
 	@Path("/{key}")
-	@ApiOperation(value = "Borra una Referencia", notes = "Borra una Referencia")
+	@ApiOperation(value = "Borra una Plantilla", notes = "Borra una Plantilla")
 	public Response deleteReferencia(@PathParam("key") String key){
 		try{
 			PlantillaController plantillaController = PlantillaController.getInstance();
 			plantillaController.deletePlantilla(key);
 			out = new Message("Borrado correcto");
-			log.info("Delete Referencia : Operation successful");
+			log.info("Delete Plantillas  : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);
@@ -103,13 +118,13 @@ public class PlantillaService extends Service{
 	 * @return r
 	 */
 	@PUT
-	@ApiOperation(value = "Modifica una Referencia", notes = "Modifica una Referencia")
+	@ApiOperation(value = "Modifica una Plantilla", notes = "Modifica una Plantilla")
 	public Response updateReferencia(Map<String,Object>  recursos){
 		
 		try{
 			PlantillaController plantillaController = PlantillaController.getInstance();
 			out = plantillaController.updatePlantilla(recursos);
-			log.info("Update Referencia : Operation successful");
+			log.info("Update Plantillas : Operation successful");
 		}catch(Exception e){
 			status = Response.Status.BAD_REQUEST;
 			log.error("Error detected: ", e);

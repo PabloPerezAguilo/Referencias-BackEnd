@@ -9,18 +9,20 @@ public class Plantilla {
 	private String nombre;
 	private String creador;
 	private boolean publica;
+	private String tipoDocumento;
 	
 	public Plantilla() {
 		
 	}
-	public Plantilla(String _id, String nombre,String creador,boolean publica) {
+	public Plantilla(String _id, String nombre,String creador,boolean publica,String tipoDocumento) {
 		
 		this._id = _id;
 		this.nombre = nombre;
 		this.creador = creador;
 		this.publica = publica;
-		
+		this.tipoDocumento = tipoDocumento;
 	}
+	
 	public String get_id() {
 		return _id;
 	}
@@ -45,12 +47,19 @@ public class Plantilla {
 	public void setPublica(boolean publica) {
 		this.publica = publica;
 	}
-	
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
 	@Override
 	public String toString() {
-		return "Plantillas [_id=" + _id + ", nombre=" + nombre + ", creador="
-				+ creador + ", publica=" + publica + "]";
+		return "Plantilla [_id=" + _id + ", nombre=" + nombre + ", creador="
+				+ creador + ", publica=" + publica + ", tipoDocumento="
+				+ tipoDocumento + "]";
 	}
+	
 	
 
 }

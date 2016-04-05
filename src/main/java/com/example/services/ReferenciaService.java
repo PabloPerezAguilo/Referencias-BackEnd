@@ -264,7 +264,9 @@ public class ReferenciaService extends Service{
 	@Path("/plantillas")
 	@Produces("application/vnd.ms-excel")
 	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
-	public Response exportar(@QueryParam("listaId") String listaId,@QueryParam("tipoDocumento") String tipoDocumento){
+	public Response exportar(@QueryParam("listaId") String listaId,
+			@QueryParam("tipoDocumento") String tipoDocumento, 
+			@QueryParam("idDocumento") String idDocumento){
 		
 		String[] arrayStringListId = listaId.split(",");
 		List<ObjectId> listReferenciasId = new ArrayList<ObjectId>() ;
@@ -280,7 +282,7 @@ public class ReferenciaService extends Service{
 		ReferenciaController referenciaController = ReferenciaController.getInstance();
 			switch(tipoDocumento){
 				case "Word": 
-					filePath = referenciaController.exportarWord(listReferenciasId);
+					filePath = referenciaController.exportarWord(listReferenciasId,idDocumento);
 					log.info("Exportar Referencia : Operation successful");
 					file = new File(filePath);
 					response = Response.ok((Object) file);
@@ -308,9 +310,8 @@ public class ReferenciaService extends Service{
 	}
 	@DELETE
 	@Path("/plantillas")
-	@ApiOperation(value = "Exporta una referencia a excel", notes = "Recibe un id y devuelve un excel con los datos de esa referencia")
+	@ApiOperation(value = "boirra de memoria un documento", notes = "borra de memoria el documento de la referencia recien exportada")
 	public void exportar(@QueryParam("tipoDocumento") String tipoDocumento){
-		
 		
 		File file = null;
 		try{
@@ -323,7 +324,7 @@ public class ReferenciaService extends Service{
 				default :tipo = "";
 			}
 			Thread.sleep(10000);
-			file = new File(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+SecurityContextHolder.getContext().getAuthentication().getName()+tipo);
+			file = new File(Config.getInstance().getProperty(Config.PATH_ARCHIVOS)+"temporal/"+SecurityContextHolder.getContext().getAuthentication().getName()+tipo);
 			file.delete();
 	
 		}catch(Exception e){

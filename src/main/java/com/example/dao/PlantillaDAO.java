@@ -53,7 +53,9 @@ public class PlantillaDAO {
 		deletePlantilla(key);
 		insertPlantilla(p);
 	}
-
+	public Iterator<Plantilla> getPlantillasPublicas() throws Exception {
+		return dao.find("{'publica':true}").as(Plantilla.class).iterator();
+	}
 	public void clearStore() {
 		dao.drop();
 	}
